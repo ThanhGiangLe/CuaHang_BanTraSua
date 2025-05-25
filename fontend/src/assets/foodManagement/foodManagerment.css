@@ -1,0 +1,283 @@
+.foodManagement {
+  width: 100%;
+  height: 100%;
+}
+
+.foodManagement .foodManagement_search {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.foodManagement .foodManagement_listFoodOrder {
+  height: 80vh;
+}
+
+.foodManagement_listFoodOrder .foodManagement_listFoodOrder_menu {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(44, 42, 42);
+  display: flex;
+  flex-direction: column;
+}
+
+.foodManagement_listFoodOrder .foodManagement_listFoodOrder_bill {
+  width: 33%;
+  height: 100%;
+  /* background-color: rgb(44, 42, 42); */
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes {
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item {
+  font-size: 13px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* .foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="checkbox"].selected {
+  background-color: #455a64;
+} */
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="2"].selected {
+  background-color: #bf360c;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="3"].selected {
+  background-color: #00acc1;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="4"].selected {
+  background-color: #710808;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="5"].selected {
+  background-color: #388e3c;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="6"].selected {
+  background-color: #c2185b;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="7"].selected {
+  background-color: #ffa000;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods {
+  margin-bottom: 10px;
+  /* flex-grow: 1; Chiếm toàn bộ không gian còn lại */
+  overflow-y: auto; /* Đảm bảo cuộn khi nội dung quá lớn */
+  overflow-x: hidden;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods_item {
+  border: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.4); /* Tạo hiệu ứng box-shadow */
+  transition: box-shadow 0.3s ease;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_img {
+  width: 100%;
+  height: 160px;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_decrement {
+  background-color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 28px;
+  line-height: 27px;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_decrement:hover {
+  background-color: aliceblue;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_increment {
+  background-color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_increment:hover {
+  background-color: aliceblue;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .foodManagement_listFoodOrder_menu_foods_item
+  .foodManagement_listFoodOrder_menu_foods_item_addFood {
+  --v-btn-size: 0.87rem;
+  --v-btn-height: 32px;
+}
+
+.foodManagement_listFoodOrder .foodManagement_listFoodOrder_bill {
+  height: 100%;
+  background-color: rgb(48, 49, 49);
+  display: flex;
+  flex-direction: column;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_bill
+  .foodManagement_listFoodOrder_bill_orderList {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_bill
+  .foodManagement_listFoodOrder_bill_orderList
+  .foodManagement_listFoodOrder_bill_orderList_item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_bill
+  .foodManagement_listFoodOrder_bill_orderList
+  .foodManagement_listFoodOrder_bill_orderList_item
+  .foodManagement_listFoodOrder_bill_orderList_item_img {
+  width: 65px;
+  height: 70px;
+  border-radius: 8px;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_bill
+  .foodManagement_listFoodOrder_bill_payment {
+  background-color: rgb(63, 65, 65);
+  padding: 8px 16px;
+}
+
+.foodManagement_listFoodOrder_menu_foods .AdditionalItems {
+  background-color: red;
+}
+
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .AdditionalItems_item
+  .v-input__control
+  .v-selection-control {
+  height: 40px;
+}
+
+.foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .AdditionalItems_item
+  .v-input--horizontal
+  .v-input__control
+  .v-selection-control--density-default
+  .v-selection-control__wrapper {
+  display: none !important;
+}
+
+#nodefooditem .v-textarea.v-text-field .v-input__details {
+  display: none;
+}
+
+#showComponentAreaManagement .areaManagement {
+  height: 50vh;
+}
+
+.foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .v-input--center-affix
+  .v-input__control
+  .v-selection-control--density-default
+  .v-selection-control__wrapper {
+  margin: 0 40px !important;
+}
+
+.foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .v-input__control
+  .v-selection-control.v-selection-control--density-default.v-checkbox-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .v-input__control
+  .v-selection-control.v-selection-control--density-default.v-checkbox-btn
+  .v-selection-control__wrapper {
+  margin: 0 40px !important;
+}
+
+.foodManagement_listFoodOrder_menu_foods
+  .AdditionalItems
+  .v-input__control
+  .v-selection-control
+  .v-label--clickable {
+  margin-left: 30px;
+}
+
+.v-combobox.v-combobox--single .v-input__details {
+  display: none;
+}

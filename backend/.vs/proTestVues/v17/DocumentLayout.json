@@ -1,0 +1,256 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\orderitemadditionalfooddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\orderitemadditionalfooddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\materialdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\materialdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\fooditemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\fooditemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\foodcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\foodcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\employeeschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\employeeschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\cashregisterdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\cashregisterdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\shift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\shift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\tabledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\tabledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|d:\\my_project_cv\\phanmemquanly_cuahanganuong\\backend\\testvue\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EmployeeSchedule.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\EmployeeSchedule.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\EmployeeSchedule.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\EmployeeSchedule.cs",
+              "RelativeToolTip": "testVue\\Models\\EmployeeSchedule.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T02:01:36.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrderDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\OrderDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\OrderDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:58:31.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MaterialDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\MaterialDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\MaterialDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\MaterialDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\MaterialDTO.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAQwBMAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:58:00.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CashRegisterDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\CashRegisterDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\CashRegisterDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\CashRegisterDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\CashRegisterDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:54:58.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FoodCategoryDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\FoodCategoryDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\FoodCategoryDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\FoodCategoryDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\FoodCategoryDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:56:11.021Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FoodItemDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\FoodItemDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\FoodItemDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\FoodItemDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\FoodItemDTO.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAAwCAAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:56:29.47Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OrderItemAdditionalFoodDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderItemAdditionalFoodDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\OrderItemAdditionalFoodDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderItemAdditionalFoodDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\OrderItemAdditionalFoodDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:54:21.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Shift.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\Shift.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\Shift.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\Shift.cs",
+              "RelativeToolTip": "testVue\\Models\\Shift.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T02:07:57.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TableDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\TableDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\TableDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\TableDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\TableDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T02:11:00.641Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\UserDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\UserDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\UserDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\UserDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T02:02:38.943Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "OrderItemDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderItemDTO.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\OrderItemDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\OrderItemDTO.cs",
+              "RelativeToolTip": "testVue\\Models\\OrderItemDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T02:05:58.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\Customer.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Models\\Customer.cs",
+              "RelativeToolTip": "testVue\\Models\\Customer.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:58:57.789Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Datas\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "testVue\\Datas\\AppDbContext.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Datas\\AppDbContext.cs",
+              "RelativeToolTip": "testVue\\Datas\\AppDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAABHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:54:13.937Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "FoodController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Controllers\\FoodController.cs",
+              "RelativeDocumentMoniker": "testVue\\Controllers\\FoodController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\Controllers\\FoodController.cs",
+              "RelativeToolTip": "testVue\\Controllers\\FoodController.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAWwCUAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T01:53:57.36Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

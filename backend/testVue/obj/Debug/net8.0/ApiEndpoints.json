@@ -1,0 +1,507 @@
+[
+  {
+    "ContainingType": "testVue.Controllers.AreaController",
+    "Method": "GetAllTable",
+    "RelativePath": "api/Area/get-all-table",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.Table, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.EmailController",
+    "Method": "CheckEmail",
+    "RelativePath": "api/Email/check",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.EmailCheckRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "AddFoodItem",
+    "RelativePath": "api/Food/add-food-item",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.RequestFoodItemAdd",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "AddOrder",
+    "RelativePath": "api/Food/add-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderRequest",
+        "Type": "testVue.Models.AddOrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "AddOrderItem",
+    "RelativePath": "api/Food/add-order-item",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderItemRequest",
+        "Type": "testVue.Models.OrderItemRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "DeleteFoodItem",
+    "RelativePath": "api/Food/delete-food-item/{FoodItemId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "FoodItemId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "GetAdditionalFood",
+    "RelativePath": "api/Food/get-all-additional-food",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.AdditionalFood, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "GetCategorys",
+    "RelativePath": "api/Food/get-all-category",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.FoodCategory, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "GetFoodItems",
+    "RelativePath": "api/Food/get-all-food-items",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.FoodItem, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.FoodController",
+    "Method": "UpdateFoodItem",
+    "RelativePath": "api/Food/update-food-item/{FoodItemId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "FoodItemId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedFoodItem",
+        "Type": "testVue.Models.RequestUpdateFoodItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetOrders",
+    "RelativePath": "api/Report/get-all-order",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.Order, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetOrdersByDate",
+    "RelativePath": "api/Report/get-all-order-currentday",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "timeRequest",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.Order, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetOrdersByDateMonth",
+    "RelativePath": "api/Report/get-all-order-currentmonth",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "timeRequest",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.Order, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetOrdersByFullName",
+    "RelativePath": "api/Report/get-all-order-fullname",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "timeRequest",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.Order, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "getAllOrderItemBestSeling",
+    "RelativePath": "api/Report/get-all-orderitem-bestseling",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "getAllOrderItemBestSelingurrent",
+    "RelativePath": "api/Report/get-all-orderitem-bestseling-currentday",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "getAllOrderItemBestSelingurrentMonth",
+    "RelativePath": "api/Report/get-all-orderitem-bestseling-currentmonth",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByCategory",
+    "RelativePath": "api/Report/total-revenue-category",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByCategoryTime",
+    "RelativePath": "api/Report/total-revenue-category-time",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.RequestTimeFilterTotalRevenue",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByCategoryTimeMonth",
+    "RelativePath": "api/Report/total-revenue-category-time-month",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.RequestTimeFilterTotalRevenue",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByUser",
+    "RelativePath": "api/Report/total-revenue-employee",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByUserTime",
+    "RelativePath": "api/Report/total-revenue-employee-time",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.RequestTimeFilterTotalRevenue",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalRevenueByUserTimeMonth",
+    "RelativePath": "api/Report/total-revenue-employee-time-month",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.RequestTimeFilterTotalRevenue",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalAmountByDate",
+    "RelativePath": "api/Report/total-revenue-time",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dateRequest",
+        "Type": "testVue.Models.TimeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.ReportController",
+    "Method": "GetTotalAmountByMonth",
+    "RelativePath": "api/Report/total-revenue-time-month",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "monthRequest",
+        "Type": "testVue.Models.TimeMonthRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.UserController",
+    "Method": "GetUsers",
+    "RelativePath": "api/User",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[testVue.Models.User, testVue, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "testVue.Controllers.UserController",
+    "Method": "AddUser",
+    "RelativePath": "api/User/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addUserRequest",
+        "Type": "testVue.Models.AddUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/User/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequest",
+        "Type": "testVue.Models.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "testVue.Controllers.UserController",
+    "Method": "UpdatePassword",
+    "RelativePath": "api/User/update-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "testVue.Models.UpdatePasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

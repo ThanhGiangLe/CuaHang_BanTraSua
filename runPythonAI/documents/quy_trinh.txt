@@ -1,0 +1,300 @@
+==> Đăng ký tài khoản?
+1. Đăng nhập vào hệ thống bằng Account của người có chức vụ là "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "NHÂN VIÊN" trên thanh Menu.
+3. Nhấn vào nút "+ ADD CANDIDATE".
+4. Điền đầy đủ các trường thông tin cần thiết.
+5. Nhấn "Thêm" để hoàn tất đăng ký.
+6. Kiểm tra bằng việc xem số lượng nhân viên đã được tăng lên hoặc xem thông tin được thêm vào giao diện ngay lập tức.
+
+==> Quy trình đăng ký tài khoản?
+1. Đăng nhập vào hệ thống bằng Account của người có chức vụ là "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "NHÂN VIÊN" trên thanh Menu.
+3. Nhấn vào nút "+ ADD CANDIDATE".
+4. Điền đầy đủ các trường thông tin cần thiết.
+5. Nhấn "Thêm" để hoàn tất đăng ký.
+6. Kiểm tra bằng việc xem số lượng nhân viên đã được tăng lên hoặc xem thông tin được thêm vào giao diện ngay lập tức.
+
+==> Cách đăng ký tài khoản?
+1. Đăng nhập vào hệ thống bằng Account của người có chức vụ là "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "NHÂN VIÊN" trên thanh Menu.
+3. Nhấn vào nút "+ ADD CANDIDATE".
+4. Điền đầy đủ các trường thông tin cần thiết.
+5. Nhấn "Thêm" để hoàn tất đăng ký.
+6. Kiểm tra bằng việc xem số lượng nhân viên đã được tăng lên hoặc xem thông tin được thêm vào giao diện ngay lập tức.
+
+==> Làm thế nào để đăng ký tài khoản?
+1. Đăng nhập vào hệ thống bằng Account của người có chức vụ là "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "NHÂN VIÊN" trên thanh Menu.
+3. Nhấn vào nút "+ ADD CANDIDATE".
+4. Điền đầy đủ các trường thông tin cần thiết.
+5. Nhấn "Thêm" để hoàn tất đăng ký.
+6. Kiểm tra bằng việc xem số lượng nhân viên đã được tăng lên hoặc xem thông tin được thêm vào giao diện ngay lập tức.
+
+==> Hướng dẫn cách đăng ký tài khoản?
+1. Đăng nhập vào hệ thống bằng Account của người có chức vụ là "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "NHÂN VIÊN" trên thanh Menu.
+3. Nhấn vào nút "+ ADD CANDIDATE".
+4. Điền đầy đủ các trường thông tin cần thiết.
+5. Nhấn "Thêm" để hoàn tất đăng ký.
+6. Kiểm tra bằng việc xem số lượng nhân viên đã được tăng lên hoặc xem thông tin được thêm vào giao diện ngay lập tức.
+
+==> Đặt món cho khách?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Tôi muốn đặt món cho khách?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Khách gọi món thế nào?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Quy trình đặt món cho khách?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Quy trình chọn món cho khách?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Làm thế nào để có thể gọi món?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Tôi muốn gọi món?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Thao tác trên giao diện "DANH SÁCH MÓN ĂN"?
+1. Có thể thực hiện tìm kiếm món ăn.
+2. Có thể chọn món ăn cùng món ăn kèm.
+3. Có thể thay đổi món ăn đã gọi hoặc xóa khỏi danh sách các món đã chọn.
+4. Đặt món mang về hoặc đặt món và chọn bàn ngồi lại quán.
+
+==> Tôi có thể làm gì với tab "DANH SÁCH MÓN ĂN"?
+1. Có thể thực hiện tìm kiếm món ăn.
+2. Có thể chọn món ăn cùng món ăn kèm.
+3. Có thể thay đổi món ăn đã gọi hoặc xóa khỏi danh sách các món đã chọn.
+4. Đặt món mang về hoặc đặt món và chọn bàn ngồi lại quán.
+
+==> Tìm kiếm món ăn?
+1. Bạn có thể nhập tên món ăn vào vào phía trên để lọc các món ăn bạn muốn.
+2. Hoặc có thể lọc các món ăn theo từng loại như: Món khô, Món nước, Món ăn nhanh,...
+
+==> Tìm kiếm món ăn?
+1. Bạn có thể nhập tên món ăn vào vào phía trên để lọc các món ăn bạn muốn.
+2. Hoặc có thể lọc các món ăn theo từng loại như: Món khô, Món nước, Món ăn nhanh,...
+
+==> Chọn món ăn vào thực đơn?
+1. Đăng nhập vào tài khoản của bạn.
+2. Thực hiện đặt món ở Tab "DANH SÁCH MÓN ĂN".
+3. Nhấn vào nút "CHỌN MÓN".
+4. Sau đó sẽ hiển thị các món ăn có thể gọi kèm.
+5. Đánh dấu vào các món muốn gọi, có thể để lại ghi chú để nhà bếp có thể thực hiện theo đúng yêu cầu.
+5. Nhấn vào nút "THÊM VÀO GIỎ" để xác nhận món ăn.
+6. Nhấn vào nút "HỦY" để bỏ các yêu cầu đã chọn.
+
+==> Cập nhật món ăn trong thực đơn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần thay đổi.
+3. Nhấn vào biểu tượng "✏️" sẽ hiển thị thông tin về món ăn của bạn.
+4. Bạn có thể cập nhật ghi chú, thông tin các món ăn kèm hoặc số lượng.
+5. Nhấn vào nút "Hủy" để bỏ các thay đổi.
+6. Nhấn vào nút "Xác nhận thay đổi" để thực hiện cập nhật thông tin.
+
+==> Thay đổi thông tin món ăn đã chọn trong thực đơn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần thay đổi.
+3. Nhấn vào biểu tượng "✏️" sẽ hiển thị thông tin về món ăn của bạn.
+4. Bạn có thể cập nhật ghi chú, thông tin các món ăn kèm hoặc số lượng.
+5. Nhấn vào nút "Hủy" để bỏ các thay đổi.
+6. Nhấn vào nút "Xác nhận thay đổi" để thực hiện cập nhật thông tin.
+
+==> Thay đổi thông tin món ăn đã được gọi?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần thay đổi.
+3. Nhấn vào biểu tượng "✏️" sẽ hiển thị thông tin về món ăn của bạn.
+4. Bạn có thể cập nhật ghi chú, thông tin các món ăn kèm hoặc số lượng.
+5. Nhấn vào nút "Hủy" để bỏ các thay đổi.
+6. Nhấn vào nút "Xác nhận thay đổi" để thực hiện cập nhật thông tin.
+
+==> Cập nhật món ăn đã chọn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần thay đổi.
+3. Nhấn vào biểu tượng "✏️" sẽ hiển thị thông tin về món ăn của bạn.
+4. Bạn có thể cập nhật ghi chú, thông tin các món ăn kèm hoặc số lượng.
+5. Nhấn vào nút "Hủy" để bỏ các thay đổi.
+6. Nhấn vào nút "Xác nhận thay đổi" để thực hiện cập nhật thông tin.
+
+==> Xóa món ăn trong thực đơn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần xóa.
+3. Nhấn vào biểu tượng thùng rác bên cạnh biểu tượng "✏️" để xóa món đã chọn.
+
+==> Xóa món ăn đã chọn trong thực đơn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần xóa.
+3. Nhấn vào biểu tượng thùng rác bên cạnh biểu tượng "✏️" để xóa món đã chọn.
+
+==> Tôi muốn bỏ món ăn đã chọn?
+1. Sau khi đã chọn món ăn sẽ nằm ở bên phải màn hình.
+2. Xác định món ăn cần xóa.
+3. Nhấn vào biểu tượng thùng rác bên cạnh biểu tượng "✏️" để xóa món đã chọn.
+
+==> Thêm món ăn mới của cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Nhấn vào nút "THÊM MÓN MỚI".
+4. Nhập đầy đủ thông tin món ăn cần thêm vào.
+5. Có thể hủy bằng cách nhấn vào nút "HỦY".
+6. Thực hiện tạo món bằng cách nhấn vào nút "THÊM".
+7. Xác nhận thành công bằng việc hiển thị thông báo ở góc trên-phải màn hình.
+
+==> Thêm món ăn mới vào danh sách món ăn đã có?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Nhấn vào nút "THÊM MÓN MỚI".
+4. Nhập đầy đủ thông tin món ăn cần thêm vào.
+5. Có thể hủy bằng cách nhấn vào nút "HỦY".
+6. Thực hiện tạo món bằng cách nhấn vào nút "THÊM".
+7. Xác nhận thành công bằng việc hiển thị thông báo ở góc trên-phải màn hình.
+
+==> Thêm món ăn cho cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Nhấn vào nút "THÊM MÓN MỚI".
+4. Nhập đầy đủ thông tin món ăn cần thêm vào.
+5. Có thể hủy bằng cách nhấn vào nút "HỦY".
+6. Thực hiện tạo món bằng cách nhấn vào nút "THÊM".
+7. Xác nhận thành công bằng việc hiển thị thông báo ở góc trên-phải màn hình.
+
+==> Quy trình thêm món mới để bán?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Nhấn vào nút "THÊM MÓN MỚI".
+4. Nhập đầy đủ thông tin món ăn cần thêm vào.
+5. Có thể hủy bằng cách nhấn vào nút "HỦY".
+6. Thực hiện tạo món bằng cách nhấn vào nút "THÊM".
+7. Xác nhận thành công bằng việc hiển thị thông báo ở góc trên-phải màn hình.
+
+==> Thao tác trên giao diện "QUẢN LÝ MÓN ĂN"?
+1. Tìm kiếm món ăn cần thao tác bằng việc nhập tên món ăn.
+2. Thêm món ăn mới vào thực đơn.
+3. Lọc món ăn theo các danh mục món ăn.
+4. Thực hiện cập nhật món ăn hoặc xóa món ăn bất kì.
+
+==> Tôi có thể làm gì trên giao diện "QUẢN LÝ MÓN ĂN"?
+1. Tìm kiếm món ăn cần thao tác bằng việc nhập tên món ăn.
+2. Thêm món ăn mới vào thực đơn.
+3. Lọc món ăn theo các danh mục món ăn.
+4. Thực hiện cập nhật món ăn hoặc xóa món ăn bất kì.
+
+==> Cập nhật món ăn của cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "THAY ĐỔI".
+5. Hiển thị thông tin về món ăn mà bạn vừa chọn.
+6. Thực hiện các thay đổi cần thiết và bấm vào "XÁC NHẬN" để thay đổi thông tin.
+
+==> Thay đổi thông tin món ăn của cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "THAY ĐỔI".
+5. Hiển thị thông tin về món ăn mà bạn vừa chọn.
+6. Thực hiện các thay đổi cần thiết và bấm vào "XÁC NHẬN" để thay đổi thông tin.
+
+==> Cập nhật thông tin món ăn của cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "THAY ĐỔI".
+5. Hiển thị thông tin về món ăn mà bạn vừa chọn.
+6. Thực hiện các thay đổi cần thiết và bấm vào "XÁC NHẬN" để thay đổi thông tin.
+
+==> Thay đổi thông tin món ăn đang được bán?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "THAY ĐỔI".
+5. Hiển thị thông tin về món ăn mà bạn vừa chọn.
+6. Thực hiện các thay đổi cần thiết và bấm vào "XÁC NHẬN" để thay đổi thông tin.
+
+==> Cập nhật thông tin món ăn hiện đang bán?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "THAY ĐỔI".
+5. Hiển thị thông tin về món ăn mà bạn vừa chọn.
+6. Thực hiện các thay đổi cần thiết và bấm vào "XÁC NHẬN" để thay đổi thông tin.
+
+==> Xóa món ăn của cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "XÓA".
+
+==> Xóa món ăn đang được bán trong cửa hàng?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "XÓA".
+
+==> Xóa món ăn đang được kinh doanh?
+1. Đăng nhập vào hệ thống bằng tài khoản của "quản lý" hoặc "chủ cửa hàng".
+2. Chọn vào Tab "QUẢN LÝ MÓN ĂN".
+3. Xác định món ăn cần thay đổi thông tin bằng cách lọc theo danh mục hoặc tìm kiếm theo tên món ăn.
+4. Nhấn vào nút "XÓA".
+
+==> Thao tác trên giao diện "BÁO CÁO"?
+1. Xem báo cáo theo doanh thu
+    - Xem báo cáo doanh thu theo nhân viên(Có thể lọc theo thời gian).
+    - Xem báo cáo doanh thu theo danh mục(Có thể lọc theo thời gian).
+    - Xem báo cáo Tổng doanh thu và Số lượng đơn hàng so với ngày trước đó(Có thể lọc theo thời gian).
+2. Xem báo cáo Các món đang bán chạy(Có thể lọc theo thời gian).
+3. Xem báo cáo Tổng hóa đơn(Có thể lọc theo thời gian, nhân viên).
+
+==> Tôi có thể làm gì trên giao diện "BÁO CÁO"?
+1. Xem báo cáo theo doanh thu
+    - Xem báo cáo doanh thu theo nhân viên(Có thể lọc theo thời gian).
+    - Xem báo cáo doanh thu theo danh mục(Có thể lọc theo thời gian).
+    - Xem báo cáo Tổng doanh thu và Số lượng đơn hàng so với ngày trước đó(Có thể lọc theo thời gian).
+2. Xem báo cáo Các món đang bán chạy(Có thể lọc theo thời gian).
+3. Xem báo cáo Tổng hóa đơn(Có thể lọc theo thời gian, nhân viên).

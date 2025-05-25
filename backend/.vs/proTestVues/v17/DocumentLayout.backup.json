@@ -1,0 +1,213 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\requestfooditemadd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\requestfooditemadd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\requestupdatefooditem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\requestupdatefooditem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\orderitemadditionalfood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\orderitemadditionalfood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\material.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\material.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\fooditem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\fooditem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\models\\additionalfood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\models\\additionalfood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|c:\\users\\giang\\downloads\\testvues\\testvues\\protestvues\\testvue\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C966EDD-A705-4393-8E80-7463EBE43B63}|testVue\\testVue.csproj|solutionrelative:testvue\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RequestFoodItemAdd.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\RequestFoodItemAdd.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\RequestFoodItemAdd.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\RequestFoodItemAdd.cs",
+              "RelativeToolTip": "testVue\\Models\\RequestFoodItemAdd.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-04T09:44:55.115Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RequestUpdateFoodItem.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\RequestUpdateFoodItem.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\RequestUpdateFoodItem.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\RequestUpdateFoodItem.cs",
+              "RelativeToolTip": "testVue\\Models\\RequestUpdateFoodItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-04T08:08:29.539Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FoodItem.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\FoodItem.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\FoodItem.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\FoodItem.cs",
+              "RelativeToolTip": "testVue\\Models\\FoodItem.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T05:23:58.367Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AdditionalFood.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\AdditionalFood.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\AdditionalFood.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\AdditionalFood.cs",
+              "RelativeToolTip": "testVue\\Models\\AdditionalFood.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T07:38:13.83Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FoodController.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Controllers\\FoodController.cs",
+              "RelativeDocumentMoniker": "testVue\\Controllers\\FoodController.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Controllers\\FoodController.cs",
+              "RelativeToolTip": "testVue\\Controllers\\FoodController.cs",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAgwJQAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T02:38:01.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Datas\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "testVue\\Datas\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Datas\\AppDbContext.cs",
+              "RelativeToolTip": "testVue\\Datas\\AppDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T02:51:01.892Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\appsettings.json",
+              "RelativeDocumentMoniker": "testVue\\appsettings.json",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\appsettings.json",
+              "RelativeToolTip": "testVue\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-11-25T01:55:50.2Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\User.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\User.cs",
+              "RelativeToolTip": "testVue\\Models\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T05:36:39.564Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReportController.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Controllers\\ReportController.cs",
+              "RelativeDocumentMoniker": "testVue\\Controllers\\ReportController.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Controllers\\ReportController.cs",
+              "RelativeToolTip": "testVue\\Controllers\\ReportController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T02:38:05.374Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Material.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\Material.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\Material.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\Material.cs",
+              "RelativeToolTip": "testVue\\Models\\Material.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAwwCkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T05:39:04.908Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\OrderItem.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\OrderItem.cs",
+              "RelativeToolTip": "testVue\\Models\\OrderItem.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T02:46:21.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "OrderItemAdditionalFood.cs",
+              "DocumentMoniker": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\OrderItemAdditionalFood.cs",
+              "RelativeDocumentMoniker": "testVue\\Models\\OrderItemAdditionalFood.cs",
+              "ToolTip": "C:\\Users\\Giang\\Downloads\\testVues\\testVues\\proTestVues\\testVue\\Models\\OrderItemAdditionalFood.cs",
+              "RelativeToolTip": "testVue\\Models\\OrderItemAdditionalFood.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T07:38:36.861Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

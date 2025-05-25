@@ -1,0 +1,120 @@
+.reportManagement_totalAmount_salesSummary
+  .d-user-contract-inventory-chart-progress-bar {
+  display: grid;
+  grid-template-columns: 80% auto;
+  align-items: center;
+  gap: 0.4em;
+}
+.reportManagement_totalAmount_salesSummary
+  .d-user-contract-inventory-chart-progress-bar-text {
+  font-size: 0.6rem;
+  text-align: right;
+}
+.reportManagement_totalAmount_salesSummary
+  .d-user-contract-inventory-chart-progress-bar-container {
+  height: 0.4em;
+  background: rgb(39, 39, 39);
+  border-radius: 25px;
+  position: relative;
+}
+.reportManagement_totalAmount_salesSummary
+  .d-user-contract-inventory-chart-progress-bar-indicator {
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    rgba(235, 86, 86, 1),
+    rgba(0, 55, 255, 1)
+  );
+  border-radius: 25px;
+  -webkit-mask: linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0);
+}
+.reportManagement_totalAmount_salesSummary
+  .d-user-contract-inventory-chart-progress-bar-indicator::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(235, 86, 86, 1),
+    rgba(0, 55, 255, 1)
+  ); /* your gradient here */
+}
+.reportManagement_totalAmount_salesSummary
+  .v-data-table-footer
+  .v-data-table-footer__items-per-page {
+  display: none;
+}
+
+.reportManagement_totalAmount_salesSummary .v-data-table-footer {
+  padding: 0;
+}
+
+.reportManagement_totalAmount .v-card-text {
+  padding: 4px 0 0;
+}
+
+/* Doanh thu của mặt hàng bán chạy */
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .v-data-table-footer
+  .v-data-table-footer__items-per-page {
+  display: none;
+}
+
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .v-data-table-footer {
+  padding: 0;
+}
+
+.reportManagement_bestsellingItem .v-card-text {
+  padding: 4px 8px 0;
+}
+
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .d-user-contract-inventory-chart-progress-bar {
+  display: grid;
+  grid-template-columns: 80% auto;
+  align-items: center;
+  gap: 0.4em;
+}
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .d-user-contract-inventory-chart-progress-bar-text {
+  font-size: 0.6rem;
+  text-align: center;
+}
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .d-user-contract-inventory-chart-progress-bar-container {
+  height: 0.4em;
+  background: rgb(39, 39, 39);
+  border-radius: 25px;
+  position: relative;
+}
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .d-user-contract-inventory-chart-progress-bar-indicator {
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    rgba(235, 86, 86, 1),
+    rgba(0, 55, 255, 1)
+  );
+  border-radius: 25px;
+  -webkit-mask: linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0);
+}
+.reportManagement_totalAmount_salesSummary_bestSellingItems
+  .d-user-contract-inventory-chart-progress-bar-indicator::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(235, 86, 86, 1),
+    rgba(0, 55, 255, 1)
+  ); /* your gradient here */
+}

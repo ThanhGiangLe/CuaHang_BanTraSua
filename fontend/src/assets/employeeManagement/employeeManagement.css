@@ -1,0 +1,72 @@
+.employeeManagement {
+  height: 100%;
+}
+
+.employeeManagement .employeeManagement_heading {
+}
+
+.employeeManagement .employeeManagement_list {
+}
+
+.employeeManagement .employeeManagement_list .employeeManagement_list_item {
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_info {
+  background-color: rgb(54, 54, 56);
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_title
+  .employeeManagement_list_item_title_other {
+  width: 36px;
+  height: 36px;
+  line-height: 24px;
+  border-radius: 50%;
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_title
+  .employeeManagement_list_item_title_avt
+  .employeeManagement_list_item_title_avt_img {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_title
+  .employeeManagement_list_item_title_avt
+  .employeeManagement_list_item_title_avt_img[type="ON"] {
+  border: 2px solid green;
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_title
+  .employeeManagement_list_item_title_avt
+  .employeeManagement_list_item_title_avt_img[type="OFF"] {
+  border: 2px solid red;
+}
+
+.employeeManagement
+  .employeeManagement_list
+  .employeeManagement_list_item
+  .employeeManagement_list_item_title
+  .employeeManagement_list_item_title_other:hover {
+  background-color: rgb(60, 60, 61);
+}
+
+/* Update Delete Employee */
+#Thuan {
+  color: red;
+}
