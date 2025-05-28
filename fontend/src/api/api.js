@@ -8,7 +8,7 @@ const API_ENDPOINTS = {
   GET_ALL_FOOD_ITEMS: `${BASE_URL}/food/get-all-food-items`,
   GET_ALL_ADDITIONAL_FOODS: `${BASE_URL}/food/get-all-additional-food`,
   ADD_ORDER: `${BASE_URL}/food/add-order`,
-  ADD_ORDER_ITEM: `${BASE_URL}/food/add-order-item`,
+  ADD_ORDER_DETAIL: `${BASE_URL}/food/add-order-detail`,
   GET_ALL_EMPLOYEES: `${BASE_URL}/user`, // Lấy danh sách nhân viên từ database
   ADD_USER: `${BASE_URL}/user/add`,
   DELETE_USER: `${BASE_URL}/user/delete-user`,

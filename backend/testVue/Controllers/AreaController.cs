@@ -18,7 +18,7 @@ namespace testVue.Controllers
 
         // GET: api/area/get-all-table
         [HttpGet("get-all-table")]
-        public async Task<ActionResult<IEnumerable<TableDTO>>> GetAllTable()
+        public async Task<ActionResult<IEnumerable<TableMdl>>> GetAllTable()
         {
             return await _context.Tables.ToListAsync();
         }

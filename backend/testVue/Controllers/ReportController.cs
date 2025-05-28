@@ -130,8 +130,8 @@ namespace testVue.Controllers
         public async Task<IActionResult> GetTotalRevenueByCategory()
         {
             // Truy vấn tổng doanh thu theo từng danh mục món ăn
-            var revenueByCategory = await _context.OrderItems
-                .Join(_context.FoodCategories,
+            var revenueByCategory = await _context.OrderDetails
+                .Join(_context.FoodCategorys,
                       orderItem => orderItem.CategoryId,
                       foodCategory => foodCategory.CategoryId,
                       (orderItem, foodCategory) => new { foodCategory.CategoryName, orderItem.Price, orderItem.Quantity })
@@ -163,10 +163,10 @@ namespace testVue.Controllers
                 DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); // 23:59:59 của ngày được chọn
 
                 // Truy vấn tổng doanh thu theo từng danh mục món ăn, có điều kiện lọc theo ngày
-                var revenueByCategory = await _context.OrderItems
+                var revenueByCategory = await _context.OrderDetails
                     .Where(orderItem => orderItem.OrderTime >= startOfDay && orderItem.OrderTime <= endOfDay) // Lọc theo thời gian
                     .Join(
-                        _context.FoodCategories,
+                        _context.FoodCategorys,
                         orderItem => orderItem.CategoryId,
                         foodCategory => foodCategory.CategoryId,
                         (orderItem, foodCategory) => new { foodCategory.CategoryName, orderItem.Price, orderItem.Quantity }
@@ -204,10 +204,10 @@ namespace testVue.Controllers
                 DateTime endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1); // Ngày cuối cùng của tháng
 
                 // Truy vấn tổng doanh thu theo từng danh mục món ăn, có điều kiện lọc theo ngày
-                var revenueByCategory = await _context.OrderItems
+                var revenueByCategory = await _context.OrderDetails
                     .Where(orderItem => orderItem.OrderTime >= startOfMonth && orderItem.OrderTime <= endOfMonth) // Lọc theo thời gian
                     .Join(
-                        _context.FoodCategories,
+                        _context.FoodCategorys,
                         orderItem => orderItem.CategoryId,
                         foodCategory => foodCategory.CategoryId,
                         (orderItem, foodCategory) => new { foodCategory.CategoryName, orderItem.Price, orderItem.Quantity }
@@ -329,12 +329,11 @@ namespace testVue.Controllers
             try
             {
                 // Truy vấn dữ liệu món ăn bán chạy nhất
-                var bestSellingItems = await _context.OrderItems
-                    .GroupBy(orderItem => new { orderItem.FoodItemId, orderItem.FoodName }) // Nhóm theo FoodItemId và FoodName
+                var bestSellingItems = await _context.OrderDetails
+                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        FoodName = g.Key.FoodName,
                         QuantitySold = g.Sum(item => item.Quantity) // Đếm số lượng bán ra
                     })
                     .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
@@ -367,13 +366,12 @@ namespace testVue.Controllers
                 DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); // 23:59:59 của ngày được chọn
 
                 // Truy vấn dữ liệu món ăn bán chạy nhất trong ngày được chọn
-                var bestSellingItems = await _context.OrderItems
+                var bestSellingItems = await _context.OrderDetails
                     .Where(orderItem => orderItem.OrderTime >= startOfDay && orderItem.OrderTime <= endOfDay) // Lọc theo thời gian
-                    .GroupBy(orderItem => new { orderItem.FoodItemId, orderItem.FoodName }) // Nhóm theo FoodItemId và FoodName
+                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        FoodName = g.Key.FoodName,
                         QuantitySold = g.Sum(item => item.Quantity), // Đếm số lượng bán ra
                     })
                     .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
@@ -407,13 +405,12 @@ namespace testVue.Controllers
                 DateTime endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1); // Ngày cuối cùng của tháng
 
                 // Truy vấn dữ liệu món ăn bán chạy nhất trong ngày được chọn
-                var bestSellingItems = await _context.OrderItems
+                var bestSellingItems = await _context.OrderDetails
                     .Where(orderItem => orderItem.OrderTime >= startOfMonth && orderItem.OrderTime <= endOfMonth) // Lọc theo thời gian
-                    .GroupBy(orderItem => new { orderItem.FoodItemId, orderItem.FoodName }) // Nhóm theo FoodItemId và FoodName
+                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        FoodName = g.Key.FoodName,
                         QuantitySold = g.Sum(item => item.Quantity) // Đếm số lượng bán ra
                     })
                     .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
@@ -431,7 +428,7 @@ namespace testVue.Controllers
 
         // Phần BÁO CÁO THEO TỔNG HÓA ĐƠN
         [HttpGet("get-all-order")]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrders()
         {
             var query = from order in _context.Orders
                         join user in _context.Users on order.UserId equals user.UserId
@@ -452,7 +449,7 @@ namespace testVue.Controllers
         }
 
         [HttpPost("get-all-order-currentday")]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByDate([FromBody] TimeRequestDTO timeRequest)
+        public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDate([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (!DateTime.TryParseExact(timeRequest.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
@@ -481,7 +478,7 @@ namespace testVue.Controllers
         }
 
         [HttpPost("get-all-order-currentmonth")]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByDateMonth([FromBody] TimeRequestDTO timeRequest)
+        public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDateMonth([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (!DateTime.TryParseExact(timeRequest.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
@@ -510,7 +507,7 @@ namespace testVue.Controllers
         }
 
         [HttpPost("get-all-order-fullname")]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByFullName([FromBody] TimeRequestDTO timeRequest)
+        public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByFullName([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (timeRequest == null)

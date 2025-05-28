@@ -143,13 +143,6 @@ async function verifyLoginAccount() {
     userStore.setUser(user);
     isOverlay.value = true;
 
-    const response2 = await axios.post(API_ENDPOINTS.IMPORT_CASH_REGISTER, {
-      UserId: user.userId,
-    });
-
-    if (response2.data.message !== 1) {
-      showToast("Lỗi ghi nhận thông tin Quản lý két", "error");
-    }
     errorMessage.value = "";
     quantityLogin.value = 0;
     setTimeout(() => {

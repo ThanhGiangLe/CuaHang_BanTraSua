@@ -16,20 +16,20 @@
 
 .areaManagement_item
   .areaManagement_item_tables
-  .areaManagement_item_tables_table[type="xanh"] {
+  .areaManagement_item_tables_table[type="dattruoc"] {
   background-color: rgb(53, 161, 58) !important;
 }
 
 .areaManagement_item
   .areaManagement_item_tables
-  .areaManagement_item_tables_table[type="vang"] {
+  .areaManagement_item_tables_table[type="ban"] {
   background-color: rgb(207, 187, 10) !important;
 }
 
 .areaManagement_item
   .areaManagement_item_tables
-  .areaManagement_item_tables_table[type="do"] {
-  background-color: rgb(211, 25, 25) !important;
+  .areaManagement_item_tables_table[type="trong"] {
+  background-color: rgb(85, 90, 92) !important;
 }
 
 .areaManagement_infoTable .v-data-table-footer {

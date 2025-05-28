@@ -17,5 +17,9 @@ namespace testVue.Models.Food
 
         public string ImageUrl { get; set; } = string.Empty;
 
+        public string CreateBy { get; set; } = string.Empty;
+        public string UpdateBy { get; set; } = string.Empty;
+        public int IsMain { get; set; } = default;
+
     }
 }

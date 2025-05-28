@@ -22,132 +22,7 @@ namespace testVue.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("testVue.Models.Area.TableDTO", b =>
-                {
-                    b.Property<int>("TableId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TableId");
-
-                    b.ToTable("Tables");
-                });
-
-            modelBuilder.Entity("testVue.Models.CashRegister", b =>
-                {
-                    b.Property<int>("CashRegisterId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CashRegisterId"));
-
-                    b.Property<decimal?>("EndBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("StartBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CashRegisterId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CashRegisters");
-                });
-
-            modelBuilder.Entity("testVue.Models.ChatBot.AImodel", b =>
-                {
-                    b.Property<int>("ChatBotId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChatBotId"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ChatBotId");
-
-                    b.ToTable("AImodels");
-                });
-
-            modelBuilder.Entity("testVue.Models.CustomizableItem", b =>
-                {
-                    b.Property<int>("CustomItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomItemId"));
-
-                    b.Property<string>("CustomItemName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CustomItemPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("CustomItemId");
-
-                    b.ToTable("CustomizableItem");
-                });
-
-            modelBuilder.Entity("testVue.Models.Food.AdditionalFoodDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FoodName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdditionalFood");
-                });
-
-            modelBuilder.Entity("testVue.Models.Food.FoodCategoryDTO", b =>
+            modelBuilder.Entity("testVue.Models.FoodCategoryMdl", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -172,7 +47,7 @@ namespace testVue.Migrations
                     b.ToTable("FoodCategory");
                 });
 
-            modelBuilder.Entity("testVue.Models.Food.FoodItemDTO", b =>
+            modelBuilder.Entity("testVue.Models.FoodItemMdl", b =>
                 {
                     b.Property<int>("FoodItemId")
                         .ValueGeneratedOnAdd()
@@ -182,6 +57,10 @@ namespace testVue.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
@@ -193,6 +72,9 @@ namespace testVue.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IsMain")
+                        .HasColumnType("int");
 
                     b.Property<decimal?>("PriceCustom")
                         .HasColumnType("decimal(18,2)");
@@ -208,6 +90,10 @@ namespace testVue.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UpdateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -216,58 +102,16 @@ namespace testVue.Migrations
                     b.ToTable("FoodItem");
                 });
 
-            modelBuilder.Entity("testVue.Models.Food.OrderDTO", b =>
+            modelBuilder.Entity("testVue.Models.OrderDetailMdl", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("OrderDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("OrderTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("testVue.Models.Food.OrderItemDTO", b =>
-                {
-                    b.Property<int>("OrderItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
 
                     b.Property<int>("FoodItemId")
                         .HasColumnType("int");
-
-                    b.Property<string>("FoodName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IsMainItem")
                         .HasColumnType("int");
@@ -292,139 +136,134 @@ namespace testVue.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OrderItemId");
+                    b.HasKey("OrderDetailId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("testVue.Models.FoodCustomizable", b =>
+            modelBuilder.Entity("testVue.Models.OrderMdl", b =>
                 {
-                    b.Property<int>("FoodCustomId")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FoodCustomId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int>("CustomItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FoodItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FoodCustomId");
-
-                    b.ToTable("FoodCustomizable");
-                });
-
-            modelBuilder.Entity("testVue.Models.FoodPriceType", b =>
-                {
-                    b.Property<int>("PriceTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriceTypeId"));
-
-                    b.Property<int>("FoodItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Size")
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PriceTypeId");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("FoodPriceType");
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("testVue.Models.Inventory.MaterialDTO", b =>
+            modelBuilder.Entity("testVue.Models.ScheduleMdl", b =>
                 {
-                    b.Property<int>("MaterialId")
+                    b.Property<int>("ScheduleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
 
-                    b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ImportDate")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ImportPrice")
+                    b.Property<decimal>("CloseingCashAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("MaterialName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MaterialType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<double>("MinQuantity")
-                        .HasColumnType("float");
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
+                    b.Property<decimal>("OpeningCashAmount")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<int>("ShiftId")
+                        .HasColumnType("int");
 
-                    b.HasKey("MaterialId");
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Materials");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleId");
+
+                    b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("testVue.Models.Inventory.WarehouseHistoryDTO", b =>
+            modelBuilder.Entity("testVue.Models.ShiftMdl", b =>
                 {
-                    b.Property<int>("WarehouseHistoryId")
+                    b.Property<string>("ShiftId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ShiftName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ShiftId");
+
+                    b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("testVue.Models.TableMdl", b =>
+                {
+                    b.Property<int>("TableId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WarehouseHistoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
 
-                    b.Property<double>("CurrentQuantity")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ImportDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ImportPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Unit")
+                    b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Using")
-                        .HasColumnType("int");
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("WarehouseHistoryId");
+                    b.HasKey("TableId");
 
-                    b.HasIndex("MaterialId");
-
-                    b.ToTable("WarehouseHistorys");
+                    b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("testVue.Models.User.UserDTO", b =>
+            modelBuilder.Entity("testVue.Models.UserMdl", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -438,6 +277,13 @@ namespace testVue.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -450,34 +296,26 @@ namespace testVue.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Point")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("testVue.Models.CashRegister", b =>
-                {
-                    b.HasOne("testVue.Models.User.UserDTO", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("testVue.Models.Inventory.WarehouseHistoryDTO", b =>
-                {
-                    b.HasOne("testVue.Models.Inventory.MaterialDTO", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Material");
                 });
 #pragma warning restore 612, 618
         }
