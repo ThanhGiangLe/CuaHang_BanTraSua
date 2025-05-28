@@ -2,7 +2,7 @@
 
 namespace testVue.Models
 {
-    public class Shift
+    public class ShiftMdl
     {
         [Key]
         public string? ShiftId { get; set; }

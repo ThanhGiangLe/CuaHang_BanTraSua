@@ -23,7 +23,7 @@ namespace testVue.Controllers
 
         // GET: api/user
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserMdl>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
@@ -113,7 +113,7 @@ namespace testVue.Controllers
             }
 
             // Tạo đối tượng người dùng mới
-            var user = new UserDTO
+            var user = new UserMdl
             {
                 FullName = addUserRequest.FullName,
                 Phone = addUserRequest.Phone,

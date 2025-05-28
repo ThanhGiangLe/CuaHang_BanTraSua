@@ -11,7 +11,8 @@ namespace testVue.Controllers
     {
         private readonly AppDbContext _appDbContext;
 
-        public ChatbotController(AppDbContext appDbContext) { 
+        public ChatbotController(AppDbContext appDbContext)
+        {
             _appDbContext = appDbContext;
         }
 

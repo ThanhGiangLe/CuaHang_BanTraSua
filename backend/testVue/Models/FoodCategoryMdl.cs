@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace testVue.Models
 {
-    [Table("FoodCategory")]
-    public class FoodCategoryDTO
+    [Table("FoodCategorys")]
+    public class FoodCategoryMdl
     {
         [Key]
         public int CategoryId { get; set; }

@@ -15,7 +15,6 @@ export default function useFoodManagement() {
   const currentDish = ref({});
   const foodCategories = ref([]);
   const foodItems = ref([]);
-  const additionalFoods = ref([]);
   const search = ref("");
   const currentFoodItem = ref({});
   const visibleUpdateCurrentFoodSelected = ref(false);
@@ -50,11 +49,6 @@ export default function useFoodManagement() {
 
     const responseFoodItems = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_ITEMS);
     foodItems.value = responseFoodItems.data;
-
-    const responseAdditonalFoods = await axios.get(
-      API_ENDPOINTS.GET_ALL_ADDITIONAL_FOODS
-    );
-    additionalFoods.value = responseAdditonalFoods.data;
     loading.value = false;
   }
   init();
@@ -546,26 +540,26 @@ export default function useFoodManagement() {
     updateOrderItem.value.Note = item.Note;
 
     // Lấy tất cả các món ăn thêm có thể chọn cho món này
-    const allAdditionalFoods = additionalFoods.value
-      .filter((i) => i.categoryId === item.CategoryId)
-      .map((food) => {
-        // Tìm món ăn thêm tương ứng trong danh sách đã chọn
-        const selectedFood = item.ListAdditionalFood.find(
-          (selected) => selected.id === food.id
-        );
-        return {
-          ...food,
-          quantity: selectedFood ? selectedFood.quantity : 0, // Giữ lại số lượng nếu đã chọn trước đó
-        };
-      });
+    // const allAdditionalFoods = additionalFoods.value
+    //   .filter((i) => i.categoryId === item.CategoryId)
+    //   .map((food) => {
+    //     // Tìm món ăn thêm tương ứng trong danh sách đã chọn
+    //     const selectedFood = item.ListAdditionalFood.find(
+    //       (selected) => selected.id === food.id
+    //     );
+    //     return {
+    //       ...food,
+    //       quantity: selectedFood ? selectedFood.quantity : 0, // Giữ lại số lượng nếu đã chọn trước đó
+    //     };
+    //   });
 
-    updateOrderItem.value.ListAdditionalFood = allAdditionalFoods;
+    // updateOrderItem.value.ListAdditionalFood = allAdditionalFoods;
 
     // Cập nhật danh sách món đã được chọn
-    updateOrderItem.value.ListAdditionalFoodSelected =
-      allAdditionalFoods.filter((foodItem) =>
-        item.ListAdditionalFood.some((selected) => selected.id === foodItem.id)
-      );
+    // updateOrderItem.value.ListAdditionalFoodSelected =
+    //   allAdditionalFoods.filter((foodItem) =>
+    //     item.ListAdditionalFood.some((selected) => selected.id === foodItem.id)
+    //   );
 
     visibleUpdateCurrentFoodSelected.value = true;
   }
@@ -740,7 +734,6 @@ export default function useFoodManagement() {
     currentDish,
     foodCategories,
     foodItems,
-    additionalFoods,
     search,
     currentFoodItem,
     visibleUpdateCurrentFoodSelected,

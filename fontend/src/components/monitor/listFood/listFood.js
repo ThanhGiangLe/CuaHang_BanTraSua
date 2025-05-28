@@ -16,68 +16,64 @@ export default function useFoodManagement() {
   const currentDish = ref({});
   const foodCategories = ref([]);
   const foodItems = ref([]);
-  const additionalFoods = ref([]);
   const search = ref("");
-  const detailItem = ref(false);
+  const showDialogSelectedAdditionalFood = ref(false);
   const currentFoodItem = ref({});
   const visibleUpdateCurrentFoodSelected = ref(false);
   const showComponentAreaManagement = ref(false);
   const loading = shallowRef(true);
-  const currentOrderClone = ref({});
+
   const propertyTax = ref(0);
   const propertyDiscount = ref(0);
+  const currentItemIsUpdate = ref(-1);
 
   // Lấy thông tin người dùng từ store
   const user = computed(() => userStore.user);
 
   // Danh sách categories được chọn
-  const listDashSelected = ref([]);
-
+  const listFoodCategorySelected = ref([]);
+  const currentOrderClone = ref({
+    user_id: user.value.userId,
+    order_time: getCurrentDateTimeForSQL(),
+    table_id: null,
+    total_amount: 0,
+    result_total_amount: 0,
+    status: "Paid",
+    discount: 12,
+    tax: 6,
+    paymentMethod: "Tiền mặt",
+    items: [],
+  });
   // Hàm chạy đầu tiên
   async function init() {
     const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
-    foodCategories.value = response.data;
+    foodCategories.value = response.data.data;
 
     const responseFoodItems = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_ITEMS);
     foodItems.value = responseFoodItems.data;
-
-    const responseAdditonalFoods = await axios.get(
-      API_ENDPOINTS.GET_ALL_ADDITIONAL_FOODS
-    );
-    additionalFoods.value = responseAdditonalFoods.data;
     loading.value = false;
   }
   init();
 
-  // Format CategoryId
-  function format(str) {
-    const index = str.indexOf("(");
-    if (index !== -1) {
-      return str.substring(0, index).trim(); // Trim để loại bỏ khoảng trắng thừa
-    }
-    return str.trim();
-  }
-
   function tonggleSelected(foodCategory) {
-    if (listDashSelected.value.includes(foodCategory)) {
-      listDashSelected.value = listDashSelected.value.filter(
+    if (listFoodCategorySelected.value.includes(foodCategory)) {
+      listFoodCategorySelected.value = listFoodCategorySelected.value.filter(
         (s) => s.categoryId !== foodCategory.categoryId
       );
     } else {
-      listDashSelected.value.push(foodCategory);
+      listFoodCategorySelected.value.push(foodCategory);
     }
   }
   const filteredFoodItems = computed(() => {
-    // Kiểm tra foodItems.value là mảng
-    if (!Array.isArray(foodItems.value)) {
-      console.error("foodItems.value is not an array:", foodItems.value);
-      return []; // Trả về mảng rỗng nếu không phải mảng
+    if (!Array.isArray(foodItems.value.data)) {
+      console.error("FoodItems is not an array:", foodItems.value);
+      return [];
     }
 
-    return foodItems.value.filter((foodItem) => {
+    return foodItems.value.data.filter((foodItem) => {
       const isCategoryMatch =
-        listDashSelected.value.length === 0 ||
-        listDashSelected.value.some(
+        listFoodCategorySelected.value.length === 0 ||
+        listFoodCategorySelected.value.some(
           (selected) => selected.categoryId === foodItem.categoryId
         );
 
@@ -94,65 +90,65 @@ export default function useFoodManagement() {
     const localTime = new Date(now.getTime() + localOffset * 60 * 1000);
     return localTime.toISOString(); // Format: YYYY-MM-DDTHH:MM:SS.SSSZ
   }
-  // Dùng để thao tác khi thêm món và0 trong Danh sách món đã chọn
   const currentOrderItem = ref({
     FoodItemId: "",
     FoodName: "",
-    Quantity: 0,
     Price: 0,
     Image: "",
-    CustomItemId: null,
     Unit: "",
-    Note: "",
     CategoryId: 0,
+    IsMain: 1,
+    // Các biến map thêm vào
+    Quantity: 1,
+    Note: "",
     ListAdditionalFood: [],
   });
-  // Sử dụng ListAdditionalFood trong phần v-model của v-checkbox để lưu các checkbox được checked
   const resultOrderItem = ref({
     FoodItemId: "",
     FoodName: "",
-    Quantity: 0,
     Price: 0,
     Image: "",
-    CustomItemId: null,
     Unit: "",
-    Note: "",
     CategoryId: 0,
+    IsMain: 1,
+    Quantity: 0,
+    Note: "",
     ListAdditionalFood: [],
   });
   const updateOrderItem = ref({
     FoodItemId: "",
     FoodName: "",
-    Quantity: 0,
     Price: 0,
     Image: "",
-    CustomItemId: null,
     Unit: "",
-    Note: "",
     CategoryId: 0,
+    IsMain: 1,
+    Quantity: 0,
+    Note: "",
     ListAdditionalFood: [],
     ListAdditionalFoodSelected: [],
   });
   const resultUpdateOrderItem = ref({
     FoodItemId: "",
     FoodName: "",
-    Quantity: 0,
     Price: 0,
     Image: "",
-    CustomItemId: null,
     Unit: "",
-    Note: "",
     CategoryId: 0,
+    IsMain: 1,
+    Quantity: 0,
+    Note: "",
     ListAdditionalFood: [],
   });
   const currentOrder = ref({
     user_id: user.value.userId,
     order_time: getCurrentDateTimeForSQL(),
-    table_id: 1,
+    table_id: null,
     total_amount: 0,
     status: "Paid",
     discount: 12,
     tax: 6,
+    paymentMethod: "Tiền mặt",
     items: [],
   });
   function resetOrderItem() {
@@ -160,26 +156,28 @@ export default function useFoodManagement() {
     currentOrderItem.value = {
       FoodItemId: "",
       FoodName: "",
-      Quantity: 0,
       Price: 0,
       Image: "",
-      CustomItemId: null,
       Unit: "",
-      Note: "",
       CategoryId: 0,
+      IsMain: 1,
+      // Các biến map thêm vào
+      Quantity: 1,
+      Note: "",
       ListAdditionalFood: [],
     };
 
     resultOrderItem.value = {
       FoodItemId: "",
       FoodName: "",
-      Quantity: 0,
       Price: 0,
       Image: "",
-      CustomItemId: null,
       Unit: "",
-      Note: "",
       CategoryId: 0,
+      IsMain: 1,
+      // Các biến map thêm vào
+      Quantity: 1,
+      Note: "",
       ListAdditionalFood: [],
     };
 
@@ -189,9 +187,9 @@ export default function useFoodManagement() {
       Quantity: 0,
       Price: 0,
       Image: "",
-      CustomItemId: null,
       Unit: "",
       Note: "",
+      IsMain: 1,
       CategoryId: 0,
       ListAdditionalFood: [],
       ListAdditionalFoodSelected: [],
@@ -203,63 +201,63 @@ export default function useFoodManagement() {
       Quantity: 0,
       Price: 0,
       Image: "",
-      CustomItemId: null,
       Unit: "",
       Note: "",
+      IsMain: 1,
       CategoryId: 0,
       ListAdditionalFood: [],
     };
   }
-  function selectedFoodItem(currentOrderItem) {
+  function selectedFoodItemToCart(currentOrderItem) {
     // Đem hết thông tin thao tác trên currentOrderItem đem qua resultOrderItem. Còn phần ListAdditionalFood đã được thao tác trước đó
     resultOrderItem.value.FoodItemId = currentOrderItem.FoodItemId;
     resultOrderItem.value.FoodName = currentOrderItem.FoodName;
-    resultOrderItem.value.Quantity = currentOrderItem.Quantity;
     resultOrderItem.value.Price = currentOrderItem.Price;
     resultOrderItem.value.Image = currentOrderItem.Image;
-    resultOrderItem.value.CustomItemId = currentOrderItem.CustomItemId;
     resultOrderItem.value.Unit = currentOrderItem.Unit;
-    resultOrderItem.value.Note = currentOrderItem.Note;
     resultOrderItem.value.CategoryId = currentOrderItem.CategoryId;
+    resultOrderItem.value.IsMain = currentOrderItem.IsMain;
+    resultOrderItem.value.Quantity = currentOrderItem.Quantity;
+    resultOrderItem.value.Note = currentOrderItem.Note;
 
     // Thêm món ăn vào danh sách order
     currentOrder.value.items.push({ ...resultOrderItem.value });
-
     // Cập nhật tổng tiền khi thêm hoặc tăng số lượng món
     updateTotalAmount();
 
     resetOrderItem();
-    detailItem.value = false;
+    showDialogSelectedAdditionalFood.value = false;
   }
-  function nonSelectedFoodItem() {
+  function nonSelectedFoodItemToCart() {
     // Lý do gán lại resultOrderItem.value.ListAdditionalFood vì khi check sẽ thao tác trực tiếp với resultOrderItem.value.ListAdditionalFood
     resultOrderItem.value.ListAdditionalFood =
       resultOrderItem.value.ListAdditionalFood.map(() => false);
     resetOrderItem();
-    detailItem.value = false;
+    showDialogSelectedAdditionalFood.value = false;
   }
-  function updateCurrentFoodSelected(item) {
+  function updateCurrentFoodSelected(item, index) {
     updateOrderItem.value.CategoryId = item.CategoryId;
-    updateOrderItem.value.CustomItemId = item.CustomItemId;
     updateOrderItem.value.FoodItemId = item.FoodItemId;
     updateOrderItem.value.FoodName = item.FoodName;
-    updateOrderItem.value.Quantity = item.Quantity;
     updateOrderItem.value.Image = item.Image;
-    updateOrderItem.value.Unit = item.Unit;
-    updateOrderItem.value.Price = item.Price;
+    updateOrderItem.value.IsMain = item.IsMain;
     updateOrderItem.value.Note = item.Note;
+    updateOrderItem.value.Price = item.Price;
+    updateOrderItem.value.Quantity = item.Quantity;
+    updateOrderItem.value.Unit = item.Unit;
+    currentItemIsUpdate.value = index;
 
-    // Lấy tất cả các món ăn thêm có thể chọn cho món này
-    const allAdditionalFoods = additionalFoods.value
-      .filter((i) => i.categoryId === item.CategoryId)
+    // Lấy ra danh sách các món thêm
+    const allAdditionalFoods = foodItems.value.data
+      .filter((i) => i.isMain === 0)
       .map((food) => {
-        // Tìm món ăn thêm tương ứng trong danh sách đã chọn
+        // Tìm món ăn thêm tương ứng trong danh sách đã chọn để 'tick'
         const selectedFood = item.ListAdditionalFood.find(
-          (selected) => selected.id === food.id
+          (selected) => selected.foodItemId === food.foodItemId
         );
         return {
           ...food,
-          quantity: selectedFood ? selectedFood.quantity : 0, // Giữ lại số lượng nếu đã chọn trước đó
+          quantity: selectedFood ? selectedFood.quantity : 1, // Giữ lại số lượng nếu đã chọn trước đó
         };
       });
 
@@ -268,29 +266,24 @@ export default function useFoodManagement() {
     // Cập nhật danh sách món đã được chọn
     updateOrderItem.value.ListAdditionalFoodSelected =
       allAdditionalFoods.filter((foodItem) =>
-        item.ListAdditionalFood.some((selected) => selected.id === foodItem.id)
+        item.ListAdditionalFood.some(
+          (selected) => selected.foodItemId === foodItem.foodItemId
+        )
       );
 
     visibleUpdateCurrentFoodSelected.value = true;
   }
   function updateFoodItem(updateOrderItem) {
-    // Tìm index của món cần update trong mảng items
-    const itemIndex = currentOrder.value.items.findIndex(
-      (item) =>
-        item.FoodItemId === updateOrderItem.FoodItemId &&
-        item.CustomItemId === updateOrderItem.CustomItemId
-    );
-
-    if (itemIndex !== -1) {
+    if (currentItemIsUpdate.value !== -1) {
       // Cập nhật món ăn tại vị trí tìm được
-      currentOrder.value.items[itemIndex] = {
+      currentOrder.value.items[currentItemIsUpdate.value] = {
         CategoryId: updateOrderItem.CategoryId,
-        CustomItemId: updateOrderItem.CustomItemId,
         FoodItemId: updateOrderItem.FoodItemId,
         FoodName: updateOrderItem.FoodName,
         Image: updateOrderItem.Image,
         ListAdditionalFood: updateOrderItem.ListAdditionalFoodSelected,
         Note: updateOrderItem.Note,
+        IsMain: updateOrderItem.IsMain,
         Price: updateOrderItem.Price,
         Quantity: updateOrderItem.Quantity,
         Unit: updateOrderItem.Unit,
@@ -301,19 +294,13 @@ export default function useFoodManagement() {
     }
 
     resetOrderItem();
+    currentItemIsUpdate.value = -1;
     visibleUpdateCurrentFoodSelected.value = false;
   }
-  function deleteCurrentFoodSelected(item) {
-    // Tìm index của món cần xóa dựa vào cả FoodItemId và CustomItemId
-    const itemIndex = currentOrder.value.items.findIndex(
-      (orderItem) =>
-        orderItem.FoodItemId === item.FoodItemId &&
-        orderItem.CustomItemId === item.CustomItemId
-    );
-
-    if (itemIndex !== -1) {
+  function deleteCurrentFoodSelected(index) {
+    if (index !== -1) {
       // Xóa món ăn tại vị trí tìm được
-      currentOrder.value.items.splice(itemIndex, 1);
+      currentOrder.value.items.splice(index, 1);
 
       // Cập nhật lại tổng tiền
       updateTotalAmount();
@@ -336,7 +323,7 @@ export default function useFoodManagement() {
   }
   function totalAmountAdditionalFoodItem(ListAdditionalFood) {
     return ListAdditionalFood.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.priceCustom * item.quantity;
     }, 0);
   }
   const resultTotalAmount = computed(() => {
@@ -347,15 +334,19 @@ export default function useFoodManagement() {
     return totalAmount + taxAmount - discountAmount;
   });
   function formatCurrency(value) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    if (value === null || value === undefined) return "0 VNĐ";
+
+    const numericValue = Number(value);
+    if (isNaN(numericValue)) return "0 VNĐ";
+
+    return numericValue.toLocaleString("vi-VN") + " VNĐ";
   }
   const openDialogShowDetail = (foodItem) => {
-    // Reset trước khi mở dialog mới
     resetOrderItem();
 
     // Lọc và map các món ăn thêm với quantity mặc định là 0
-    const additionalFoodsWithQuantity = additionalFoods.value
-      .filter((item) => item.categoryId === foodItem.categoryId)
+    const additionalFoodsWithQuantity = foodItems.value.data
+      .filter((item) => item.isMain === 0)
       .map((item) => ({
         ...item,
         quantity: 1, // Set quantity mặc định là 0
@@ -371,6 +362,7 @@ export default function useFoodManagement() {
       CategoryId: foodItem.categoryId,
       ListAdditionalFood: additionalFoodsWithQuantity,
       Note: "",
+      IsMain: foodItem.isMain,
     };
 
     updateOrderItem.value = {
@@ -383,10 +375,11 @@ export default function useFoodManagement() {
       CategoryId: foodItem.categoryId,
       ListAdditionalFood: additionalFoodsWithQuantity,
       ListAdditionalFoodSelected: [],
+      IsMain: foodItem.IsMain,
       Note: "",
     };
 
-    detailItem.value = true;
+    showDialogSelectedAdditionalFood.value = true;
   };
 
   const resetCurrentOrder = () => {
@@ -403,53 +396,51 @@ export default function useFoodManagement() {
   };
   async function callApiOrderFood() {
     let orderTimeCurrent = getCurrentDateTimeForSQL();
-    console.log("currentOrder", currentOrder.value);
     try {
       // Call API để thêm vào bảng Orders về thông tin của một lần gọi món
       const orderResponse = await axios.post(API_ENDPOINTS.ADD_ORDER, {
         userId: currentOrder.value.user_id,
         orderTime: orderTimeCurrent,
         tableId: currentOrder.value.table_id,
-        totalAmount: resultTotalAmount.value,
+        totalAmount: currentOrder.value.total_amount,
+        totalResult: resultTotalAmount.value,
         status: currentOrder.value.status,
         discount: currentOrder.value.discount,
         tax: currentOrder.value.tax,
+        paymentMethod: currentOrder.value.paymentMethod,
       });
 
       const orderId = orderResponse.data.data.orderId; // Nhận tại OrderId để khi thêm các món ăn đã gọi sẽ biết thuộc bill nào
-
       // Gửi cả món chính và món phụ trong sau khi đã nhận được orderId, nhầm xác định được các món ăn này thuộc bill nào
       await Promise.all(
         currentOrder.value.items.map(async (item) => {
-          // Gửi món chính
           const mainItemResponse = await axios.post(
-            API_ENDPOINTS.ADD_ORDER_ITEM,
+            API_ENDPOINTS.ADD_ORDER_DETAIL,
             {
               orderId: orderId,
               foodItemId: item.FoodItemId,
               foodName: item.FoodName,
               quantity: item.Quantity,
               price: item.Price,
-              isMainItem: 1,
+              isMainItem: item.IsMain ?? 1,
               unit: item.Unit,
               note: item.Note,
               categoryId: item.CategoryId,
               orderTime: orderTimeCurrent,
             }
           );
-          // Gửi các món phụ với parentItemId là mainItemId và các món phụ đi kèm món chính đó
           await Promise.all(
             item.ListAdditionalFood.map(async (addFood) => {
-              await axios.post(API_ENDPOINTS.ADD_ORDER_ITEM, {
+              await axios.post(API_ENDPOINTS.ADD_ORDER_DETAIL, {
                 orderId: orderId,
-                foodItemId: addFood.id,
+                foodItemId: addFood.foodItemId,
                 foodName: addFood.foodName,
                 quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                price: addFood.price,
+                price: addFood.priceCustom,
                 isMainItem: 0,
                 unit: addFood.unit,
                 note: "",
-                categoryId: 0,
+                categoryId: addFood.categoryId,
                 orderTime: orderTimeCurrent,
               });
             })
@@ -457,79 +448,48 @@ export default function useFoodManagement() {
         })
       );
 
-      const [responseUpdateMaterial, responseUpdateTotalIncome] =
-        await Promise.all([
-          axios.post(API_ENDPOINTS.UPDATE_QUANTITY_MATERIALS_AFTER_ORDER, {
-            Items: currentOrder.value.items,
-          }),
-          axios.post(API_ENDPOINTS.UPDATE_TOTALINCOME_CASH_REGISTER, {
-            UserId: user.value.userId,
-            TotalAmount: resultTotalAmount.value,
-          }),
-        ]);
-      console.log("responseUpdateMaterial", responseUpdateMaterial.data);
-      console.log("responseUpdateTotalIncome", responseUpdateTotalIncome.data);
+      // const [responseUpdateMaterial, responseUpdateTotalIncome] =
+      //   await Promise.all([
+      //     axios.post(API_ENDPOINTS.UPDATE_QUANTITY_MATERIALS_AFTER_ORDER, {
+      //       Items: currentOrder.value.items,
+      //     }),
+      //     axios.post(API_ENDPOINTS.UPDATE_TOTALINCOME_CASH_REGISTER, {
+      //       UserId: user.value.userId,
+      //       TotalAmount: resultTotalAmount.value,
+      //     }),
+      //   ]);
       // Kiểm tra phản hồi từ server
       if (orderResponse.data.success === -1) {
-        toast.warn("Please provide all required information!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false, // Hiện thanh tiến trình
-          closeOnClick: true, // Đóng khi nhấp vào thông báo
-          pauseOnHover: true, // Dừng khi di chuột lên thông báo
-          draggable: true, // Kéo thông báo
-          progress: undefined, // Tiến độ (nếu có)
-        });
+        showToast("Please provide all required information!", "warn");
       } else if (orderResponse.data.success === 1) {
-        toast.success("Add order successful!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false, // Hiện thanh tiến trình
-          closeOnClick: true, // Đóng khi nhấp vào thông báo
-          pauseOnHover: true, // Dừng khi di chuột lên thông báo
-          draggable: true, // Kéo thông báo
-          progress: undefined, // Tiến độ (nếu có)
-        });
+        showToast("Add order successful!", "success");
         resetCurrentOrder();
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 3200);
       } else {
         console.error("Failed to add order", orderResponse.data.message);
       }
     } catch (error) {
-      toast.error(`Error adding order: ${error}`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false, // Hiện thanh tiến trình
-        closeOnClick: true, // Đóng khi nhấp vào thông báo
-        pauseOnHover: true, // Dừng khi di chuột lên thông báo
-        draggable: true, // Kéo thông báo
-        progress: undefined, // Tiến độ (nếu có)
-      });
+      showToast(`Error adding order: ${error}`, "error");
     }
   }
+
   async function callApiOrderFoodAndAddTable() {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
     currentOrderClone.value = {
       ...currentOrder.value,
-      total_amount: resultTotalAmount.value,
+      result_total_amount: resultTotalAmount.value,
     };
-    console.log("Danh sách món ăn đã gọi: ", currentOrderClone.value);
-    propertyTax.value = currentOrderClone.value.tax;
-    propertyDiscount.value = currentOrderClone.value.discount;
-    console.log("Số 11 ", propertyTax.value);
-    console.log("Số 11 ", propertyDiscount.value);
 
     orderStore.setSelectedDishes(currentOrderClone.value);
   }
-  const handleShowComponentAreaManagement = () => {
+  const handleCloseComponentAreaManagement = () => {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
     orderStore.clearSelectedDishes();
     // resetCurrentOrder();
   };
   function handleCloseAndReset() {
-    console.log("Có vào");
     resetCurrentOrder();
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
   }
@@ -541,9 +501,8 @@ export default function useFoodManagement() {
     currentDish,
     foodCategories,
     foodItems,
-    additionalFoods,
     search,
-    detailItem,
+    showDialogSelectedAdditionalFood,
     currentFoodItem,
     visibleUpdateCurrentFoodSelected,
     showComponentAreaManagement,
@@ -555,7 +514,7 @@ export default function useFoodManagement() {
     resultTotalAmount,
 
     // Data objects
-    listDashSelected,
+    listFoodCategorySelected,
     currentOrderItem,
     resultOrderItem,
     updateOrderItem,
@@ -564,12 +523,11 @@ export default function useFoodManagement() {
 
     // Methods
     init,
-    format,
     tonggleSelected,
     getCurrentDateTimeForSQL,
     resetOrderItem,
-    selectedFoodItem,
-    nonSelectedFoodItem,
+    selectedFoodItemToCart,
+    nonSelectedFoodItemToCart,
     updateTotalAmount,
     totalAmountAdditionalFoodItem,
     formatCurrency,
@@ -577,7 +535,7 @@ export default function useFoodManagement() {
     updateCurrentFoodSelected,
     updateFoodItem,
     deleteCurrentFoodSelected,
-    handleShowComponentAreaManagement,
+    handleCloseComponentAreaManagement,
     handleCloseAndReset,
     resetCurrentOrder,
     callApiOrderFood,

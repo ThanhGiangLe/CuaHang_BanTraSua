@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Of73MwBPXzg=",
+  "dgSpecHash": "dGJP6ayK+Hg=",
   "success": true,
-  "projectFilePath": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\testVue.csproj",
+  "projectFilePath": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\testVue\\testVue.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSI PHONG VU\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\MSI PHONG VU\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

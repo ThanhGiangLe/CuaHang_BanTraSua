@@ -46,42 +46,59 @@
   .foodManagement_listFoodOrder_menu_dishes_item[type="checkbox"].selected {
   background-color: #455a64;
 } */
-
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="2"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="8"].selected {
+  background-color: #9e0cbf;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="9"].selected {
   background-color: #bf360c;
 }
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="3"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="10"].selected {
   background-color: #00acc1;
 }
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="4"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="11"].selected {
   background-color: #710808;
 }
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="5"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="12"].selected {
   background-color: #388e3c;
 }
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="6"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="13"].selected {
   background-color: #c2185b;
 }
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
-  .foodManagement_listFoodOrder_menu_dishes_item[type="7"].selected {
+  .foodManagement_listFoodOrder_menu_dishes_item[type="14"].selected {
   background-color: #ffa000;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="15"].selected {
+  background-color: #0000ff;
+}
+.foodManagement_listFoodOrder
+  .foodManagement_listFoodOrder_menu
+  .foodManagement_listFoodOrder_menu_dishes
+  .foodManagement_listFoodOrder_menu_dishes_item[type="16"].selected {
+  background-color: #7ecc08;
 }
 
 .foodManagement_listFoodOrder
@@ -280,4 +297,22 @@
 
 .v-combobox.v-combobox--single .v-input__details {
   display: none;
+}
+
+.hiddent-text-one-line {
+  max-height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.hiddent-text-two-line {
+  max-height: 40px;
+  height: 40px;
+  line-height: 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

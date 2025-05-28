@@ -6,18 +6,14 @@ namespace testVue.ModelsRequest
     {
         [Key]
         public int FoodItemId { get; set; } = default;
-
         public string FoodName { get; set; } = string.Empty;
-
         public decimal PriceListed { get; set; } = default;
-
         public decimal? PriceCustom { get; set; } = default;
-
         public string Unit { get; set; } = "phần";
-
         public int? CategoryId { get; set; } = default;
         public string Status { get; set; } = string.Empty;
-
         public string ImageUrl { get; set; } = string.Empty;
+        public int UserId { get; set; } = default;
+        public int IsMain { get; set; } = default;
     }
 }

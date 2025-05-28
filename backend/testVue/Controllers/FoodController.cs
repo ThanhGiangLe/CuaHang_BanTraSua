@@ -20,44 +20,67 @@ namespace testVue.Controllers
 
         // GET: api/food/get-all-category
         [HttpGet("get-all-category")]
-        public async Task<ActionResult<IEnumerable<FoodCategoryDTO>>> GetCategorys()
+        public async Task<ActionResult<IEnumerable<FoodCategoryMdl>>> GetCategorys()
         {
             // Lấy danh sách người dùng từ cơ sở dữ liệu
-            return await _context.FoodCategories.ToListAsync();
+            try
+            {
+                var categories = await _context.FoodCategorys.ToListAsync();
+                return Ok(new { success = 1, data = categories });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = -1,
+                    message = "Lỗi khi lấy danh sách danh mục.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
         }
 
         // GET: api/food/get-all-food-items
         [HttpGet("get-all-food-items")]
-        public async Task<ActionResult<IEnumerable<FoodItemDTO>>> GetFoodItems()
+        public async Task<ActionResult<IEnumerable<FoodItemMdl>>> GetFoodItems()
         {
             // Lấy danh sách người dùng từ cơ sở dữ liệu
-            return await _context.FoodItems.ToListAsync();
-        }
-
-        // GET: api/food/get-all-additional-food
-        [HttpGet("get-all-additional-food")]
-        public async Task<ActionResult<IEnumerable<AdditionalFoodDTO>>> GetAdditionalFood()
-        {
-            return await _context.AdditionalFoods.ToListAsync();
+            try
+            {
+                var foodItems = await _context.FoodItems.ToListAsync();
+                return Ok(new { success = 1, data = foodItems });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = -1,
+                    message = "Lỗi khi lấy danh sách món ăn.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
         }
 
         // POST: api/food/add-order
         [HttpPost("add-order")]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDTO orderRequest)
         {
-            if(orderRequest == null)
+            if (orderRequest == null)
             {
                 return Ok(new { success = -1 });
             }
-            var order = new OrderDTO
+            var order = new OrderMdl
             {
                 UserId = orderRequest.UserId,
                 OrderTime = orderRequest.OrderTime,
                 TableId = orderRequest.TableId,
                 TotalAmount = orderRequest.TotalAmount,
+                TotalResult = orderRequest.TotalResult,
                 Status = orderRequest.Status,
                 Discount = orderRequest.Discount,
-                Tax = orderRequest.Tax
+                Tax = orderRequest.Tax,
+                PaymentMethod = orderRequest.PaymentMethod
             };
             _context.Orders.Add(order);
             try
@@ -75,7 +98,8 @@ namespace testVue.Controllers
                         order.TotalAmount,
                         order.Status,
                         order.Discount,
-                        order.Tax
+                        order.Tax,
+                        order.PaymentMethod
                     }
                 });
             }
@@ -92,17 +116,16 @@ namespace testVue.Controllers
         }
 
         // POST: api/food/add-order
-        [HttpPost("add-order-item")]
-        public async Task<IActionResult> AddOrderItem([FromBody] OrderItemRequestDTO orderItemRequest)
+        [HttpPost("add-order-detail")]
+        public async Task<IActionResult> AddOrderDetail([FromBody] OrderDetailRequestDTO orderItemRequest)
         {
-            if(orderItemRequest == null)
+            if (orderItemRequest == null)
             {
                 return BadRequest(new { success = -1, message = "Request không hợp lệ" });
             }
-            var orderItem = new OrderItemDTO
+            var orderItem = new OrderDetailMdl
             {
                 OrderId = orderItemRequest.OrderId,
-                FoodName = orderItemRequest.FoodName,
                 FoodItemId = orderItemRequest.FoodItemId,
                 Quantity = orderItemRequest.Quantity,
                 Price = orderItemRequest.Price,
@@ -112,7 +135,7 @@ namespace testVue.Controllers
                 CategoryId = orderItemRequest.CategoryId,
                 OrderTime = orderItemRequest.OrderTime,
             };
-            _context.OrderItems.Add(orderItem);
+            _context.OrderDetails.Add(orderItem);
             try
             {
                 await _context.SaveChangesAsync();
@@ -142,18 +165,23 @@ namespace testVue.Controllers
                 return BadRequest("Invalid food item data.");
             }
 
+            var currentTime = DateTime.UtcNow;
+
             // Tạo một đối tượng FoodItem từ RequestFoodItemAdd
-            var foodItem = new FoodItemDTO
+            var foodItem = new FoodItemMdl
             {
                 FoodName = request.FoodName,
                 PriceListed = request.PriceListed,
                 PriceCustom = request.PriceCustom,
                 ImageUrl = request.ImageUrl,
-                Unit = request.Unit ?? "phần", // Nếu Unit không có, mặc định là "phần"
+                Unit = request.Unit ?? "Ly", // Nếu Unit không có, mặc định là "phần"
                 CategoryId = request.CategoryId,
-                Status = "Có sẵn", // Mặc định là "available"
-                CreateDate = DateTime.Now,
-                UpdateDate = DateTime.Now,
+                Status = "Available", // Mặc định là "available"
+                CreateDate = currentTime,
+                CreateBy = request.CreateBy,
+                UpdateDate = currentTime,
+                UpdateBy = request.UpdateBy,
+                IsMain = request.IsMain,
             };
 
             try
@@ -168,14 +196,16 @@ namespace testVue.Controllers
                     success = true,
                     categoryId = foodItem.CategoryId,
                     foodItemId = foodItem.FoodItemId,
-                    foodName = foodItem.FoodName,
                     imageUrl = foodItem.ImageUrl,
                     priceCustom = foodItem.PriceCustom,
                     priceListed = foodItem.PriceListed,
                     status = foodItem.Status,
                     unit = foodItem.Unit,
                     createDate = foodItem.CreateDate,
+                    createBy = foodItem.CreateBy,
                     updateDate = foodItem.UpdateDate,
+                    updateBy = foodItem.UpdateBy,
+                    isMain = foodItem.IsMain,
                 });
             }
             catch (Exception ex)
@@ -239,15 +269,23 @@ namespace testVue.Controllers
                 return NotFound(new { success = -1, message = "Món ăn không tồn tại." });
             }
 
+            var user = await _context.Users.FindAsync(updatedFoodItem.UserId);
+            if (user == null)
+            {
+                return NotFound(new { success = -1, message = "Người dùng không tồn tại." });
+            }
+
             // Cập nhật thông tin món ăn
             existingFoodItem.FoodName = updatedFoodItem.FoodName ?? existingFoodItem.FoodName;
             existingFoodItem.PriceListed = updatedFoodItem.PriceListed > 0 ? updatedFoodItem.PriceListed : existingFoodItem.PriceListed;
             existingFoodItem.PriceCustom = updatedFoodItem.PriceCustom ?? existingFoodItem.PriceCustom;
+            existingFoodItem.ImageUrl = updatedFoodItem.ImageUrl ?? existingFoodItem.ImageUrl;
             existingFoodItem.Unit = updatedFoodItem.Unit ?? existingFoodItem.Unit;
             existingFoodItem.CategoryId = updatedFoodItem.CategoryId ?? existingFoodItem.CategoryId;
             existingFoodItem.Status = updatedFoodItem.Status ?? existingFoodItem.Status;
-            existingFoodItem.ImageUrl = updatedFoodItem.ImageUrl ?? existingFoodItem.ImageUrl;
             existingFoodItem.UpdateDate = DateTime.Now;
+            existingFoodItem.UpdateBy = user.FullName ?? "Admin";
+            existingFoodItem.IsMain = updatedFoodItem.IsMain > 0 ? updatedFoodItem.IsMain : existingFoodItem.IsMain;
 
             try
             {
@@ -267,6 +305,8 @@ namespace testVue.Controllers
                         existingFoodItem.CategoryId,
                         existingFoodItem.Status,
                         existingFoodItem.UpdateDate,
+                        existingFoodItem.UpdateBy,
+                        existingFoodItem.IsMain
                     }
                 });
             }
@@ -281,7 +321,5 @@ namespace testVue.Controllers
                 });
             }
         }
-
-
     }
 }

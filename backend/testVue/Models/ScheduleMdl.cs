@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace testVue.Models
 {
-    public class EmployeeSchedule
+    public class ScheduleMdl
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ScheduleId { get; set; } = default;
-
         public int UserId { get; set; } = default;
         public DateTime? Date {  get; set; }
         public int ShiftId { get; set; }
@@ -16,7 +15,7 @@ namespace testVue.Models
         public string? CreateBy {  get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? UpdateBy { get; set; }
-        public  int CashRegisterId { get; set; }
-        public UserDTO User { get; set; }
+        public decimal OpeningCashAmount { get; set; }
+        public decimal CloseingCashAmount { get; set; }
     }
 }

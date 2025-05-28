@@ -22,10 +22,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Đăng ký DI
-builder.Services.AddScoped<IHandleOrderItem, HandleOrderItem>();
-builder.Services.AddScoped<IHandleMaterials, HandleMaterials>();
-builder.Services.AddScoped<MaterialConfigs>();
-builder.Services.AddScoped<MaterialIdConfigs>();
+//builder.Services.AddScoped<IHandleOrderItem, HandleOrderItem>();
+//builder.Services.AddScoped<IHandleMaterials, HandleMaterials>();
+//builder.Services.AddScoped<MaterialConfigs>();
+//builder.Services.AddScoped<MaterialIdConfigs>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<UserConnectionManager>(); 
 
@@ -50,7 +50,7 @@ var app = builder.Build();
     app.UseSwaggerUI();
 //}
 
-app.MapHub<UserHub>("/userhub"); // endpoint cho SignalR
+//app.MapHub<UserHub>("/userhub"); // endpoint cho SignalR
 
 app.UseCors("AllowSpecificOrigin");
 

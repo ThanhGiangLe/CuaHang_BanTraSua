@@ -7,9 +7,11 @@ export const userOrderStore = defineStore("order", {
       order_time: null,
       table_id: null,
       total_amount: 0,
+      result_total_amount: 0,
       status: "",
       discount: 0,
       tax: 0,
+      paymentMethod: "",
       items: [],
     },
     tableOrders: JSON.parse(localStorage.getItem(STORAGE_KEY)) || {},
@@ -24,41 +26,72 @@ export const userOrderStore = defineStore("order", {
         console.warn("Chưa chọn món ăn");
         return;
       }
-      if (!this.tableOrders[tableId]) {
-        this.tableOrders[tableId] = [];
+      this.selectedDishes.table_id = tableId;
+
+      const currentTableOrder = this.tableOrders[tableId];
+
+      if (currentTableOrder) {
+        this.selectedDishes.items.forEach((newDish) => {
+          const existing = currentTableOrder.items.find(
+            (d) => d.FoodItemId === newDish.FoodItemId
+          );
+          if (existing) {
+            existing.Quantity += newDish.Quantity || 1;
+          } else {
+            currentTableOrder.items.push({ ...newDish });
+          }
+        });
+
+        // Gộp các thông tin khác (tuỳ bạn muốn merge hay ghi đè)
+        this.tableOrders[tableId] = {
+          ...currentTableOrder,
+          ...this.selectedDishes,
+          order_time: this.selectedDishes.order_time,
+          items: currentTableOrder.items,
+        };
+      } else {
+        // Nếu chưa có thì lưu toàn bộ
+        this.tableOrders[tableId] = {
+          ...this.selectedDishes,
+        };
       }
-      this.selectedDishes.items.forEach((newDish) => {
-        const existing = this.tableOrders[tableId].find(
-          (d) => d.FoodItemId == newDish.FoodItemId
-        );
-        if (existing) {
-          existing.Quantity += newDish.Quantity || 1;
-        } else {
-          this.tableOrders[tableId].push({ ...newDish });
-        }
-      });
       this.persistTableOrders();
       // this.clearSelectedDishes();
     },
 
     getDishesByTable(tableId) {
-      return this.tableOrders[tableId] || [];
+      return (
+        this.tableOrders[tableId] || {
+          user_id: null,
+          order_time: null,
+          table_id: tableId,
+          total_amount: 0,
+          result_total_amount: 0,
+          status: "",
+          discount: 0,
+          tax: 0,
+          paymentMethod: "",
+          items: [],
+        }
+      );
     },
 
     removeDishFromTable(tableId, dishId) {
       if (!this.tableOrders[tableId]) return;
 
-      this.tableOrders[tableId] = this.tableOrders[tableId].filter(
-        (d) => d.id !== dishId
+      this.tableOrders[tableId].items = this.tableOrders[tableId].items.filter(
+        (d) => d.FoodItemId !== dishId
       );
       this.persistTableOrders();
     },
 
     updateDishQuantity(tableId, dishId, newQty) {
       if (!this.tableOrders[tableId]) return;
-      const dish = this.tableOrders[tableId].find((d) => d.id === dishId);
+      const dish = this.tableOrders[tableId].items.find(
+        (d) => d.FoodItemId === dishId
+      );
       if (dish) {
-        dish.quantity = newQty;
+        dish.Quantity = newQty;
         this.persistTableOrders();
       }
     },
@@ -69,6 +102,7 @@ export const userOrderStore = defineStore("order", {
         order_time: null,
         table_id: null,
         total_amount: 0,
+        result_total_amount: 0,
         status: "",
         discount: 0,
         tax: 0,

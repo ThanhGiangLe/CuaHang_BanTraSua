@@ -7051,11 +7051,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\testVue.csproj",
+      "projectUniqueName": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\testVue\\testVue.csproj",
       "projectName": "testVue",
-      "projectPath": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\testVue.csproj",
+      "projectPath": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\testVue\\testVue.csproj",
       "packagesPath": "C:\\Users\\MSI PHONG VU\\.nuget\\packages\\",
-      "outputPath": "D:\\MY_PROJECT_CV\\PhanMemQuanLy_CuaHangAnUong\\backend\\testVue\\obj\\",
+      "outputPath": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\testVue\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\MSI PHONG VU\\AppData\\Roaming\\NuGet\\NuGet.Config",

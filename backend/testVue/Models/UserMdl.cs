@@ -2,7 +2,7 @@
 
 namespace testVue.Models
 {
-    public class UserDTO
+    public class UserMdl
     {
         [Key]
         public int UserId { get; set; } = default;
@@ -13,5 +13,11 @@ namespace testVue.Models
         public string? Password { get; set; } = string.Empty;
         public string? Role { get; set; } = string.Empty;
         public string? Avatar { get; set; } = string.Empty;
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public string CreateBy { get; set; } = string.Empty;
+        public string UpdateBy { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public decimal Point {  get; set; }
     }
 }
