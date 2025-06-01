@@ -76,7 +76,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="min-height: 160px"
+                    style="height: 160px"
                   />
                   <span
                     class="mt-3 hiddent-text-one-line"
@@ -493,8 +493,11 @@
         </div>
 
         <!-- Thực hiện thao tác -->
+        <v-btn class="w-100 mt-3 mb-2" color="orange-darken-2"
+          >Chọn phương thức thanh toán</v-btn
+        >
         <v-btn
-          class="w-100 mt-3 mb-2"
+          class="w-100 mb-2"
           @click="callApiOrderFood()"
           color="orange-darken-2"
           >Đặt món</v-btn

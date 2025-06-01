@@ -205,6 +205,7 @@ async function init() {
       date: `${monthFormat}-${currentYear}`,
     }
   );
+  console.log("response.data: ", response.data);
   allItemBestSeling.value = response.data;
 
   const quantitySoldMaxDataTable = allItemBestSeling.value

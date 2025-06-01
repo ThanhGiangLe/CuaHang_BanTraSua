@@ -84,19 +84,12 @@ export default function useAreaManagement() {
     return localTime.toISOString(); // Format: YYYY-MM-DDTHH:MM:SS.SSSZ
   }
   function formatDate(dateString) {
-    const date = new Date(dateString);
+    const isoString = dateString.toString();
 
-    const pad = (n) => String(n).padStart(2, "0");
-
-    const day = pad(date.getUTCDate());
-    const month = pad(date.getUTCMonth() + 1);
-    const year = date.getUTCFullYear();
-
-    const hours = pad(date.getUTCHours());
-    const minutes = pad(date.getUTCMinutes());
-    const seconds = pad(date.getUTCSeconds());
-
-    return `${day}:${month}:${year} ${hours}:${minutes}:${seconds}`;
+    return isoString
+      .replace("T", " ")
+      .replace(/\.\d+Z$/, "")
+      .replace(/\.\d+/, "");
   }
   async function ConfirmPayment() {
     let orderTimeCurrent = getCurrentDateTimeForSQL();

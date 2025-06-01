@@ -63,22 +63,28 @@ export default function useReportRevenue() {
 
   const foodCategories = ref([]);
   const listLabels = ref([
-    "Món khô",
-    "Món nước",
-    "Món ăn nhanh",
-    "Tráng miệng",
-    "Nước uống",
-    "Món gọi thêm",
+    "Best thèm",
+    "Món mới",
+    "Đậm vị",
+    "Trà sữa truyền thống",
+    "Trà sữa mix",
+    "Thèm nhai đã",
+    "Siêu tiết kiệm / Combo hot",
+    "Thơm béo ngất ngay",
+    "Món thêm",
   ]);
 
-  const listDatas = ref([1, 1, 1, 1, 1, 1]);
+  const listDatas = ref([1, 1, 1, 1, 1, 1, 1, 1, 1]);
   const listColor = ref([
-    "#bf360c",
-    "#00acc1",
-    "#710808",
-    "#388e3c",
-    "#c2185b",
-    "#ffa000",
+    "#bf360c", // đỏ nâu
+    "#00acc1", // xanh dương ngọc
+    "#710808", // đỏ rượu
+    "#388e3c", // xanh lá
+    "#c2185b", // hồng đậm
+    "#ffa000", // vàng cam
+    "#6a1b9a", // tím đậm
+    "#00796b", // xanh ngọc đậm
+    "#f4511e", // cam cháy
   ]);
   // Khai báo dữ liệu biểu đồ
   const chartData = ref({
@@ -107,6 +113,8 @@ export default function useReportRevenue() {
 
   async function selectMonthAndCallAPI(month) {
     selectedMonth.value = month;
+    selectedDay.value = "";
+    selectedCurrentDay.value = "";
     let [monthf, yearf] = selectedMonth.value.split("-");
     monthf = monthf.padStart(2, "0");
     selectedMonth.value = `${monthf}-${yearf}`;
@@ -130,6 +138,8 @@ export default function useReportRevenue() {
   }
   async function selectDayAndCallAPI(day) {
     selectedDay.value = day;
+    selectedMonth.value = "";
+    selectedCurrentDay.value = "";
     let [dayf, monthf, yearf] = selectedDay.value.split("-");
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
@@ -151,15 +161,13 @@ export default function useReportRevenue() {
   }
   async function selectCurrentDayAndCallAPI() {
     const day = currentDate.getDate();
+    selectedMonth.value = "";
+    selectedDay.value = "";
     // Định dạng lại thành "ngày/tháng/năm"
     const formattedDate = `${day < 10 ? "0" + day : day}-${
       currentMonth < 10 ? "0" + currentMonth : currentMonth
     }-${currentYear}`;
     selectedCurrentDay.value = formattedDate;
-    let [dayf, monthf, yearf] = selectedCurrentDay.value.split("-");
-    dayf = dayf.padStart(2, "0");
-    monthf = monthf.padStart(2, "0");
-    selectedCurrentDay.value = `${dayf}-${monthf}-${yearf}`;
 
     const responseTotal1 = await axios.post(
       API_ENDPOINTS.GET_ALL_REVENUE_BY_TIME,
@@ -259,7 +267,6 @@ export default function useReportRevenue() {
 
   async function callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH() {
     const formattedMonth = currentMonth.toString().padStart(2, "0");
-    // Lọc danh thu theo nhân viên
     const responseRevenue = await axios.post(
       API_ENDPOINTS.GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH,
       {
@@ -282,7 +289,7 @@ export default function useReportRevenue() {
   }
   async function callApi_GET_ALL_FOOD_CATEGORIES() {
     const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
-    foodCategories.value = response.data;
+    foodCategories.value = response.data.data;
     listLabels.value = foodCategories.value.map((c) => c.categoryName);
   }
   async function callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH() {
@@ -293,20 +300,15 @@ export default function useReportRevenue() {
         date: `${formattedMonth}-${currentYear}`,
       }
     );
-
-    const revenueMap = responseRevenueForCategory.data.reduce((acc, item) => {
-      acc[item.categoryName] = item.totalRevenue;
-      return acc;
-    }, {});
-
-    listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
-
-    // listDatas.value = responseRevenueForCategory.data.map(
-    //   (i) => i.totalRevenue
-    // );
-    // while (listDatas.value.length < listLabels.value.length) {
-    //   listDatas.value.push(1);
-    // }
+    if (responseRevenueForCategory.data.length != 0) {
+      const revenueMap = responseRevenueForCategory.data.reduce((acc, item) => {
+        acc[item.categoryName] = item.totalRevenue;
+        return acc;
+      }, {});
+      listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
+    } else {
+      listDatas.value = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    }
 
     chartData.value = {
       labels: listLabels.value,
@@ -336,6 +338,7 @@ export default function useReportRevenue() {
   async function selectDayAndCallAPIForEmployee(day) {
     loading.value = true;
     selectedDayForEmp.value = day;
+    selectedMonthForEmp.value = "";
     let [dayf, monthf, yearf] = selectedDayForEmp.value.split("-");
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
@@ -364,6 +367,7 @@ export default function useReportRevenue() {
   async function selectMonthAndCallAPIForEmployee(month) {
     loading.value = true;
     selectedMonthForEmp.value = month;
+    selectedDayForEmp.value = "";
     let [monthf, yearf] = selectedMonthForEmp.value.split("-");
     monthf = monthf.padStart(2, "0");
     selectedMonthForEmp.value = `${monthf}-${yearf}`;
@@ -399,6 +403,7 @@ export default function useReportRevenue() {
   async function selectDayAndCallAPIForCategory(day) {
     loading.value = true;
     selectedDayForCate.value = day;
+    selectedMonthForCate.value = "";
     let [dayf, monthf, yearf] = selectedDayForCate.value.split("-");
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
@@ -409,21 +414,16 @@ export default function useReportRevenue() {
         date: selectedDayForCate.value,
       }
     );
+    if (responseTotal1.data.length != 0) {
+      const revenueMap = responseTotal1.data.reduce((acc, item) => {
+        acc[item.categoryName] = item.totalRevenue;
+        return acc;
+      }, {});
 
-    const revenueMap = responseTotal1.data.reduce((acc, item) => {
-      acc[item.categoryName] = item.totalRevenue;
-      return acc;
-    }, {});
-
-    listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
-
-    // listDatas.value = responseRevenueForCategory.data.map(
-    //   (i) => i.totalRevenue
-    // );
-    // while (listDatas.value.length < listLabels.value.length) {
-    //   listDatas.value.push(1);
-    // }
-
+      listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
+    } else {
+      listDatas.value = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    }
     chartData.value = {
       labels: listLabels.value,
       datasets: [
@@ -439,6 +439,7 @@ export default function useReportRevenue() {
   async function selectMonthAndCallAPIForCategory(month) {
     loading.value = true;
     selectedMonthForCate.value = month;
+    selectedDayForCate.value = "";
     let [monthf, yearf] = selectedMonthForCate.value.split("-");
     monthf = monthf.padStart(2, "0");
     selectedMonthForCate.value = `${monthf}-${yearf}`;
@@ -449,19 +450,16 @@ export default function useReportRevenue() {
         date: selectedMonthForCate.value,
       }
     );
-    const revenueMap = responseTotal1.data.reduce((acc, item) => {
-      acc[item.categoryName] = item.totalRevenue;
-      return acc;
-    }, {});
+    if (responseTotal1.data.length != 0) {
+      const revenueMap = responseTotal1.data.reduce((acc, item) => {
+        acc[item.categoryName] = item.totalRevenue;
+        return acc;
+      }, {});
 
-    listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
-
-    // listDatas.value = responseRevenueForCategory.data.map(
-    //   (i) => i.totalRevenue
-    // );
-    // while (listDatas.value.length < listLabels.value.length) {
-    //   listDatas.value.push(1);
-    // }
+      listDatas.value = listLabels.value.map((label) => revenueMap[label] || 0);
+    } else {
+      listDatas.value = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    }
 
     chartData.value = {
       labels: listLabels.value,
@@ -485,38 +483,23 @@ export default function useReportRevenue() {
   };
 
   return {
-    generateDates,
-    generateMonths,
-    currentDate,
-
     currentMonth,
-    currentYear,
     dateList,
     monthList,
     selectedMonth,
     selectedDay,
     selectedCurrentDay,
-    totalRevenueOrderCurrentDay,
-    totalRevenueOrderCurrentMonth,
     totalRevenue,
     totalRevenueYesterday,
     totalOrders,
     totalOrdersYesterday,
     totalRevenueMax,
-    totalRevenueForCategoryMax,
     loading,
     filteredTotalRevenueForEmployee,
-    filteredTotalRevenueForCategory,
-    tab,
     selectedMonthForEmp,
     selectedDayForEmp,
     selectedDayForCate,
     selectedMonthForCate,
-    init,
-    foodCategories,
-    listLabels,
-    listDatas,
-    listColor,
     chartData,
     chartOptions,
     selectMonthAndCallAPI,
@@ -529,10 +512,6 @@ export default function useReportRevenue() {
     calculateOrderPercentage,
     resetTimeFillterRevenueOrder,
     headersEmployee,
-    headersCategory,
-    callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH,
-    callApi_GET_ALL_FOOD_CATEGORIES,
-    callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH,
     selectDayAndCallAPIForEmployee,
     selectMonthAndCallAPIForEmployee,
     resetTimeFillterRevenueOrderForEmployee,

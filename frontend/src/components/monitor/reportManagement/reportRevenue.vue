@@ -30,6 +30,7 @@
             <!-- Báo cáo doanh thu theo nhân viên -->
             <div class="mt-1 d-flex flex-column" style="height: 60%">
               <h2 class="text-center w-100 opacity-50">Theo Nhân Viên</h2>
+              <!-- Filter -->
               <div
                 class="reportManagement_chosseTime d-flex justify-md-space-between"
               >
@@ -88,6 +89,7 @@
                     </v-list>
                   </v-menu>
                 </div>
+                <!-- Reset filter -->
                 <v-btn
                   style="border: 1px solid #333; min-width: 60px"
                   size="small"
@@ -96,7 +98,7 @@
                   Làm mới
                 </v-btn>
               </div>
-              <!-- style="height: 405px; max-height: 405px; overflow-y: auto" -->
+              <!-- Thông tin hiển thị   style="height: 405px; max-height: 405px; overflow-y: auto" -->
               <div
                 class="reportManagement_totalAmount_salesSummary flex-1-0 d-flex mt-1 mb-1"
                 style="overflow-y: auto"
@@ -159,11 +161,13 @@
                 </v-data-table>
               </div>
             </div>
+
             <!-- Báo cáo doanh thu theo thời gian -->
             <div class="mb-2 mt-2">
               <h2 class="text-center w-100 opacity-50">
                 Tổng doanh thu - Số lượng đơn hàng hôm nay
               </h2>
+              <!-- Filter -->
               <div
                 class="reportManagement_chosseTime d-flex justify-md-space-between mb-2"
               >
@@ -240,6 +244,7 @@
                   Làm mới
                 </v-btn>
               </div>
+              <!-- Hiển thị thông tin -->
               <div class="reportManagement_totalAmount_salesSummary d-flex">
                 <!-- Hiển thị tổng doanh thu -->
                 <div
@@ -249,32 +254,14 @@
                     background-color: rgb(32 32 32);
                   "
                 >
-                  <!-- Nếu có tháng được chọn -->
-                  <div v-if="selectedMonth != ''">
-                    <span>Doanh thu</span>
-                    <h2>{{ formatCurencyFromApiToView(totalRevenue) }} vnđ</h2>
-                    <div>
-                      <v-icon
-                        color="green"
-                        v-if="totalRevenue > totalRevenueYesterday"
-                        >mdi-trending-up</v-icon
-                      >
-                      <v-icon color="red" v-else>mdi-trending-down</v-icon>
-                      <span
-                        style="color: green"
-                        v-if="totalRevenue > totalRevenueYesterday"
-                        >{{ calculateRevenuePercentage.toFixed(1) }}%</span
-                      >
-                      <span style="color: red" v-else
-                        >{{ calculateRevenuePercentage.toFixed(1) }}%</span
-                      >
-                      <span style="font-size: 12px; margin-left: 6px"
-                        >so với {{ previousMonth }}</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Nếu có ngày được chọn -->
-                  <div v-else-if="selectedDay != ''">
+                  <!-- Nếu có thời gian được chọn -->
+                  <div
+                    v-if="
+                      selectedMonth != '' ||
+                      selectedDay != '' ||
+                      selectedCurrentDay != ''
+                    "
+                  >
                     <span>Doanh thu</span>
                     <h2>{{ formatCurencyFromApiToView(totalRevenue) }}</h2>
                     <div>
@@ -292,31 +279,19 @@
                       <span style="color: red" v-else
                         >{{ calculateRevenuePercentage.toFixed(1) }}%</span
                       >
-                      <span style="font-size: 12px; margin-left: 6px">
-                        so với {{ previousDay }}
-                      </span>
-                    </div>
-                  </div>
-                  <!-- Nếu chọn ngày là hôm nay -->
-                  <div v-else-if="selectedCurrentDay != ''">
-                    <span>Doanh thu</span>
-                    <h2>{{ formatCurencyFromApiToView(totalRevenue) }} vnđ</h2>
-                    <div>
-                      <v-icon
-                        v-if="totalRevenue > totalRevenueYesterday"
-                        color="green"
-                        >mdi-trending-up</v-icon
-                      >
-                      <v-icon v-else color="red">mdi-trending-down</v-icon>
                       <span
-                        style="color: green"
-                        v-if="totalRevenue > totalRevenueYesterday"
-                        >{{ calculateRevenuePercentage.toFixed(1) }}%</span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-if="selectedMonth != ''"
+                        >so với {{ previousMonth }}</span
                       >
-                      <span style="color: red" v-else
-                        >{{ calculateRevenuePercentage.toFixed(1) }}%</span
+                      <span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-else-if="selectedDay != ''"
+                        >so với {{ previousDay }}</span
                       >
-                      <span style="font-size: 12px; margin-left: 6px"
+                      <span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-else-if="selectedCurrentDay != ''"
                         >so với {{ previousCurrentDay }}</span
                       >
                     </div>
@@ -342,8 +317,14 @@
                     background-color: rgb(32 32 32);
                   "
                 >
-                  <!-- Nếu có tháng được chọn -->
-                  <div v-if="selectedMonth != ''">
+                  <!-- Nếu có thời gian được chọn -->
+                  <div
+                    v-if="
+                      selectedMonth != '' ||
+                      selectedDay != '' ||
+                      selectedCurrentDay != ''
+                    "
+                  >
                     <span>Đơn hàng</span>
                     <h2>{{ totalOrders }}</h2>
                     <div>
@@ -361,62 +342,23 @@
                       <span style="color: red" v-else
                         >{{ calculateOrderPercentage.toFixed(1) }}%</span
                       >
-                      <span style="font-size: 12px; margin-left: 6px">
-                        so với {{ previousMonth }}
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Nếu có ngày được chọn -->
-                  <div v-else-if="selectedDay != ''">
-                    <span>Đơn hàng</span>
-                    <h2>{{ totalOrders }}</h2>
-                    <div>
-                      <v-icon
-                        color="green"
-                        v-if="totalOrders > totalOrdersYesterday"
-                        >mdi-trending-up</v-icon
-                      >
-                      <v-icon color="red" v-else>mdi-trending-down</v-icon>
                       <span
-                        style="color: green"
-                        v-if="totalOrders > totalOrdersYesterday"
-                        >{{ calculateOrderPercentage.toFixed(1) }}%</span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-if="selectedMonth != ''"
+                        >so với {{ previousMonth }}</span
                       >
-                      <span style="color: red" v-else
-                        >{{ calculateOrderPercentage.toFixed(1) }}%</span
-                      >
-                      <span style="font-size: 12px; margin-left: 6px">
-                        so với {{ previousDay }}
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Nếu chọn ngày là hôm nay -->
-                  <div v-else-if="selectedCurrentDay != ''">
-                    <span>Đơn hàng</span>
-                    <h2>{{ totalOrders }}</h2>
-                    <div>
-                      <v-icon
-                        color="green"
-                        v-if="totalOrders > totalOrdersYesterday"
-                        >mdi-trending-up</v-icon
-                      >
-                      <v-icon color="red" v-else>mdi-trending-down</v-icon>
                       <span
-                        style="color: green"
-                        v-if="totalOrders > totalOrdersYesterday"
-                        >{{ calculateOrderPercentage.toFixed(1) }}%</span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-else-if="selectedDay != ''"
+                        >so với {{ previousDay }}</span
                       >
-                      <span style="color: red" v-else
-                        >{{ calculateOrderPercentage.toFixed(1) }}%</span
+                      <span
+                        style="font-size: 12px; margin-left: 6px"
+                        v-else-if="selectedCurrentDay != ''"
+                        >so với {{ previousCurrentDay }}</span
                       >
-                      <span style="font-size: 12px; margin-left: 6px">
-                        so với {{ previousCurrentDay }}
-                      </span>
                     </div>
                   </div>
-
                   <!-- Nếu không có lựa chọn nào (Hiển thị mặc định) -->
                   <div v-else>
                     <span>Đơn hàng</span>
@@ -517,37 +459,23 @@ import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 const {
-  generateDates,
-  generateMonths,
-  currentDate,
   currentMonth,
-  currentYear,
   dateList,
   monthList,
   selectedMonth,
   selectedDay,
   selectedCurrentDay,
-  totalRevenueOrderCurrentDay,
-  totalRevenueOrderCurrentMonth,
   totalRevenue,
   totalRevenueYesterday,
   totalOrders,
   totalOrdersYesterday,
   totalRevenueMax,
-  totalRevenueForCategoryMax,
   loading,
   filteredTotalRevenueForEmployee,
-  filteredTotalRevenueForCategory,
-  tab,
   selectedMonthForEmp,
   selectedDayForEmp,
   selectedDayForCate,
   selectedMonthForCate,
-  init,
-  foodCategories,
-  listLabels,
-  listDatas,
-  listColor,
   chartData,
   chartOptions,
   selectMonthAndCallAPI,
@@ -560,10 +488,6 @@ const {
   calculateOrderPercentage,
   resetTimeFillterRevenueOrder,
   headersEmployee,
-  headersCategory,
-  callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH,
-  callApi_GET_ALL_FOOD_CATEGORIES,
-  callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH,
   selectDayAndCallAPIForEmployee,
   selectMonthAndCallAPIForEmployee,
   resetTimeFillterRevenueOrderForEmployee,

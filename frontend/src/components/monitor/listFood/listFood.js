@@ -32,18 +32,7 @@ export default function useFoodManagement() {
 
   // Danh sách categories được chọn
   const listFoodCategorySelected = ref([]);
-  const currentOrderClone = ref({
-    user_id: user.value.userId,
-    order_time: getCurrentDateTimeForSQL(),
-    table_id: null,
-    total_amount: 0,
-    result_total_amount: 0,
-    status: "Paid",
-    discount: 12,
-    tax: 6,
-    paymentMethod: "Tiền mặt",
-    items: [],
-  });
+  const currentOrderClone = ref({});
   // Hàm chạy đầu tiên
   async function init() {
     const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
@@ -143,7 +132,7 @@ export default function useFoodManagement() {
   const currentOrder = ref({
     user_id: user.value.userId,
     order_time: getCurrentDateTimeForSQL(),
-    table_id: null,
+    table_id: 1,
     total_amount: 0,
     status: "Paid",
     discount: 12,
@@ -462,11 +451,11 @@ export default function useFoodManagement() {
       if (orderResponse.data.success === -1) {
         showToast("Please provide all required information!", "warn");
       } else if (orderResponse.data.success === 1) {
-        showToast("Add order successful!", "success");
+        showToast("Đặt món thành công!", "success");
         resetCurrentOrder();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 3200);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
       } else {
         console.error("Failed to add order", orderResponse.data.message);
       }
