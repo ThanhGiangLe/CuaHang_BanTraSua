@@ -31,7 +31,12 @@
               checkFoodOrderByTableId(table.tableId).items.length != 0
                 ? "Đã gọi " +
                   checkFoodOrderByTableId(table.tableId).items.length +
-                  " món"
+                  " món: " +
+                  formatCurrency(
+                    getTotal_ResultTotalAmount_ResultTotalPayment(
+                      checkFoodOrderByTableId(table.tableId)
+                    ).totalPayment
+                  )
                 : "Chưa gọi món"
             }}
           </div>
@@ -62,18 +67,23 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="showListFoodOrderOfTableId" max-width="900" persistent>
+    <v-dialog
+      v-model="showListFoodOrderOfTableId"
+      max-width="900"
+      height="640"
+      persistent
+    >
       <v-card class="pa-4">
         <v-card-title class="text-h6 font-weight-bold pa-0">
           Danh sách món ăn đã gọi
         </v-card-title>
         <v-divider></v-divider>
 
-        <v-container
-          class="pt-4 pa-2"
-          style="max-height: 500px; overflow-y: auto"
-        >
-          <v-row dense style="min-height: 100px">
+        <v-container class="pt-4 pa-2">
+          <v-row
+            dense
+            style="min-height: 100px; max-height: 320px; overflow-y: auto"
+          >
             <v-col
               v-for="foodItem in listFoodOrderOfTableId"
               :key="foodItem.FoodItemId"
@@ -109,6 +119,10 @@
                         : "..."
                     }}
                   </div>
+                  <div class="text-caption mb-1 hiddent-text-one-line">
+                    Ghi chú:
+                    {{ foodItem.Note ? foodItem.Note : "..." }}
+                  </div>
                   <div class="text-caption text-grey-darken-1">
                     Đơn giá: {{ formatCurrency(foodItem.Price) }} x
                     {{ foodItem.Quantity }}
@@ -131,7 +145,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row dense class="d-flex justify-space-between align-end">
+          <v-row dense class="d-flex justify-space-between align-end mt-2">
             <div class="w-33">
               <div
                 class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between mb-2"
@@ -152,15 +166,31 @@
                   style="width: 65px; border: 1px solid rgb(52, 52, 52)"
                 />
               </div>
+              <div
+                class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mb-2"
+              >
+                <v-radio-group v-model="paymentInfo.paymentMethod">
+                  <v-radio
+                    label="Thanh toán bằng tiền mặt"
+                    value="Tiền mặt"
+                  ></v-radio>
+                  <v-radio
+                    label="Thanh toán bằng chuyển khoản"
+                    value="Chuyển khoản"
+                  ></v-radio>
+                </v-radio-group>
+              </div>
             </div>
             <div class="w-33 d-flex flex-column">
               <div class="d-flex justify-space-between">
                 <span class="mb-2">Tổng tiền: </span>
-                <span>{{ formatCurrency(paymentInfo.totalAmount) }}</span>
+                <span>{{ formatCurrency(paymentInfo.resultTotalAmount) }}</span>
               </div>
               <div class="d-flex justify-space-between">
                 <span class="mb-2">Số tiền thanh toán: </span>
-                <span>{{ formatCurrency(paymentInfo.resultTotalAmount) }}</span>
+                <span>{{
+                  formatCurrency(paymentInfo.resultTotalPayment)
+                }}</span>
               </div>
             </div>
           </v-row>
@@ -205,6 +235,7 @@ const {
   handleConfirmDialog,
   cancelTableAndSetCurrentOrders,
   viewTableAndSetCurrentOrders,
+  getTotal_ResultTotalAmount_ResultTotalPayment,
   totalAmountAdditionalFoodItem,
   closeShowListFoodOrderOfTableId,
   checkFoodOrderByTableId,

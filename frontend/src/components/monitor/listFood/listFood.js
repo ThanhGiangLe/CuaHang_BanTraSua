@@ -7,6 +7,7 @@ import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { userOrderStore } from "@/stores/orderStore.js";
 import { showToast } from "@/styles/handmade";
+import axiosClient from "@/services/utils/axiosClient";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
@@ -23,8 +24,6 @@ export default function useFoodManagement() {
   const showComponentAreaManagement = ref(false);
   const loading = shallowRef(true);
 
-  const propertyTax = ref(0);
-  const propertyDiscount = ref(0);
   const currentItemIsUpdate = ref(-1);
 
   // Lấy thông tin người dùng từ store
@@ -35,10 +34,15 @@ export default function useFoodManagement() {
   const currentOrderClone = ref({});
   // Hàm chạy đầu tiên
   async function init() {
-    const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
+    const response = await axiosClient.get(
+      API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES
+    );
+    console.log(response);
     foodCategories.value = response.data.data;
 
-    const responseFoodItems = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_ITEMS);
+    const responseFoodItems = await axiosClient.get(
+      API_ENDPOINTS.GET_ALL_FOOD_ITEMS
+    );
     foodItems.value = responseFoodItems.data;
     loading.value = false;
   }
@@ -135,8 +139,8 @@ export default function useFoodManagement() {
     table_id: 1,
     total_amount: 0,
     status: "Paid",
-    discount: 12,
-    tax: 6,
+    discount: 0,
+    tax: 0,
     paymentMethod: "Tiền mặt",
     items: [],
   });
@@ -197,6 +201,96 @@ export default function useFoodManagement() {
       ListAdditionalFood: [],
     };
   }
+  function updateTotalAmount() {
+    currentOrder.value.total_amount = currentOrder.value.items.reduce(
+      (total, item) => {
+        const mainItemTotal = item.Price * item.Quantity;
+
+        const additionalFoodTotal =
+          item.Quantity *
+          totalAmountAdditionalFoodItem(item.ListAdditionalFood);
+
+        return total + mainItemTotal + additionalFoodTotal;
+      },
+      0
+    );
+  }
+  function totalAmountAdditionalFoodItem(ListAdditionalFood) {
+    return ListAdditionalFood.reduce((total, item) => {
+      return total + item.priceCustom * item.quantity;
+    }, 0);
+  }
+  const resultTotalAmount = computed(() => {
+    const totalAmount = currentOrder.value.total_amount;
+    const discountAmount =
+      (totalAmount * (currentOrder.value.discount || 0)) / 100;
+    const taxAmount = (totalAmount * (currentOrder.value.tax || 0)) / 100;
+    return totalAmount + taxAmount - discountAmount;
+  });
+  function formatCurrency(value) {
+    if (value === null || value === undefined) return "0 VNĐ";
+
+    const numericValue = Number(value);
+    if (isNaN(numericValue)) return "0 VNĐ";
+
+    return numericValue.toLocaleString("vi-VN") + " VNĐ";
+  }
+  const resetCurrentOrder = () => {
+    currentOrder.value = {
+      user_id: user.value.userId,
+      order_time: getCurrentDateTimeForSQL(),
+      table_id: 1,
+      total_amount: 0, // Reset lại tổng thanh toán
+      status: "Paid", // Trạng thái mặc định
+      discount: 0, // Reset giảm giá
+      tax: 0, // Reset thuế
+      items: [], // Reset danh sách các món ăn
+    };
+  };
+
+  // <== DIALOG ĐỂ CHỌN MÓN ==>
+  const openDialogShowDetail = (foodItem) => {
+    resetOrderItem();
+
+    // Lọc và map các món ăn thêm với quantity mặc định là 0
+    const additionalFoodsWithQuantity = foodItems.value.data
+      .filter((item) => item.isMain === 0)
+      .map((item) => ({
+        ...item,
+        quantity: 1, // Set quantity mặc định là 0
+      }));
+
+    currentOrderItem.value = {
+      FoodItemId: foodItem.foodItemId,
+      FoodName: foodItem.foodName,
+      Quantity: 1,
+      Image: foodItem.imageUrl,
+      Unit: foodItem.unit,
+      Price: foodItem.priceCustom,
+      CategoryId: foodItem.categoryId,
+      ListAdditionalFood: additionalFoodsWithQuantity,
+      Note: "",
+      IsMain: foodItem.isMain,
+    };
+
+    updateOrderItem.value = {
+      FoodItemId: foodItem.foodItemId,
+      FoodName: foodItem.foodName,
+      Quantity: 1,
+      Image: foodItem.imageUrl,
+      Unit: foodItem.unit,
+      Price: foodItem.priceCustom,
+      CategoryId: foodItem.categoryId,
+      ListAdditionalFood: additionalFoodsWithQuantity,
+      ListAdditionalFoodSelected: [],
+      IsMain: foodItem.IsMain,
+      Note: "",
+    };
+
+    showDialogSelectedAdditionalFood.value = true;
+  };
+
+  // <== THÊM MÓN VÀO GIỎ ==>
   function selectedFoodItemToCart(currentOrderItem) {
     // Đem hết thông tin thao tác trên currentOrderItem đem qua resultOrderItem. Còn phần ListAdditionalFood đã được thao tác trước đó
     resultOrderItem.value.FoodItemId = currentOrderItem.FoodItemId;
@@ -209,8 +303,21 @@ export default function useFoodManagement() {
     resultOrderItem.value.Quantity = currentOrderItem.Quantity;
     resultOrderItem.value.Note = currentOrderItem.Note;
 
-    // Thêm món ăn vào danh sách order
-    currentOrder.value.items.push({ ...resultOrderItem.value });
+    const existingItem = currentOrder.value.items.find(
+      (item) =>
+        item.FoodItemId == resultOrderItem.value.FoodItemId &&
+        item.FoodName == resultOrderItem.value.FoodName &&
+        item.Note == resultOrderItem.value.Note &&
+        JSON.stringify(item.ListAdditionalFood) ==
+          JSON.stringify(resultOrderItem.value.ListAdditionalFood)
+    );
+
+    if (existingItem) {
+      existingItem.Quantity += resultOrderItem.value.Quantity;
+    } else {
+      currentOrder.value.items.push({ ...resultOrderItem.value });
+    }
+
     // Cập nhật tổng tiền khi thêm hoặc tăng số lượng món
     updateTotalAmount();
 
@@ -224,6 +331,19 @@ export default function useFoodManagement() {
     resetOrderItem();
     showDialogSelectedAdditionalFood.value = false;
   }
+
+  // <== DELETE MÓN ĐÃ CHỌN ==>
+  function deleteCurrentFoodSelected(index) {
+    if (index !== -1) {
+      // Xóa món ăn tại vị trí tìm được
+      currentOrder.value.items.splice(index, 1);
+
+      // Cập nhật lại tổng tiền
+      updateTotalAmount();
+    }
+  }
+
+  // <== UPDATE MÓN ĐÃ CHỌN ==>
   function updateCurrentFoodSelected(item, index) {
     updateOrderItem.value.CategoryId = item.CategoryId;
     updateOrderItem.value.FoodItemId = item.FoodItemId;
@@ -286,108 +406,12 @@ export default function useFoodManagement() {
     currentItemIsUpdate.value = -1;
     visibleUpdateCurrentFoodSelected.value = false;
   }
-  function deleteCurrentFoodSelected(index) {
-    if (index !== -1) {
-      // Xóa món ăn tại vị trí tìm được
-      currentOrder.value.items.splice(index, 1);
 
-      // Cập nhật lại tổng tiền
-      updateTotalAmount();
-    }
-  }
-  // Hàm cập nhật tổng số tiền
-  function updateTotalAmount() {
-    currentOrder.value.total_amount = currentOrder.value.items.reduce(
-      (total, item) => {
-        const mainItemTotal = item.Price * item.Quantity;
-
-        const additionalFoodTotal =
-          item.Quantity *
-          totalAmountAdditionalFoodItem(item.ListAdditionalFood);
-
-        return total + mainItemTotal + additionalFoodTotal;
-      },
-      0
-    );
-  }
-  function totalAmountAdditionalFoodItem(ListAdditionalFood) {
-    return ListAdditionalFood.reduce((total, item) => {
-      return total + item.priceCustom * item.quantity;
-    }, 0);
-  }
-  const resultTotalAmount = computed(() => {
-    const totalAmount = currentOrder.value.total_amount;
-    const discountAmount =
-      (totalAmount * (currentOrder.value.discount || 0)) / 100;
-    const taxAmount = (totalAmount * (currentOrder.value.tax || 0)) / 100;
-    return totalAmount + taxAmount - discountAmount;
-  });
-  function formatCurrency(value) {
-    if (value === null || value === undefined) return "0 VNĐ";
-
-    const numericValue = Number(value);
-    if (isNaN(numericValue)) return "0 VNĐ";
-
-    return numericValue.toLocaleString("vi-VN") + " VNĐ";
-  }
-  const openDialogShowDetail = (foodItem) => {
-    resetOrderItem();
-
-    // Lọc và map các món ăn thêm với quantity mặc định là 0
-    const additionalFoodsWithQuantity = foodItems.value.data
-      .filter((item) => item.isMain === 0)
-      .map((item) => ({
-        ...item,
-        quantity: 1, // Set quantity mặc định là 0
-      }));
-
-    currentOrderItem.value = {
-      FoodItemId: foodItem.foodItemId,
-      FoodName: foodItem.foodName,
-      Quantity: 1,
-      Image: foodItem.imageUrl,
-      Unit: foodItem.unit,
-      Price: foodItem.priceCustom,
-      CategoryId: foodItem.categoryId,
-      ListAdditionalFood: additionalFoodsWithQuantity,
-      Note: "",
-      IsMain: foodItem.isMain,
-    };
-
-    updateOrderItem.value = {
-      FoodItemId: foodItem.foodItemId,
-      FoodName: foodItem.foodName,
-      Quantity: 1,
-      Image: foodItem.imageUrl,
-      Unit: foodItem.unit,
-      Price: foodItem.priceCustom,
-      CategoryId: foodItem.categoryId,
-      ListAdditionalFood: additionalFoodsWithQuantity,
-      ListAdditionalFoodSelected: [],
-      IsMain: foodItem.IsMain,
-      Note: "",
-    };
-
-    showDialogSelectedAdditionalFood.value = true;
-  };
-
-  const resetCurrentOrder = () => {
-    currentOrder.value = {
-      user_id: user.value.userId,
-      order_time: getCurrentDateTimeForSQL(),
-      table_id: 1,
-      total_amount: 0, // Reset lại tổng thanh toán
-      status: "Paid", // Trạng thái mặc định
-      discount: 12, // Reset giảm giá
-      tax: 6, // Reset thuế
-      items: [], // Reset danh sách các món ăn
-    };
-  };
+  // <== ĐẶT MÓN ==>
   async function callApiOrderFood() {
     let orderTimeCurrent = getCurrentDateTimeForSQL();
     try {
-      // Call API để thêm vào bảng Orders về thông tin của một lần gọi món
-      const orderResponse = await axios.post(API_ENDPOINTS.ADD_ORDER, {
+      const orderResponse = await axiosClient.post(API_ENDPOINTS.ADD_ORDER, {
         userId: currentOrder.value.user_id,
         orderTime: orderTimeCurrent,
         tableId: currentOrder.value.table_id,
@@ -398,77 +422,66 @@ export default function useFoodManagement() {
         tax: currentOrder.value.tax,
         paymentMethod: currentOrder.value.paymentMethod,
       });
-
-      const orderId = orderResponse.data.data.orderId; // Nhận tại OrderId để khi thêm các món ăn đã gọi sẽ biết thuộc bill nào
-      // Gửi cả món chính và món phụ trong sau khi đã nhận được orderId, nhầm xác định được các món ăn này thuộc bill nào
-      await Promise.all(
-        currentOrder.value.items.map(async (item) => {
-          const mainItemResponse = await axios.post(
-            API_ENDPOINTS.ADD_ORDER_DETAIL,
-            {
-              orderId: orderId,
-              foodItemId: item.FoodItemId,
-              foodName: item.FoodName,
-              quantity: item.Quantity,
-              price: item.Price,
-              isMainItem: item.IsMain ?? 1,
-              unit: item.Unit,
-              note: item.Note,
-              categoryId: item.CategoryId,
-              orderTime: orderTimeCurrent,
-            }
-          );
-          await Promise.all(
-            item.ListAdditionalFood.map(async (addFood) => {
-              await axios.post(API_ENDPOINTS.ADD_ORDER_DETAIL, {
-                orderId: orderId,
-                foodItemId: addFood.foodItemId,
-                foodName: addFood.foodName,
-                quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                price: addFood.priceCustom,
-                isMainItem: 0,
-                unit: addFood.unit,
-                note: "",
-                categoryId: addFood.categoryId,
-                orderTime: orderTimeCurrent,
-              });
-            })
-          );
-        })
-      );
-
-      // const [responseUpdateMaterial, responseUpdateTotalIncome] =
-      //   await Promise.all([
-      //     axios.post(API_ENDPOINTS.UPDATE_QUANTITY_MATERIALS_AFTER_ORDER, {
-      //       Items: currentOrder.value.items,
-      //     }),
-      //     axios.post(API_ENDPOINTS.UPDATE_TOTALINCOME_CASH_REGISTER, {
-      //       UserId: user.value.userId,
-      //       TotalAmount: resultTotalAmount.value,
-      //     }),
-      //   ]);
-      // Kiểm tra phản hồi từ server
       if (orderResponse.data.success === -1) {
-        showToast("Please provide all required information!", "warn");
+        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
       } else if (orderResponse.data.success === 1) {
+        const orderId = orderResponse.data.data.orderId;
+        await Promise.all(
+          currentOrder.value.items.map(async (item) => {
+            const mainItemResponse = await axiosClient.post(
+              API_ENDPOINTS.ADD_ORDER_DETAIL,
+              {
+                orderId: orderId,
+                foodItemId: item.FoodItemId,
+                foodName: item.FoodName,
+                quantity: item.Quantity,
+                price: item.Price,
+                isMainItem: item.IsMain ?? 1,
+                unit: item.Unit,
+                note: item.Note,
+                categoryId: item.CategoryId,
+                orderTime: orderTimeCurrent,
+              }
+            );
+            await Promise.all(
+              item.ListAdditionalFood.map(async (addFood) => {
+                await axiosClient.post(API_ENDPOINTS.ADD_ORDER_DETAIL, {
+                  orderId: orderId,
+                  foodItemId: addFood.foodItemId,
+                  foodName: addFood.foodName,
+                  quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
+                  price: addFood.priceCustom,
+                  isMainItem: 0,
+                  unit: addFood.unit,
+                  note: "",
+                  categoryId: addFood.categoryId,
+                  orderTime: orderTimeCurrent,
+                });
+              })
+            );
+          })
+        );
         showToast("Đặt món thành công!", "success");
         resetCurrentOrder();
         setTimeout(() => {
           window.location.reload();
         }, 3200);
       } else {
+        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
         console.error("Failed to add order", orderResponse.data.message);
       }
     } catch (error) {
-      showToast(`Error adding order: ${error}`, "error");
+      if (error.response.status === 401) {
+        showToast(`${error.response.data.message}`, "error");
+      }
     }
   }
 
+  // <== ĐẶT MÓN VÀ CHỌN BÀN ==>
   async function callApiOrderFoodAndAddTable() {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
     currentOrderClone.value = {
       ...currentOrder.value,
-      result_total_amount: resultTotalAmount.value,
     };
 
     orderStore.setSelectedDishes(currentOrderClone.value);

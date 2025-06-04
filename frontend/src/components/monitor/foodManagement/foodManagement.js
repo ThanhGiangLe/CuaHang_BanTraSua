@@ -6,6 +6,7 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { showToast } from "@/styles/handmade";
+import axiosClient from "@/services/utils/axiosClient";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
@@ -17,13 +18,10 @@ export default function useFoodManagement() {
   const modalUpdateFoodItem = ref(false);
   const foodItemCurrentUpdate = ref({});
   const loading = shallowRef(true);
-  // Thêm biến để lưu trữ giá trị ban đầu của món ăn
   const originalFoodItem = ref(null);
 
-  // Lấy thông tin người dùng từ store
   const user = computed(() => userStore.user);
 
-  // Danh sách categories được chọn
   const listDashSelected = ref([]);
 
   const categoriesDataDefault = {
@@ -40,7 +38,6 @@ export default function useFoodManagement() {
     1: "Món chính",
     0: "Món thêm",
   };
-  // Thông tin lưu món được thêm vào
   const foodAdd = ref({
     foodName: "",
     priceListed: "",
@@ -52,19 +49,6 @@ export default function useFoodManagement() {
     isMain: -1,
     isMainString: "",
   });
-
-  // Hàm chạy đầu tiên
-  async function init() {
-    const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
-    foodCategories.value = response.data.data;
-
-    const responseFoodItems = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_ITEMS);
-    foodItems.value = responseFoodItems.data.data;
-    loading.value = false;
-  }
-  init();
-
-  // Format CategoryId
   function getIdByName(name) {
     const cleanedName = name.trim();
     for (const [id, value] of Object.entries(categoriesDataDefault)) {
@@ -90,104 +74,23 @@ export default function useFoodManagement() {
       reader.onerror = (error) => reject(error);
     });
   }
-  function cancelSaveFood() {
-    showDialogAdd.value = !showDialogAdd.value;
-    foodAdd.value = {
-      foodName: "",
-      priceListed: "",
-      priceCustom: "",
-      imageUrl: "",
-      unit: "",
-      categoryIdString: "",
-      categoryId: -1,
-      isMainString: "",
-      isMain: -1,
-    };
+  // Hàm chạy đầu tiên
+  async function init() {
+    const response = await axiosClient.get(
+      API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES
+    );
+    foodCategories.value = response.data.data;
+
+    const responseFoodItems = await axiosClient.get(
+      API_ENDPOINTS.GET_ALL_FOOD_ITEMS
+    );
+    foodItems.value = responseFoodItems.data.data;
+    loading.value = false;
   }
-  // Lưu thông tin xuống database
-  async function saveFood() {
-    try {
-      // Format categoryId
-      foodAdd.value.categoryId = getIdByName(foodAdd.value.categoryIdString);
-      foodAdd.value.isMain = getIdByName(foodAdd.value.isMainString);
-
-      // Chuyển đổi file ảnh thành base64 string nếu có
-      let imageString = null;
-      if (foodAdd.value.imageUrl instanceof File) {
-        imageString = await convertFileToBase64(foodAdd.value.imageUrl);
-      }
-
-      // Tạo object data với ảnh dạng string
-      const requestData = {
-        foodName: foodAdd.value.foodName,
-        priceListed: foodAdd.value.priceListed,
-        priceCustom: foodAdd.value.priceCustom,
-        imageUrl: imageString,
-        unit: foodAdd.value.unit,
-        categoryId: foodAdd.value.categoryId,
-        createBy: user.value.fullName,
-        updateBy: user.value.fullName,
-        isMain: foodAdd.value.isMain,
-      };
-
-      const response = await axios.post(
-        API_ENDPOINTS.ADD_FOOD_ITEM,
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        showDialogAdd.value = !showDialogAdd.value;
-
-        // Tạo object món ăn mới với dữ liệu từ response và ảnh
-        const food = {
-          categoryId: response.data.categoryId,
-          foodItemId: response.data.foodItemId,
-          foodName: response.data.foodName,
-          imageUrl: imageString || response.data.imageUrl, // Sử dụng ảnh mới hoặc từ response
-          priceCustom: response.data.priceCustom,
-          priceListed: response.data.priceListed,
-          status: response.data.status,
-          unit: response.data.unit,
-          createDate: new Date(response.data.createDate),
-          createBy: response.data.createBy,
-          updateDate: new Date(response.data.updateDate),
-          updateBy: response.data.updateBy,
-          isMain: response.data.isMain,
-        };
-
-        // Thêm món ăn mới vào danh sách
-        foodItems.value.push(food);
-
-        // Reset form
-        foodAdd.value = {
-          foodName: "",
-          priceListed: "",
-          priceCustom: "",
-          imageUrl: "",
-          unit: "",
-          categoryIdString: "",
-          categoryId: -1,
-          isMainString: "",
-          isMain: -1,
-        };
-        showToast("Thêm món thành công!", "success");
-      } else {
-        showToast("Thêm món thất bại!", "error");
-      }
-    } catch (error) {
-      showToast(`Lỗi trong quá trình thêm món ${error.message}!`, "error");
-    }
-  }
-
+  init();
   const getCategoryName = (categoryId) => {
     return categoriesDataDefault[categoryId] || "Không xác định";
   };
-
   function tonggleSelected(foodCategory) {
     if (listDashSelected.value.includes(foodCategory)) {
       listDashSelected.value = listDashSelected.value.filter(
@@ -218,7 +121,6 @@ export default function useFoodManagement() {
       return isCategoryMatch && isSearchMatch;
     });
   });
-  // Dùng để thao tác khi thêm món và0 trong Danh sách món đã chọn
   const currentOrderItem = ref({
     FoodItemId: "",
     FoodName: "",
@@ -235,7 +137,108 @@ export default function useFoodManagement() {
 
     return numericValue.toLocaleString("vi-VN") + " VNĐ";
   }
-  //Hàm xóa confirm xóa món
+
+  // <=== CHỨC NĂNG CREATE ===>
+  function cancelSaveFood() {
+    showDialogAdd.value = !showDialogAdd.value;
+    foodAdd.value = {
+      foodName: "",
+      priceListed: "",
+      priceCustom: "",
+      imageUrl: "",
+      unit: "",
+      categoryIdString: "",
+      categoryId: -1,
+      isMainString: "",
+      isMain: -1,
+    };
+  }
+  async function saveFood() {
+    try {
+      // Format categoryId
+      foodAdd.value.categoryId = getIdByName(foodAdd.value.categoryIdString);
+      foodAdd.value.isMain = getIdByName(foodAdd.value.isMainString);
+
+      // Chuyển đổi file ảnh thành base64 string nếu có
+      let imageString = null;
+      if (foodAdd.value.imageUrl instanceof File) {
+        imageString = await convertFileToBase64(foodAdd.value.imageUrl);
+      }
+
+      // Tạo object data với ảnh dạng string
+      const requestData = {
+        foodName: foodAdd.value.foodName,
+        priceListed: foodAdd.value.priceListed,
+        priceCustom: foodAdd.value.priceCustom,
+        imageUrl: imageString,
+        unit: foodAdd.value.unit,
+        categoryId: foodAdd.value.categoryId,
+        createBy: user.value.fullName,
+        updateBy: user.value.fullName,
+        isMain: foodAdd.value.isMain,
+      };
+
+      const response = await axiosClient.post(
+        API_ENDPOINTS.ADD_FOOD_ITEM,
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        showDialogAdd.value = !showDialogAdd.value;
+
+        // Tạo object món ăn mới với dữ liệu từ response và ảnh
+        const food = {
+          categoryId: response.data.categoryId,
+          foodItemId: response.data.foodItemId,
+          foodName: response.data.foodName,
+          imageUrl: imageString || response.data.imageUrl, // Sử dụng ảnh mới hoặc từ response
+          priceCustom: response.data.priceCustom,
+          priceListed: response.data.priceListed,
+          status: response.data.status,
+          unit: response.data.unit,
+          createDate: formatDate(response.data.createDate),
+          createBy: response.data.createBy,
+          updateDate: formatDate(response.data.updateDate),
+          updateBy: response.data.updateBy,
+          isMain: response.data.isMain,
+        };
+
+        // Thêm món ăn mới vào danh sách
+        foodItems.value.push(food);
+
+        // Reset form
+        foodAdd.value = {
+          foodName: "",
+          priceListed: "",
+          priceCustom: "",
+          imageUrl: "",
+          unit: "",
+          categoryIdString: "",
+          categoryId: -1,
+          isMainString: "",
+          isMain: -1,
+        };
+        showToast("Thêm món thành công!", "success");
+      } else {
+        showToast("Thêm món thất bại!", "error");
+      }
+    } catch (error) {
+      if (
+        error.response.status == 401 &&
+        error.response.data.message ==
+          "Bạn không có quyền thao tác chức năng này!"
+      ) {
+        showToast(`${error.response.data.message}`, "warn");
+      }
+    }
+  }
+
+  // <=== CHỨC NĂNG DELETE ===>
   function openDialogShowDeleteFoodItemSelected(foodItem) {
     currentOrderItem.value.FoodItemId = foodItem.foodItemId;
     currentOrderItem.value.FoodName = foodItem.foodName;
@@ -243,24 +246,33 @@ export default function useFoodManagement() {
     currentOrderItem.value.Price = foodItem.priceCustom;
     modalConfirmDeleteFoodItem.value = true;
   }
-
   async function confimDeleteFoodItem(currentOrderItem) {
     const FoodItemCurrentId = currentOrderItem.FoodItemId;
-
-    const response = await axios.delete(
-      `${API_ENDPOINTS.DELETE_FOOD_ITEM}/${FoodItemCurrentId}`
-    );
-    if (response.data.success) {
-      modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
-      showToast("Xóa món thành công!", "success");
-      foodItems.value = foodItems.value.filter(
-        (item) => item.foodItemId != FoodItemCurrentId
+    try {
+      const response = await axiosClient.delete(
+        `${API_ENDPOINTS.DELETE_FOOD_ITEM}/${FoodItemCurrentId}`
       );
-    } else {
-      showToast("Xóa món thất bại!", "error");
+      if (response.data.success) {
+        modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
+        showToast("Xóa món thành công!", "success");
+        foodItems.value = foodItems.value.filter(
+          (item) => item.foodItemId != FoodItemCurrentId
+        );
+      } else {
+        showToast("Xóa món thất bại!", "error");
+      }
+    } catch (error) {
+      if (
+        error.response.status == 401 &&
+        error.response.data.message ==
+          "Bạn không có quyền thao tác chức năng này!"
+      ) {
+        showToast(`${error.response.data.message}`, "warn");
+      }
     }
   }
 
+  // <=== CHỨC NĂNG UPDATE ===>
   function openDialogShowUpdateFoodItemSelected(foodItem) {
     // Lưu lại giá trị ban đầu
     originalFoodItem.value = { ...foodItem };
@@ -271,7 +283,6 @@ export default function useFoodManagement() {
     };
     modalUpdateFoodItem.value = true;
   }
-
   function cancelConfirmUpdateFoodItem() {
     // Khôi phục lại giá trị ban đầu từ originalFoodItem
     if (originalFoodItem.value) {
@@ -279,7 +290,6 @@ export default function useFoodManagement() {
     }
     modalUpdateFoodItem.value = false;
   }
-
   async function confirmUpdateFoodItem(foodItemCurrentUpdate) {
     foodItemCurrentUpdate.categoryId = getIdByName(
       foodItemCurrentUpdate.categoryIdString
@@ -310,7 +320,7 @@ export default function useFoodManagement() {
         isMain: foodItemCurrentUpdate.isMain,
       };
 
-      const response = await axios.put(
+      const response = await axiosClient.put(
         `${API_ENDPOINTS.UPDATE_FOOD_ITEM}/${FoodItemUpdateId}`,
         requestData,
         {
@@ -342,7 +352,13 @@ export default function useFoodManagement() {
         showToast("Cập nhật thất bại!", "error");
       }
     } catch (error) {
-      showToast(`Lỗi trong quá trình cập nhật ${error.message}`, "error");
+      if (
+        error.response.status == 401 &&
+        error.response.data.message ==
+          "Bạn không có quyền thao tác chức năng này!"
+      ) {
+        showToast(`${error.response.data.message}`, "warn");
+      }
     }
   }
 

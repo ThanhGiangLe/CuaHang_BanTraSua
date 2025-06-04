@@ -12,7 +12,7 @@
         <div class="text-subtitle-1 text-medium-emphasis">Email</div>
         <v-text-field
           density="compact"
-          placeholder="Nhập email dùng đăng ký tài khoản..."
+          placeholder="Nhập email đã đăng ký tài khoản..."
           prepend-inner-icon="mdi-email-outline"
           variant="outlined"
           v-model="email"
@@ -41,26 +41,20 @@
       <!-- Mail tồn tại, thực hiện nhập mã OTP -->
       <div v-else>
         <div v-if="visibleFillPassword">
-          <div class="text-subtitle-1 text-medium-emphasis">OTP</div>
-          <v-text-field
-            density="compact"
-            placeholder="Nhập OTP vừa nhận được..."
-            prepend-inner-icon="mdi-key"
-            variant="outlined"
-            v-model="enteredOtp"
-          ></v-text-field>
-
+          <v-otp-input v-model="enteredOtp" focus-all focused></v-otp-input>
           <v-btn
-            class="mb-4 mt-4"
+            class="mt-4"
             color="blue"
             size="large"
             variant="tonal"
             block
             @click="verifyOTP()"
+            v-if="visibleResendOtp == false"
           >
             Xác thực OTP
           </v-btn>
           <v-btn
+            class="mt-4"
             color="blue"
             size="large"
             variant="tonal"
@@ -68,7 +62,7 @@
             @click="sendOTP()"
             v-if="visibleResendOtp == true"
           >
-            Resend OTP
+            Gửi lại OTP
           </v-btn>
         </div>
 
@@ -130,6 +124,7 @@ import emailjs from "emailjs-com";
 import API_ENDPOINTS from "@/api/api.js";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
+import axiosClient from "@/services/utils/axiosClient";
 
 const router = useRouter();
 const visible = ref(false); // Dùng để hiển thị mật khẩu...
@@ -149,26 +144,26 @@ const publicKey = "YVFyP3Zy91mr0Jc5W";
 
 emailjs.init(publicKey);
 
-const otpSentTime = ref(null); // Lưu thời gian lúc gửi OTP
-const otpTimeout = 1 * 60 * 1000; // Thời gian 5 phút
+const otpSendTime = ref(null); // Lưu thời gian lúc gửi OTP
+const otpTimeout = 1 * 60 * 1000; // Thời gian 1 phút
 const visibleResendOtp = ref(false);
 
 async function sendOTP() {
   function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString(); // Mã OTP 6 chữ số
   }
-  otpSentTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
   if (!email.value) {
-    showToast("Nhập địa chỉ Email hợp lệ!", "warn");
+    showToast("Vui lòng nhập Email!", "warn");
     return;
   }
 
-  const response = await axios.post(API_ENDPOINTS.CHECK_EMAIL_EXISTS, {
+  const response = await axiosClient.post(API_ENDPOINTS.CHECK_EMAIL_EXISTS, {
     email: email.value,
   });
 
   try {
     if (response.data.exists) {
+      otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
       otp.value = generateOTP();
       const templateParams = {
         email: email.value,
@@ -178,14 +173,15 @@ async function sendOTP() {
       emailjs
         .send(serviceID, templateID, templateParams)
         .then((response) => {
-          showToast("Hãy kiểm tra thông báo mail!", "success");
+          showToast("Hãy kiểm tra thông báo email!", "success");
           visibleFillMail.value = false;
+          visibleResendOtp.value = false;
         })
         .catch((err) => {
           showToast("Có lỗi trong quá trình gửi mail.", "warn");
         });
     } else {
-      showToast("Email vừa nhập không tồn tại trong hệ thống.", "error");
+      showToast("Email không tồn tại.", "error");
     }
   } catch (error) {
     showToast("Lỗi trong quá trình xác minh tài khoản.", "error");
@@ -194,14 +190,15 @@ async function sendOTP() {
 
 function verifyOTP() {
   if (!enteredOtp.value) {
-    showToast("Vui lòng nhập đúng mã nhận được từ mail!", "warn");
+    showToast("Nhập mã nhận được từ email!", "warn");
     return;
   }
   let currentTime = new Date().getTime();
-  if (currentTime - otpSentTime.value > otpTimeout) {
+  if (currentTime - otpSendTime.value > otpTimeout) {
+    showToast("OTP đã hết thời gian sử dụng!", "error");
     visibleResendOtp.value = true;
     otp.value = "";
-    showToast("Đã quá thời gian mã OTP còn sống!", "error");
+    enteredOtp.value = "";
     return;
   }
   if (enteredOtp.value === otp.value) {

@@ -155,3 +155,4 @@ D:\MY_PROJECT_CV\CuaHang_BanTraSua\backend\sourceAPIs\obj\Debug\net8.0\refint\so
 D:\MY_PROJECT_CV\CuaHang_BanTraSua\backend\sourceAPIs\obj\Debug\net8.0\sourceAPI.pdb
 D:\MY_PROJECT_CV\CuaHang_BanTraSua\backend\sourceAPIs\obj\Debug\net8.0\sourceAPIs.genruntimeconfig.cache
 D:\MY_PROJECT_CV\CuaHang_BanTraSua\backend\sourceAPIs\obj\Debug\net8.0\ref\sourceAPI.dll
+D:\MY_PROJECT_CV\CuaHang_BanTraSua\backend\sourceAPIs\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

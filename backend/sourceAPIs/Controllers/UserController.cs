@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Identity.Data;
 using Twilio.TwiML.Messaging;
 using testVue.ModelsRequest;
 using testVue.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using sourceAPI.Models.Token;
 
 namespace testVue.Controllers
 {
@@ -15,10 +20,12 @@ namespace testVue.Controllers
     public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly JwtSettings _jwtSetting;
 
-        public UserController(AppDbContext context)
+        public UserController(AppDbContext context, JwtSettings jwtSettings)
         {
             _context = context;
+            _jwtSetting = jwtSettings;
         }
 
         // GET: api/user
@@ -39,16 +46,62 @@ namespace testVue.Controllers
                 return Unauthorized(new { message = "Mật khẩu không đúng" });
             }
 
-            // Nếu thông tin hợp lệ, trả về thông tin người dùng (không trả về mật khẩu)
+            // Tạo token để trả về người dùng
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_jwtSetting.Key);
+
+            var tokenDiscriptor = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Role, user.Role ?? "Staff")
+                }),
+                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
+                Issuer = _jwtSetting.Issuer,
+                Audience = _jwtSetting.Audience,
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature
+                )
+            };
+            var token = tokenHandler.CreateToken(tokenDiscriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            // Tạo refreshToken và lưu vào HTTP only
+            var refreshToken = new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserId = user.UserId,
+                ExpiresAt = DateTime.UtcNow.AddDays(_jwtSetting.RefreshTokenExpireDays)
+            };
+
+            _context.RefreshTokens.Add(refreshToken);
+            await _context.SaveChangesAsync();
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, // Đặt true nếu dùng HTTPS
+                SameSite = SameSiteMode.Strict,
+                Expires = refreshToken.ExpiresAt
+            });
+
+            // CHỉ trả về token
             return Ok(new
             {
-                userId = user.UserId,
-                fullName = user.FullName,
-                phone = user.Phone,
-                email = user.Email,
-                role = user.Role,
-                address = user.Address,
-                avatar = user.Avatar
+                token = tokenString,
+                data = new
+                {
+                    userId = user.UserId,
+                    fullName = user.FullName,
+                    phone = user.Phone,
+                    email = user.Email,
+                    role = user.Role,
+                    address = user.Address,
+                    avatar = user.Avatar
+                }
             });
         }
 
@@ -149,12 +202,12 @@ namespace testVue.Controllers
         [HttpDelete("delete-user/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            if(userId == 0)
+            if (userId == 0)
             {
                 return BadRequest("UserId không hợp lệ");
             }
             var user = await _context.Users.FindAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("Không tồn tại nhân viên cần xóa");
             }
@@ -170,14 +223,16 @@ namespace testVue.Controllers
         [HttpPost("update-user")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request)
         {
-            if (request == null) {
+            if (request == null)
+            {
                 return BadRequest("Thông tin không hợp lệ");
             }
             var user = await _context.Users.FindAsync(request.UserId);
-            if (user == null) {
+            if (user == null)
+            {
                 return NotFound("Không tìm thấy User đang tương tác");
             }
-            if(request.NewPassword != "")
+            if (request.NewPassword != "")
             {
                 var newPass = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 user.Password = newPass;
@@ -198,7 +253,8 @@ namespace testVue.Controllers
                     data = user
                 });
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 return StatusCode(500, new
                 {
                     success = -1,
@@ -206,6 +262,63 @@ namespace testVue.Controllers
                     details = ex.InnerException?.Message
                 });
             }
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if(string.IsNullOrEmpty(refreshToken) )
+            {
+                return Unauthorized(new { message = "Refresh token không tồn tại" });
+            }
+            var existingToken = await _context.RefreshTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.Token == refreshToken);
+            if(existingToken == null || existingToken.IsUsed || existingToken.IsRevoked || existingToken.ExpiresAt < DateTime.UtcNow)
+            {
+                return Unauthorized(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
+            }
+            var user = existingToken.User;
+
+            // Tạo access token mới
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_jwtSetting.Key);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Role, user.Role ?? "Staff"),
+                }),
+                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
+                Issuer = _jwtSetting.Issuer,
+                Audience = _jwtSetting.Audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var accessToken = tokenHandler.WriteToken(token);
+
+            existingToken.IsUsed = true;
+
+            var newRefreshToken = new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserId = user.UserId,
+                ExpiresAt = DateTime.UtcNow.AddHours(_jwtSetting.RefreshTokenExpireDays)
+            };
+            _context.RefreshTokens.Add(newRefreshToken);
+
+            // Ghi vào cookie mới
+            Response.Cookies.Append("refreshToken", newRefreshToken.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = newRefreshToken.ExpiresAt
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok(new { token = accessToken });
         }
     }
 }

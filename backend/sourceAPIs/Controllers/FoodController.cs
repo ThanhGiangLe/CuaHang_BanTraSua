@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using testVue.Datas;
 using testVue.Models;
 using testVue.Models.Food;
@@ -7,6 +9,7 @@ using testVue.ModelsRequest;
 
 namespace testVue.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
@@ -18,7 +21,6 @@ namespace testVue.Controllers
             _context = context;
         }
 
-        // GET: api/food/get-all-category
         [HttpGet("get-all-category")]
         public async Task<ActionResult<IEnumerable<FoodCategoryMdl>>> GetCategorys()
         {
@@ -40,7 +42,6 @@ namespace testVue.Controllers
             }
         }
 
-        // GET: api/food/get-all-food-items
         [HttpGet("get-all-food-items")]
         public async Task<ActionResult<IEnumerable<FoodItemMdl>>> GetFoodItems()
         {
@@ -62,7 +63,7 @@ namespace testVue.Controllers
             }
         }
 
-        // POST: api/food/add-order
+        [Authorize]
         [HttpPost("add-order")]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDTO orderRequest)
         {
@@ -70,9 +71,18 @@ namespace testVue.Controllers
             {
                 return Ok(new { success = -1 });
             }
+            var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại để thực hiện thao tác!" });
+            }
+            if (!int.TryParse(userIdFromToken, out var userIdTryParse))
+            {
+                return Unauthorized(new { message = "Token không hợp lệ" });
+            }
             var order = new OrderMdl
             {
-                UserId = orderRequest.UserId,
+                UserId = userIdTryParse,
                 OrderTime = orderRequest.OrderTime,
                 TableId = orderRequest.TableId,
                 TotalAmount = orderRequest.TotalAmount,
@@ -110,12 +120,10 @@ namespace testVue.Controllers
                 {
                     success = -1,
                     message = ex.Message,
-                    details = ex.InnerException?.Message
                 });
             }
         }
 
-        // POST: api/food/add-order
         [HttpPost("add-order-detail")]
         public async Task<IActionResult> AddOrderDetail([FromBody] OrderDetailRequestDTO orderItemRequest)
         {
@@ -156,6 +164,9 @@ namespace testVue.Controllers
             }
         }
 
+
+
+        [Authorize]
         [HttpPost("add-food-item")]
         public async Task<IActionResult> AddFoodItem([FromBody] RequestFoodItemAddDTO request)
         {
@@ -163,6 +174,11 @@ namespace testVue.Controllers
             if (request == null)
             {
                 return BadRequest("Invalid food item data.");
+            }
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
             }
 
             var currentTime = DateTime.UtcNow.AddHours(7);
@@ -220,6 +236,11 @@ namespace testVue.Controllers
         [HttpDelete("delete-food-item/{FoodItemId}")]
         public async Task<IActionResult> DeleteFoodItem(int FoodItemId)
         {
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
+            }
             // Tìm món ăn theo ID trong cơ sở dữ liệu
             var foodItem = await _context.FoodItems.FindAsync(FoodItemId);
 
@@ -261,6 +282,11 @@ namespace testVue.Controllers
             if (updatedFoodItem == null || FoodItemId != updatedFoodItem.FoodItemId)
             {
                 return BadRequest(new { success = -1, message = "Dữ liệu yêu cầu không hợp lệ hoặc ID không khớp." });
+            }
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
             }
             var currentTime = DateTime.UtcNow.AddHours(7);
             // Tìm FoodItem trong cơ sở dữ liệu

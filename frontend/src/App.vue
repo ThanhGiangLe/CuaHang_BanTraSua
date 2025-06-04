@@ -7,5 +7,5 @@
 </template>
 
 <script setup>
-  import './assets/main.css';
+import "./assets/main.css";
 </script>

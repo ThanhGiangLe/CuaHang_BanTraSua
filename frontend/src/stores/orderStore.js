@@ -6,12 +6,9 @@ export const userOrderStore = defineStore("order", {
       user_id: null,
       order_time: null,
       table_id: null,
-      total_amount: 0,
-      result_total_amount: 0,
       status: "",
       discount: 0,
       tax: 0,
-      paymentMethod: "",
       items: [],
     },
     tableOrders: JSON.parse(localStorage.getItem(STORAGE_KEY)) || {},
@@ -33,7 +30,11 @@ export const userOrderStore = defineStore("order", {
       if (currentTableOrder) {
         this.selectedDishes.items.forEach((newDish) => {
           const existing = currentTableOrder.items.find(
-            (d) => d.FoodItemId === newDish.FoodItemId
+            (d) =>
+              d.FoodItemId === newDish.FoodItemId &&
+              d.Note === newDish.Note &&
+              JSON.stringify(d.ListAdditionalFood) ===
+                JSON.stringify(newDish.ListAdditionalFood)
           );
           if (existing) {
             existing.Quantity += newDish.Quantity || 1;
@@ -65,12 +66,9 @@ export const userOrderStore = defineStore("order", {
           user_id: null,
           order_time: null,
           table_id: tableId,
-          total_amount: 0,
-          result_total_amount: 0,
           status: "",
           discount: 0,
           tax: 0,
-          paymentMethod: "",
           items: [],
         }
       );

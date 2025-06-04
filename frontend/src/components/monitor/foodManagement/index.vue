@@ -22,21 +22,24 @@
       <!-- Dialog thêm món ăn mới -->
       <v-dialog v-model="showDialogAdd" max-width="600px">
         <v-card class="pa-2">
-          <v-card-title> Thông tin món ăn </v-card-title>
+          <v-card-title> Thông tin món mới </v-card-title>
           <v-card-text>
             <v-text-field
               label="Tên món"
               v-model="foodAdd.foodName"
             ></v-text-field>
             <v-text-field
-              label="Giá mặc định"
+              label="Giá niêm yết"
               v-model="foodAdd.priceListed"
             ></v-text-field>
             <v-text-field
-              label="Giá bán"
+              label="Giá bán ra"
               v-model="foodAdd.priceCustom"
             ></v-text-field>
-            <v-text-field label="Đơn vị" v-model="foodAdd.unit"></v-text-field>
+            <v-text-field
+              label="Đơn vị tính"
+              v-model="foodAdd.unit"
+            ></v-text-field>
             <v-combobox
               label="Loại danh mục"
               :items="[

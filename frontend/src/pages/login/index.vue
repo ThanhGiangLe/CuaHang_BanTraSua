@@ -23,6 +23,7 @@
         <router-link
           class="text-caption text-decoration-none text-blue"
           to="/forgotpassword"
+          v-if="quantityLogin <= 3"
         >
           Quên mật khẩu?
         </router-link>
@@ -67,17 +68,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-
-    <!-- Nút bay loạn xạ -->
-
-    <!-- Loading Overlay -->
-    <!-- <v-overlay
-      :model-value="isOverlay"
-      persistent
-      class="justify-center align-center"
-    >
-      <v-progress-circular indeterminate size="48" width="6" color="primary" />
-    </v-overlay> -->
   </div>
 </template>
 
@@ -85,11 +75,10 @@
 import { useUserStore } from "@/stores/user";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import API_ENDPOINTS from "@/api/api.js";
-import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
+import axiosClient from "@/services/utils/axiosClient";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -106,20 +95,20 @@ const isValid = computed(() => phone.value && password.value);
 
 async function verifyLoginAccount() {
   if (!isValid.value) {
-    showToast("Vui lòng nhập số điện thoại và mật khẩu!", "warn");
+    showToast("Vui lòng nhập đầy đủ thông tin!", "warn");
     return;
   }
 
   try {
-    const response = await axios.post(API_ENDPOINTS.LOGIN, {
+    const response = await axiosClient.post(API_ENDPOINTS.LOGIN, {
       Phone: phone.value,
       Password: password.value,
     });
+    const { token, data } = response.data;
+    sessionStorage.setItem("token", token);
+    userStore.setUser(data);
 
-    const user = response.data;
-    userStore.setUser(user);
     isOverlay.value = true;
-
     errorMessage.value = "";
     quantityLogin.value = 0;
     setTimeout(() => {
@@ -127,9 +116,9 @@ async function verifyLoginAccount() {
     }, 1000);
   } catch (error) {
     quantityLogin.value++;
-    if (quantityLogin.value > 3) {
+    if (quantityLogin.value >= 3) {
       errorMessage.value =
-        "Bạn đã nhập sai quá 3 lần. Liên hệ Quản lý hoặc Chủ cửa hàng để thay đổi mật khẩu.";
+        "Bạn đã nhập sai 3 lần. Hãy liên hệ Quản lý hoặc Chủ cửa hàng để thay đổi mật khẩu.";
       showButtonLogin.value = false;
     } else {
       errorMessage.value = "";
