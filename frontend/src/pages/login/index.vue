@@ -23,6 +23,7 @@
         <router-link
           class="text-caption text-decoration-none text-blue"
           to="/forgotpassword"
+          v-if="quantityLogin <= 3"
         >
           Quên mật khẩu?
         </router-link>
@@ -38,7 +39,7 @@
         @click:append-inner="visible = !visible"
       ></v-text-field>
 
-      <v-card class="mb-12" color="surface-variant" variant="tonal">
+      <v-card class="mb-10" color="surface-variant" variant="tonal">
         <v-card-text
           class="text-medium-emphasis text-caption text-justify"
           style="color: #ffee58 !important"
@@ -53,29 +54,20 @@
       <v-alert v-if="errorMessage" type="error" outlined>
         {{ errorMessage }}
       </v-alert>
+      <v-card-actions>
+        <v-btn
+          style="width: 90%; margin: 0 auto"
+          color="grey-lighten-2"
+          size="large"
+          variant="tonal"
+          v-if="showButtonLogin"
+          @click="verifyLoginAccount"
+          @mouseenter="onHoverLoginBtn"
+        >
+          Đăng nhập
+        </v-btn>
+      </v-card-actions>
     </v-card>
-
-    <!-- Nút bay loạn xạ -->
-    <v-btn
-      :style="btnStyle"
-      color="grey-lighten-2"
-      size="large"
-      variant="tonal"
-      v-if="showButtonLogin"
-      @click="verifyLoginAccount"
-      @mouseenter="onHoverLoginBtn"
-    >
-      Đăng nhập
-    </v-btn>
-
-    <!-- Loading Overlay -->
-    <v-overlay
-      :model-value="isOverlay"
-      persistent
-      class="justify-center align-center"
-    >
-      <v-progress-circular indeterminate size="48" width="6" color="primary" />
-    </v-overlay>
   </div>
 </template>
 
@@ -83,11 +75,10 @@
 import { useUserStore } from "@/stores/user";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import API_ENDPOINTS from "@/api/api.js";
-import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
+import axiosClient from "@/services/utils/axiosClient";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -100,49 +91,24 @@ const isOverlay = ref(false);
 const showButtonLogin = ref(true);
 const quantityLogin = ref(0);
 
-// ✅ Style nút có thể thay đổi vị trí
-const btnStyle = ref({
-  position: "fixed",
-  top: "60%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  transition: "top 0.3s ease, left 0.3s ease",
-});
-
 const isValid = computed(() => phone.value && password.value);
 
-function onHoverLoginBtn() {
-  if (!isValid.value) {
-    const btnWidth = 120;
-    const btnHeight = 50;
-    const maxX = window.innerWidth - btnWidth;
-    const maxY = window.innerHeight - btnHeight;
-
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
-
-    btnStyle.value.top = `${randomY}px`;
-    btnStyle.value.left = `${randomX}px`;
-  }
-}
-
-// ✅ Hàm đăng nhập
 async function verifyLoginAccount() {
   if (!isValid.value) {
-    showToast("Vui lòng nhập số điện thoại và mật khẩu!", "warn");
+    showToast("Vui lòng nhập đầy đủ thông tin!", "warn");
     return;
   }
 
   try {
-    const response = await axios.post(API_ENDPOINTS.LOGIN, {
+    const response = await axiosClient.post(API_ENDPOINTS.LOGIN, {
       Phone: phone.value,
       Password: password.value,
     });
+    const { token, data } = response.data;
+    sessionStorage.setItem("token", token);
+    userStore.setUser(data);
 
-    const user = response.data;
-    userStore.setUser(user);
     isOverlay.value = true;
-
     errorMessage.value = "";
     quantityLogin.value = 0;
     setTimeout(() => {
@@ -150,9 +116,9 @@ async function verifyLoginAccount() {
     }, 1000);
   } catch (error) {
     quantityLogin.value++;
-    if (quantityLogin.value > 3) {
+    if (quantityLogin.value >= 3) {
       errorMessage.value =
-        "Bạn đã nhập sai quá 3 lần. Liên hệ Quản lý hoặc Chủ cửa hàng để thay đổi mật khẩu.";
+        "Bạn đã nhập sai 3 lần. Hãy liên hệ Quản lý hoặc Chủ cửa hàng để thay đổi mật khẩu.";
       showButtonLogin.value = false;
     } else {
       errorMessage.value = "";

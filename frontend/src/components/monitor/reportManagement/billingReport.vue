@@ -161,10 +161,10 @@
               </span>
             </template>
             <template v-slot:item.discount="{ item }">
-              <span> {{ item.discount ? item.discount : "-" }}% </span>
+              <span> {{ item.discount }}% </span>
             </template>
             <template v-slot:item.tax="{ item }">
-              <span> {{ item.tax ? item.tax : "-" }}% </span>
+              <span> {{ item.tax }}% </span>
             </template>
 
             <!-- <template v-slot:item.quantitySold="{ item }">
@@ -214,12 +214,13 @@ const employeeList = ref([]);
 const employeeListFullName = ref([]);
 
 const header = ref([
-  { title: "Nhân viên đứng quầy", key: "fullName" },
-  { title: "Thời gian bán", key: "orderTime" },
-  { title: "Bàn ăn", key: "tableName" },
+  { title: "Nhân viên", key: "fullName" },
+  { title: "Thời gian", key: "orderTime" },
+  { title: "Vị trí", key: "tableName" },
   { title: "Tổng thanh toán", key: "totalAmount" },
   { title: "Giảm giá", key: "discount" },
   { title: "Thuế", key: "tax" },
+  { title: "Phương thức thanh toán", key: "paymentMethod" },
 ]);
 
 const selectedCurrentDay = ref("");
@@ -260,6 +261,7 @@ async function init() {
   const response = await axios.post(API_ENDPOINTS.GET_ALL_ORDER_CURRENT_MONTH, {
     date: `${monthFormat}-${currentYear}`,
   });
+  console.log("allBilling: ", response.data);
   allBilling.value = response.data;
 
   // const quantitySoldMaxDataTable = allBilling.value
@@ -319,6 +321,7 @@ async function selectMonthAndCallAPI(month) {
     date: selectedMonth.value,
   });
   allBilling.value = response.data;
+  allBilling.value = allBilling.value.sort((a, b) => b.orderTime - a.orderTime);
 }
 async function selectEmployeeAndCallAPI(emp) {
   selectedEmployee.value = emp;

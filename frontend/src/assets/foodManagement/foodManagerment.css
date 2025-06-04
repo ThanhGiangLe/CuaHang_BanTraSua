@@ -31,6 +31,10 @@
   .foodManagement_listFoodOrder_menu_dishes {
 }
 
+.foodManagement_listFoodOrder_bill_payment_paymentMethod .v-input__details {
+  display: none;
+}
+
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes
@@ -134,7 +138,7 @@
   .foodManagement_listFoodOrder_menu_foods_item
   .foodManagement_listFoodOrder_menu_foods_item_img {
   width: 100%;
-  height: 160px;
+  height: 200px;
 }
 
 .foodManagement_listFoodOrder

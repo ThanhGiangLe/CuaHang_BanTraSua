@@ -76,7 +76,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="min-height: 160px"
+                    style="height: 160px"
                   />
                   <span
                     class="mt-3 hiddent-text-one-line"
@@ -483,6 +483,21 @@
               style="width: 65px"
             />
           </div>
+          <div
+            class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mb-2"
+          >
+            <v-radio-group v-model="currentOrder.paymentMethod">
+              <v-radio
+                label="Thanh toán bằng tiền mặt"
+                value="Tiền mặt"
+              ></v-radio>
+              <v-radio
+                label="Thanh toán bằng chuyển khoản"
+                value="Chuyển khoản"
+              ></v-radio>
+            </v-radio-group>
+          </div>
+
           <v-divider></v-divider>
           <div
             class="foodManagement_listFoodOrder_bill_payment_payment d-flex justify-space-between mt-2"
@@ -494,7 +509,7 @@
 
         <!-- Thực hiện thao tác -->
         <v-btn
-          class="w-100 mt-3 mb-2"
+          class="w-100 mb-2 mt-2"
           @click="callApiOrderFood()"
           color="orange-darken-2"
           >Đặt món</v-btn
@@ -506,6 +521,25 @@
           @click="callApiOrderFoodAndAddTable"
           >Đặt món và chọn bàn</v-btn
         >
+
+        <!-- <v-dialog
+          v-model="isShowQRCode"
+          width="500px"
+          height="500px"
+          persistent
+        >
+          <v-card>
+            <v-card-text
+              style="padding: 16px 4px 0px; width: 88%; margin: 0 auto"
+            >
+              <v-img cover src="/public/qr.jpg"></v-img>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn @click="isShowQRCode = false" color="red">Đóng</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog> -->
 
         <!-- Dialog nếu chọn bàn -->
         <v-dialog
