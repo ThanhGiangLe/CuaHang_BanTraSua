@@ -7,10 +7,12 @@ import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { userOrderStore } from "@/stores/orderStore.js";
 import { showToast } from "@/styles/handmade";
-import axiosClient from "@/services/utils/axiosClient";
+import { orderFoodHandler } from "/src/composables/listFood/orderFoodHandler.js";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
+  const { orderFood, orderDetail, getAllFood, getAllCategory } =
+    orderFoodHandler();
   const orderStore = userOrderStore();
   const showDialogUpdate = ref(false);
   const isStaff = ref(true);
@@ -34,16 +36,12 @@ export default function useFoodManagement() {
   const currentOrderClone = ref({});
   // Hàm chạy đầu tiên
   async function init() {
-    const response = await axiosClient.get(
-      API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES
-    );
-    console.log(response);
-    foodCategories.value = response.data.data;
+    const responseFood = await getAllFood();
+    foodItems.value = responseFood.listFood;
 
-    const responseFoodItems = await axiosClient.get(
-      API_ENDPOINTS.GET_ALL_FOOD_ITEMS
-    );
-    foodItems.value = responseFoodItems.data;
+    const responseCate = await getAllCategory();
+    foodCategories.value = responseCate.listCategory.data;
+
     loading.value = false;
   }
   init();
@@ -410,70 +408,64 @@ export default function useFoodManagement() {
   // <== ĐẶT MÓN ==>
   async function callApiOrderFood() {
     let orderTimeCurrent = getCurrentDateTimeForSQL();
-    try {
-      const orderResponse = await axiosClient.post(API_ENDPOINTS.ADD_ORDER, {
-        userId: currentOrder.value.user_id,
-        orderTime: orderTimeCurrent,
-        tableId: currentOrder.value.table_id,
-        totalAmount: currentOrder.value.total_amount,
-        totalResult: resultTotalAmount.value,
-        status: currentOrder.value.status,
-        discount: currentOrder.value.discount,
-        tax: currentOrder.value.tax,
-        paymentMethod: currentOrder.value.paymentMethod,
-      });
-      if (orderResponse.data.success === -1) {
-        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-      } else if (orderResponse.data.success === 1) {
-        const orderId = orderResponse.data.data.orderId;
-        await Promise.all(
-          currentOrder.value.items.map(async (item) => {
-            const mainItemResponse = await axiosClient.post(
-              API_ENDPOINTS.ADD_ORDER_DETAIL,
-              {
+    const request = {
+      userId: currentOrder.value.user_id,
+      orderTime: orderTimeCurrent,
+      tableId: currentOrder.value.table_id,
+      totalAmount: currentOrder.value.total_amount,
+      totalResult: resultTotalAmount.value,
+      status: currentOrder.value.status,
+      discount: currentOrder.value.discount,
+      tax: currentOrder.value.tax,
+      paymentMethod: currentOrder.value.paymentMethod,
+    };
+    const response = await orderFood(request);
+    console.log("response: ", response);
+    if (response.responseOrder.success === -1) {
+      showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+    } else if (response.responseOrder.success === 1) {
+      const orderId = response.responseOrder.data.orderId;
+      await Promise.all(
+        currentOrder.value.items.map(async (item) => {
+          const mainRequest = {
+            orderId: orderId,
+            foodItemId: item.FoodItemId,
+            foodName: item.FoodName,
+            quantity: item.Quantity,
+            price: item.Price,
+            isMainItem: item.IsMain ?? 1,
+            unit: item.Unit,
+            note: item.Note,
+            categoryId: item.CategoryId,
+            orderTime: orderTimeCurrent,
+          };
+          const mainItemResponse = await orderDetail(mainRequest);
+          await Promise.all(
+            item.ListAdditionalFood.map(async (addFood) => {
+              const subRequest = {
                 orderId: orderId,
-                foodItemId: item.FoodItemId,
-                foodName: item.FoodName,
-                quantity: item.Quantity,
-                price: item.Price,
-                isMainItem: item.IsMain ?? 1,
-                unit: item.Unit,
-                note: item.Note,
-                categoryId: item.CategoryId,
+                foodItemId: addFood.foodItemId,
+                foodName: addFood.foodName,
+                quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
+                price: addFood.priceCustom,
+                isMainItem: 0,
+                unit: addFood.unit,
+                note: "",
+                categoryId: addFood.categoryId,
                 orderTime: orderTimeCurrent,
-              }
-            );
-            await Promise.all(
-              item.ListAdditionalFood.map(async (addFood) => {
-                await axiosClient.post(API_ENDPOINTS.ADD_ORDER_DETAIL, {
-                  orderId: orderId,
-                  foodItemId: addFood.foodItemId,
-                  foodName: addFood.foodName,
-                  quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                  price: addFood.priceCustom,
-                  isMainItem: 0,
-                  unit: addFood.unit,
-                  note: "",
-                  categoryId: addFood.categoryId,
-                  orderTime: orderTimeCurrent,
-                });
-              })
-            );
-          })
-        );
-        showToast("Đặt món thành công!", "success");
-        resetCurrentOrder();
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
-      } else {
-        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-        console.error("Failed to add order", orderResponse.data.message);
-      }
-    } catch (error) {
-      if (error.response.status === 401) {
-        showToast(`${error.response.data.message}`, "error");
-      }
+              };
+              const subItemResponse = await orderDetail(subRequest);
+            })
+          );
+        })
+      );
+      showToast("Đặt món thành công!", "success");
+      resetCurrentOrder();
+      setTimeout(() => {
+        window.location.reload();
+      }, 3200);
+    } else {
+      showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
     }
   }
 

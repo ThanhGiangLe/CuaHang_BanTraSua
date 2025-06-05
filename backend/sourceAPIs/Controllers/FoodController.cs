@@ -24,7 +24,6 @@ namespace testVue.Controllers
         [HttpGet("get-all-category")]
         public async Task<ActionResult<IEnumerable<FoodCategoryMdl>>> GetCategorys()
         {
-            // Lấy danh sách người dùng từ cơ sở dữ liệu
             try
             {
                 var categories = await _context.FoodCategorys.ToListAsync();
@@ -164,8 +163,6 @@ namespace testVue.Controllers
             }
         }
 
-
-
         [Authorize]
         [HttpPost("add-food-item")]
         public async Task<IActionResult> AddFoodItem([FromBody] RequestFoodItemAddDTO request)
@@ -178,7 +175,7 @@ namespace testVue.Controllers
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
-                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
+                return Forbid("Bearer");
             }
 
             var currentTime = DateTime.UtcNow.AddHours(7);
@@ -192,7 +189,7 @@ namespace testVue.Controllers
                 ImageUrl = request.ImageUrl,
                 Unit = request.Unit ?? "Ly", // Nếu Unit không có, mặc định là "phần"
                 CategoryId = request.CategoryId,
-                Status = "Available", // Mặc định là "available"
+                Status = "Đang kinh doanh", // Mặc định là "available"
                 CreateDate = currentTime,
                 CreateBy = request.CreateBy,
                 UpdateDate = currentTime,
@@ -232,14 +229,14 @@ namespace testVue.Controllers
             }
         }
 
-        // DELETE: api/food/delete-food-item/{id}
+        [Authorize]
         [HttpDelete("delete-food-item/{FoodItemId}")]
         public async Task<IActionResult> DeleteFoodItem(int FoodItemId)
         {
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
-                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
+                return Forbid("Bearer");
             }
             // Tìm món ăn theo ID trong cơ sở dữ liệu
             var foodItem = await _context.FoodItems.FindAsync(FoodItemId);
@@ -274,7 +271,7 @@ namespace testVue.Controllers
         }
 
 
-        // PUT: api/food/update-food-item/{FoodItemId}
+        [Authorize]
         [HttpPut("update-food-item/{FoodItemId}")]
         public async Task<IActionResult> UpdateFoodItem(int FoodItemId, [FromBody] RequestUpdateFoodItemDTO updatedFoodItem)
         {
@@ -286,7 +283,7 @@ namespace testVue.Controllers
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
-                return Unauthorized(new { message = "Bạn không có quyền thao tác chức năng này!" });
+                return Forbid("Bearer");
             }
             var currentTime = DateTime.UtcNow.AddHours(7);
             // Tìm FoodItem trong cơ sở dữ liệu

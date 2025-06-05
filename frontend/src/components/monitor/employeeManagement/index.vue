@@ -256,6 +256,7 @@ import axios from "axios";
 import API_ENDPOINTS from "@/api/api.js";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import axiosClient from "@/services/utils/axiosClient";
 
 const search = ref("");
 const showDialogAddEmployee = ref(false);
@@ -272,7 +273,7 @@ const displayMonitorUpdateUser = ref(false);
 const employeeCurrentChoose = ref();
 
 async function init() {
-  const response = await axios.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
+  const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
   employeeList.value = response.data;
   console.log("Danh sách nhân viên:", employeeList.value);
 }
@@ -282,7 +283,7 @@ init();
 async function addEmployee() {
   try {
     // Gửi yêu cầu lên server với FormData
-    const response = await axios.post(API_ENDPOINTS.ADD_USER, {
+    const response = await axiosClient.post(API_ENDPOINTS.ADD_USER, {
       FullName: employeeInfo.value.FullName,
       Phone: employeeInfo.value.Phone,
       Email: employeeInfo.value.Email,
@@ -375,7 +376,7 @@ async function handleExtensionOfAccount(index, employee) {
   } else if (index === 1) {
     // Xóa nhân viên
     try {
-      const responseDel = await axios.delete(
+      const responseDel = await axiosClient.delete(
         `${API_ENDPOINTS.DELETE_USER}/${employee.userId}`
       );
       if (responseDel.data.message === "Succes") {
@@ -412,7 +413,7 @@ async function handleExtensionOfAccount(index, employee) {
 async function updateInfoUserByManager() {
   console.log("Thông tin mới nè: ", employeeCurrentChoose.value);
   try{
-    const response = await axios.post(API_ENDPOINTS.UPDATE_USER, {
+    const response = await axiosClient.post(API_ENDPOINTS.UPDATE_USER, {
       UserId: employeeCurrentChoose.value.userId,
       FullName: employeeCurrentChoose.value.fullName,
       Email: employeeCurrentChoose.value.email,
