@@ -12,7 +12,6 @@
         v-model="search"
       ></v-text-field>
       <v-btn
-        v-if="user.role !== 'Staff'"
         color="blue-lighten-1"
         class="ms-5"
         @click="showDialogAdd = !showDialogAdd"
@@ -130,6 +129,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
+                    style="width: 75%; height: 180px; margin: 0 auto"
                   />
                   <!-- Thông tin món ăn -->
                   <div class="d-flex flex-column mt-3" style="gap: 8px">
@@ -230,7 +230,6 @@
                   <!-- Buttons -->
                   <div
                     class="d-flex flex-wrap justify-center align-center w-100 mt-2"
-                    v-if="user.role !== 'Staff'"
                   >
                     <v-btn
                       class="foodManagement_listFoodOrder_menu_foods_item_addFood me-2"

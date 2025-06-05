@@ -68,6 +68,14 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-overlay
+      :model-value="isOverlay"
+      persistent
+      class="justify-center align-center"
+    >
+      <v-progress-circular indeterminate size="48" width="6" color="primary" />
+    </v-overlay>
   </div>
 </template>
 
@@ -75,10 +83,11 @@
 import { useUserStore } from "@/stores/user";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import API_ENDPOINTS from "@/api/api.js";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
-import axiosClient from "@/services/utils/axiosClient";
+import { useLogin } from "/src/composables/authen/useLogin.js";
+
+const { login } = useLogin();
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -99,12 +108,13 @@ async function verifyLoginAccount() {
     return;
   }
 
-  try {
-    const response = await axiosClient.post(API_ENDPOINTS.LOGIN, {
-      Phone: phone.value,
-      Password: password.value,
-    });
-    const { token, data } = response.data;
+  const response = await login({
+    phone: phone.value,
+    password: password.value,
+  });
+  if (response.data && response.token) {
+    const { token, data } = response;
+
     sessionStorage.setItem("token", token);
     userStore.setUser(data);
 
@@ -114,7 +124,7 @@ async function verifyLoginAccount() {
     setTimeout(() => {
       router.push("/monitor");
     }, 1000);
-  } catch (error) {
+  } else {
     quantityLogin.value++;
     if (quantityLogin.value >= 3) {
       errorMessage.value =
@@ -123,7 +133,7 @@ async function verifyLoginAccount() {
     } else {
       errorMessage.value = "";
     }
-    if (error.response && error.response.status === 401) {
+    if (response.response.status === 400) {
       showToast("Số điện thoại hoặc mật khẩu không đúng!", "error");
     } else {
       showToast("Lỗi hệ thông. Vui lòng thử lại!", "error");

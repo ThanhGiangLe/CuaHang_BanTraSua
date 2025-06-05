@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\emailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\emailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\areacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\areacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,14 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\emailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\emailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -41,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\token\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\token\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\sourceapis.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -70,37 +78,88 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ReportController.cs",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
-              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\ReportController.cs",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
-              "RelativeToolTip": "sourceAPIs\\Controllers\\ReportController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "AuthenController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\AuthenController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\AuthenController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\AuthenController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\AuthenController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T06:56:13.116Z",
+              "WhenOpened": "2025-06-05T13:40:19.413Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
+              "Title": "AreaController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\AreaController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\AreaController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\AreaController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\AreaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T13:30:41.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
+              "RelativeDocumentMoniker": "sourceAPIs\\appsettings.json",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
+              "RelativeToolTip": "sourceAPIs\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-01T09:41:57.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\UserController.cs",
+              "ViewState": "AQIAAGkAAAAAAAAAAAAgwBsBAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T06:35:56.414Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FoodController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\FoodController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\FoodController.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAxwBoAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T06:23:39.919Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "EmailController.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\EmailController.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\EmailController.cs",
               "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\EmailController.cs",
               "RelativeToolTip": "sourceAPIs\\Controllers\\EmailController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAAwCEAAAAkAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-04T05:49:13.855Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\RefreshToken.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Models\\Token\\RefreshToken.cs",
@@ -112,7 +171,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 5,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "sourceAPIs\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
+              "RelativeToolTip": "sourceAPIs\\Properties\\launchSettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-01T06:28:45.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "sourceAPIs.http",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.http",
               "RelativeDocumentMoniker": "sourceAPIs\\sourceAPIs.http",
@@ -124,46 +196,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
-              "RelativeDocumentMoniker": "sourceAPIs\\appsettings.json",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
-              "RelativeToolTip": "sourceAPIs\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-01T09:41:57.217Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\UserController.cs",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
-              "RelativeToolTip": "sourceAPIs\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAAgBAAAAAAAAAAAcwA0BAAA/AAAA",
+              "DocumentIndex": 6,
+              "Title": "ReportController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\ReportController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\ReportController.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T06:35:56.414Z",
+              "WhenOpened": "2025-06-04T06:56:13.116Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FoodController.cs",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
-              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\FoodController.cs",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
-              "RelativeToolTip": "sourceAPIs\\Controllers\\FoodController.cs",
-              "ViewState": "AQIAABgAAAAAAAAAAAA1wDEAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T06:23:39.919Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Program.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Program.cs",
@@ -171,12 +217,11 @@
               "RelativeToolTip": "sourceAPIs\\Program.cs",
               "ViewState": "AQIAAAEAAAAAAAAAAAAiwBMAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T06:23:48.748Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-01T06:23:48.748Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "20250602134225_Add-RefreshToken.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Migrations\\20250602134225_Add-RefreshToken.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Migrations\\20250602134225_Add-RefreshToken.cs",
@@ -188,7 +233,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Datas\\AppDbContext.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Datas\\AppDbContext.cs",
@@ -200,19 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "sourceAPIs\\Properties\\launchSettings.json",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
-              "RelativeToolTip": "sourceAPIs\\Properties\\launchSettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAGAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-01T06:28:45.368Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "UserHub.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserHub.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Handls\\UserHub.cs",
@@ -224,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "JwtSettings.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\JwtSettings.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Models\\Token\\JwtSettings.cs",
@@ -236,7 +269,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "sourceAPIs.csproj",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.csproj",
               "RelativeDocumentMoniker": "sourceAPIs\\sourceAPIs.csproj",
@@ -248,7 +281,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "UserConnectionManager.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserConnectionManager.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Handls\\UserConnectionManager.cs",

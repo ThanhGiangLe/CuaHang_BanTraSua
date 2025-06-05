@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using sourceAPI.Models.Token;
+using Microsoft.AspNetCore.Authorization;
 
 namespace testVue.Controllers
 {
@@ -28,14 +29,12 @@ namespace testVue.Controllers
             _jwtSetting = jwtSettings;
         }
 
-        // GET: api/user
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserMdl>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-        // POST: api/user/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
@@ -43,7 +42,7 @@ namespace testVue.Controllers
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
             {
-                return Unauthorized(new { message = "Mật khẩu không đúng" });
+                return BadRequest(new { message = "Mật khẩu không đúng" });
             }
 
             // Tạo token để trả về người dùng
@@ -105,7 +104,7 @@ namespace testVue.Controllers
             });
         }
 
-        // POST: api/user/update-password
+
         [HttpPost("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequestDTO request)
         {
@@ -141,7 +140,7 @@ namespace testVue.Controllers
             }
         }
 
-        // POST: api/user/add
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromBody] AddUserRequestDTO addUserRequest)
         {
@@ -153,6 +152,12 @@ namespace testVue.Controllers
                 string.IsNullOrEmpty(addUserRequest.Role))
             {
                 return Ok(new { success = -1 });
+            }
+
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Forbid("Bearer");
             }
 
             // Kiểm tra xem người dùng đã tồn tại hay chưa
@@ -199,12 +204,18 @@ namespace testVue.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("delete-user/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
             if (userId == 0)
             {
                 return BadRequest("UserId không hợp lệ");
+            }
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Forbid("Bearer");
             }
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -220,12 +231,18 @@ namespace testVue.Controllers
             });
         }
 
+        [Authorize]
         [HttpPost("update-user")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request)
         {
             if (request == null)
             {
                 return BadRequest("Thông tin không hợp lệ");
+            }
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Forbid("Bearer");
             }
             var user = await _context.Users.FindAsync(request.UserId);
             if (user == null)
@@ -262,63 +279,6 @@ namespace testVue.Controllers
                     details = ex.InnerException?.Message
                 });
             }
-        }
-
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
-        {
-            var refreshToken = Request.Cookies["refreshToken"];
-            if(string.IsNullOrEmpty(refreshToken) )
-            {
-                return Unauthorized(new { message = "Refresh token không tồn tại" });
-            }
-            var existingToken = await _context.RefreshTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.Token == refreshToken);
-            if(existingToken == null || existingToken.IsUsed || existingToken.IsRevoked || existingToken.ExpiresAt < DateTime.UtcNow)
-            {
-                return Unauthorized(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
-            }
-            var user = existingToken.User;
-
-            // Tạo access token mới
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_jwtSetting.Key);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Role, user.Role ?? "Staff"),
-                }),
-                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
-                Issuer = _jwtSetting.Issuer,
-                Audience = _jwtSetting.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var accessToken = tokenHandler.WriteToken(token);
-
-            existingToken.IsUsed = true;
-
-            var newRefreshToken = new RefreshToken
-            {
-                Token = Guid.NewGuid().ToString(),
-                UserId = user.UserId,
-                ExpiresAt = DateTime.UtcNow.AddHours(_jwtSetting.RefreshTokenExpireDays)
-            };
-            _context.RefreshTokens.Add(newRefreshToken);
-
-            // Ghi vào cookie mới
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = newRefreshToken.ExpiresAt
-            });
-            await _context.SaveChangesAsync();
-
-            return Ok(new { token = accessToken });
         }
     }
 }

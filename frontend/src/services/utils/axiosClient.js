@@ -25,27 +25,17 @@ axiosClient.interceptors.request.use(
   }
 );
 
-const refreshErrors = [
-  "Refresh token không tồn tại",
-  "Refresh token không hợp lệ hoặc đã hết hạn",
-];
-
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
     console.warn("Gọi lại refreshToken");
     console.warn(error);
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      (refreshErrors.includes(error.response?.data?.message) ||
-        error.response?.data == "")
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const res = axios.post(
-          `${env}/user/refresh-token`,
+          `${env}/authen/refresh-token`,
           {},
           { withCredentials: true }
         );

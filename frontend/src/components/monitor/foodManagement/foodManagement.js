@@ -6,10 +6,12 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { showToast } from "@/styles/handmade";
-import axiosClient from "@/services/utils/axiosClient";
+import { foodManagementHandler } from "/src/composables/foodManagement/foodManagementHandler.js";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
+  const { getAllFood, getAllCategory, createFood, updateFood, deleteFood } =
+    foodManagementHandler();
   const showDialogAdd = ref(false);
   const foodCategories = ref([]);
   const foodItems = ref([]);
@@ -76,15 +78,11 @@ export default function useFoodManagement() {
   }
   // Hàm chạy đầu tiên
   async function init() {
-    const response = await axiosClient.get(
-      API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES
-    );
-    foodCategories.value = response.data.data;
+    const responseFood = await getAllFood();
+    foodItems.value = responseFood.listFood.data;
 
-    const responseFoodItems = await axiosClient.get(
-      API_ENDPOINTS.GET_ALL_FOOD_ITEMS
-    );
-    foodItems.value = responseFoodItems.data.data;
+    const responseCate = await getAllCategory();
+    foodCategories.value = responseCate.listCategory.data;
     loading.value = false;
   }
   init();
@@ -154,86 +152,57 @@ export default function useFoodManagement() {
     };
   }
   async function saveFood() {
-    try {
-      // Format categoryId
-      foodAdd.value.categoryId = getIdByName(foodAdd.value.categoryIdString);
-      foodAdd.value.isMain = getIdByName(foodAdd.value.isMainString);
+    foodAdd.value.categoryId = getIdByName(foodAdd.value.categoryIdString);
+    foodAdd.value.isMain = getIdByName(foodAdd.value.isMainString);
 
-      // Chuyển đổi file ảnh thành base64 string nếu có
-      let imageString = null;
-      if (foodAdd.value.imageUrl instanceof File) {
-        imageString = await convertFileToBase64(foodAdd.value.imageUrl);
-      }
+    let imageString = null;
+    if (foodAdd.value.imageUrl instanceof File) {
+      imageString = await convertFileToBase64(foodAdd.value.imageUrl);
+    }
 
-      // Tạo object data với ảnh dạng string
-      const requestData = {
-        foodName: foodAdd.value.foodName,
-        priceListed: foodAdd.value.priceListed,
-        priceCustom: foodAdd.value.priceCustom,
-        imageUrl: imageString,
-        unit: foodAdd.value.unit,
-        categoryId: foodAdd.value.categoryId,
-        createBy: user.value.fullName,
-        updateBy: user.value.fullName,
-        isMain: foodAdd.value.isMain,
-      };
+    const requestData = {
+      foodName: foodAdd.value.foodName,
+      priceListed: foodAdd.value.priceListed,
+      priceCustom: foodAdd.value.priceCustom,
+      imageUrl: imageString,
+      unit: foodAdd.value.unit,
+      categoryId: foodAdd.value.categoryId,
+      createBy: user.value.fullName,
+      updateBy: user.value.fullName,
+      isMain: foodAdd.value.isMain,
+    };
 
-      const response = await axiosClient.post(
-        API_ENDPOINTS.ADD_FOOD_ITEM,
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    const response = await createFood(requestData);
 
-      if (response.data.success) {
-        showDialogAdd.value = !showDialogAdd.value;
-
-        // Tạo object món ăn mới với dữ liệu từ response và ảnh
+    if (response.responseCreate) {
+      if (response.responseCreate.success) {
         const food = {
-          categoryId: response.data.categoryId,
-          foodItemId: response.data.foodItemId,
-          foodName: response.data.foodName,
-          imageUrl: imageString || response.data.imageUrl, // Sử dụng ảnh mới hoặc từ response
-          priceCustom: response.data.priceCustom,
-          priceListed: response.data.priceListed,
-          status: response.data.status,
-          unit: response.data.unit,
-          createDate: formatDate(response.data.createDate),
-          createBy: response.data.createBy,
-          updateDate: formatDate(response.data.updateDate),
-          updateBy: response.data.updateBy,
-          isMain: response.data.isMain,
+          categoryId: response.responseCreate.categoryId,
+          foodItemId: response.responseCreate.foodItemId,
+          foodName: response.responseCreate.foodName,
+          imageUrl: imageString || response.responseCreate.imageUrl, // Sử dụng ảnh mới hoặc từ response
+          priceCustom: response.responseCreate.priceCustom,
+          priceListed: response.responseCreate.priceListed,
+          status: response.responseCreate.status,
+          unit: response.responseCreate.unit,
+          createDate: formatDate(response.responseCreate.createDate),
+          createBy: response.responseCreate.createBy,
+          updateDate: formatDate(response.responseCreate.updateDate),
+          updateBy: response.responseCreate.updateBy,
+          isMain: response.responseCreate.isMain,
         };
 
-        // Thêm món ăn mới vào danh sách
         foodItems.value.push(food);
+        cancelSaveFood();
 
-        // Reset form
-        foodAdd.value = {
-          foodName: "",
-          priceListed: "",
-          priceCustom: "",
-          imageUrl: "",
-          unit: "",
-          categoryIdString: "",
-          categoryId: -1,
-          isMainString: "",
-          isMain: -1,
-        };
         showToast("Thêm món thành công!", "success");
       } else {
         showToast("Thêm món thất bại!", "error");
       }
-    } catch (error) {
-      if (
-        error.response.status == 401 &&
-        error.response.data.message ==
-          "Bạn không có quyền thao tác chức năng này!"
-      ) {
-        showToast(`${error.response.data.message}`, "warn");
+    } else {
+      if (response.response.status == 403) {
+        showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
+        cancelSaveFood();
       }
     }
   }
@@ -248,11 +217,9 @@ export default function useFoodManagement() {
   }
   async function confimDeleteFoodItem(currentOrderItem) {
     const FoodItemCurrentId = currentOrderItem.FoodItemId;
-    try {
-      const response = await axiosClient.delete(
-        `${API_ENDPOINTS.DELETE_FOOD_ITEM}/${FoodItemCurrentId}`
-      );
-      if (response.data.success) {
+    const response = await deleteFood(FoodItemCurrentId);
+    if (response.responseDelete) {
+      if (response.responseDelete.success) {
         modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
         showToast("Xóa món thành công!", "success");
         foodItems.value = foodItems.value.filter(
@@ -261,13 +228,10 @@ export default function useFoodManagement() {
       } else {
         showToast("Xóa món thất bại!", "error");
       }
-    } catch (error) {
-      if (
-        error.response.status == 401 &&
-        error.response.data.message ==
-          "Bạn không có quyền thao tác chức năng này!"
-      ) {
-        showToast(`${error.response.data.message}`, "warn");
+    } else {
+      if (response.response.status == 403) {
+        showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
+        modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
       }
     }
   }
@@ -297,53 +261,41 @@ export default function useFoodManagement() {
     foodItemCurrentUpdate.isMain = getIdByName(
       foodItemCurrentUpdate.isMainString
     );
-    console.log("foodItemCurrentUpdate: ", foodItemCurrentUpdate);
+
     let FoodItemUpdateId = foodItemCurrentUpdate.foodItemId;
-    try {
-      // Nếu có file ảnh mới, chuyển đổi thành base64 string
-      let imageString = foodItemCurrentUpdate.imageUrl;
-      if (foodItemCurrentUpdate.imageUrl instanceof File) {
-        imageString = await convertFileToBase64(foodItemCurrentUpdate.imageUrl);
-      }
 
-      // Tạo object data với ảnh dạng string
-      const requestData = {
-        foodItemId: FoodItemUpdateId,
-        foodName: foodItemCurrentUpdate.foodName,
-        priceListed: foodItemCurrentUpdate.priceListed,
-        priceCustom: foodItemCurrentUpdate.priceCustom,
-        imageUrl: imageString,
-        unit: foodItemCurrentUpdate.unit,
-        categoryId: foodItemCurrentUpdate.categoryId,
-        status: foodItemCurrentUpdate.status,
-        updateBy: user.value.fullName,
-        isMain: foodItemCurrentUpdate.isMain,
-      };
+    let imageString = foodItemCurrentUpdate.imageUrl;
+    if (foodItemCurrentUpdate.imageUrl instanceof File) {
+      imageString = await convertFileToBase64(foodItemCurrentUpdate.imageUrl);
+    }
 
-      const response = await axiosClient.put(
-        `${API_ENDPOINTS.UPDATE_FOOD_ITEM}/${FoodItemUpdateId}`,
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    const requestData = {
+      foodItemId: FoodItemUpdateId,
+      foodName: foodItemCurrentUpdate.foodName,
+      priceListed: foodItemCurrentUpdate.priceListed,
+      priceCustom: foodItemCurrentUpdate.priceCustom,
+      imageUrl: imageString,
+      unit: foodItemCurrentUpdate.unit,
+      categoryId: foodItemCurrentUpdate.categoryId,
+      status: foodItemCurrentUpdate.status,
+      updateBy: user.value.fullName,
+      isMain: foodItemCurrentUpdate.isMain,
+    };
 
-      if (response.data.success) {
+    const response = await updateFood(requestData);
+
+    if (response.responseUpdate) {
+      if (response.responseUpdate.success) {
         const updatedFoodIndex = foodItems.value.findIndex(
           (item) => item.foodItemId === FoodItemUpdateId
         );
-        console.log("response: ", response.data.data);
         if (updatedFoodIndex !== -1) {
-          // Cập nhật ngay lập tức dữ liệu trong foodItems
           foodItems.value[updatedFoodIndex] = {
             ...foodItems.value[updatedFoodIndex],
-            ...response.data.data, // Giả sử server trả về object với thông tin đã cập nhật
-            updateDate: response.data.data.updateDate,
+            ...response.responseUpdate.data, // Giả sử server trả về object với thông tin đã cập nhật
+            updateDate: response.responseUpdate.data.updateDate,
             imageUrl: imageString, // Cập nhật URL ảnh mới
           };
-          console.log("Sau cập nhật: ", response.data.data);
         }
 
         modalUpdateFoodItem.value = false;
@@ -351,13 +303,10 @@ export default function useFoodManagement() {
       } else {
         showToast("Cập nhật thất bại!", "error");
       }
-    } catch (error) {
-      if (
-        error.response.status == 401 &&
-        error.response.data.message ==
-          "Bạn không có quyền thao tác chức năng này!"
-      ) {
-        showToast(`${error.response.data.message}`, "warn");
+    } else {
+      if (response.response.status == 403) {
+        showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
+        modalUpdateFoodItem.value = false;
       }
     }
   }

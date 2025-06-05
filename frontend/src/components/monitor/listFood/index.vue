@@ -76,7 +76,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="height: 160px"
+                    style="height: 140px; width: 95%"
                   />
                   <span
                     class="mt-3 hiddent-text-one-line"
