@@ -483,6 +483,8 @@ export default function useFoodManagement() {
     } else {
       if (response.response.status == 404) {
         showToast(response.response.data, "warn");
+      }else if (response.response.status == 403) {
+        showToast(response.response.data, "warn");
       }
     }
   }
