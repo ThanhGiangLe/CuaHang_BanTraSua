@@ -39,6 +39,8 @@ axiosClient.interceptors.response.use(
           {},
           { withCredentials: true }
         );
+        console.log("res: ", res);
+        // Làm thêm đăng nhập phần này
         const newAccessToken = res.data.token;
 
         sessionStorage.setItem("token", newAccessToken);

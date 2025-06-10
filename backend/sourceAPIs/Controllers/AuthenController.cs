@@ -28,12 +28,12 @@ namespace sourceAPI.Controllers
             var refreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
             {
-                return Unauthorized(new { message = "Refresh token không tồn tại" });
+                return BadRequest(new { message = "Refresh token không tồn tại" });
             }
             var existingToken = await _context.RefreshTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.Token == refreshToken);
             if (existingToken == null || existingToken.IsUsed || existingToken.IsRevoked || existingToken.ExpiresAt < DateTime.UtcNow)
             {
-                return Unauthorized(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
+                return BadRequest(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
             }
             var user = existingToken.User;
 

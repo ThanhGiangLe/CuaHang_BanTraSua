@@ -1,14 +1,13 @@
 import { ref } from "vue";
-import axios from "axios";
 import { computed } from "vue";
 import API_ENDPOINTS from "@/api/api.js";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
-
+import { reportManagementHandler } from "/src/composables/reportManagement/reportManagementHandler.js";
+import { foodManagementHandler } from "/src/composables/foodManagement/foodManagementHandler.js";
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 export default function useReportRevenue() {
-  // Cho biết số ngày trong tháng và năm hiện tại
   const generateDates = (month, year) => {
     const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
     const dates = [];
@@ -19,7 +18,6 @@ export default function useReportRevenue() {
     }
     return dates;
   };
-  // Cho biết số tháng trong năm
   const generateMonths = (year) => {
     const months = [];
     for (let month = 1; month <= 12; month++) {
@@ -28,11 +26,18 @@ export default function useReportRevenue() {
     }
     return months;
   };
-
+  const {
+    getAllRevenueByMonth,
+    gettAllRevenueByDay,
+    gettAllRevenueWithEmployeeByMonth,
+    gettAllRevenueWithEmployeeByDay,
+    gettAllRevenueWithCategoryByMonth,
+    gettAllRevenueWithCategoryByDay,
+  } = reportManagementHandler();
+  const { getAllCategory } = foodManagementHandler();
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
   const currentYear = currentDate.getFullYear(); // Năm hiện tại
-
   const dateList = ref(generateDates(currentMonth, currentYear));
   const monthList = ref(generateMonths(currentYear));
   const selectedMonth = ref("");
@@ -40,27 +45,24 @@ export default function useReportRevenue() {
   const selectedCurrentDay = ref("");
   const totalRevenueOrderCurrentDay = ref([]);
   const totalRevenueOrderCurrentMonth = ref([]);
-
   const totalRevenue = ref(0);
   const totalRevenueYesterday = ref(0);
   const totalOrders = ref(0);
   const totalOrdersYesterday = ref(0);
-
   const totalRevenueMax = ref(0);
   const totalRevenueForCategoryMax = ref(0);
   const loading = shallowRef(true);
   const filteredTotalRevenueForEmployee = ref([]);
   const filteredTotalRevenueForCategory = ref([]);
-
-  const tab = ref(null);
-
   const selectedMonthForEmp = ref("");
   const selectedDayForEmp = ref("");
-
   const selectedDayForCate = ref("");
   const selectedMonthForCate = ref("");
   init();
-
+  const headersEmployee = ref([
+    { title: "Tên Nhân Viên", key: "fullName", width: "35%" },
+    { title: "Tổng doanh thu", key: "totalRevenue", width: "65%" },
+  ]);
   const foodCategories = ref([]);
   const listLabels = ref([
     "Best thèm",
@@ -73,7 +75,6 @@ export default function useReportRevenue() {
     "Thơm béo ngất ngay",
     "Món thêm",
   ]);
-
   const listDatas = ref([1, 1, 1, 1, 1, 1, 1, 1, 1]);
   const listColor = ref([
     "#bf360c", // đỏ nâu
@@ -86,7 +87,6 @@ export default function useReportRevenue() {
     "#00796b", // xanh ngọc đậm
     "#f4511e", // cam cháy
   ]);
-  // Khai báo dữ liệu biểu đồ
   const chartData = ref({
     labels: listLabels.value,
     datasets: [
@@ -111,6 +111,7 @@ export default function useReportRevenue() {
     },
   });
 
+  // <== Tổng doanh thu - Số lượng đơn hàng hôm nay ==>
   async function selectMonthAndCallAPI(month) {
     selectedMonth.value = month;
     selectedDay.value = "";
@@ -119,13 +120,9 @@ export default function useReportRevenue() {
     monthf = monthf.padStart(2, "0");
     selectedMonth.value = `${monthf}-${yearf}`;
 
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_TIME_MONTH,
-      {
-        date: selectedMonth.value,
-      }
-    );
-    totalRevenueOrderCurrentMonth.value = responseTotal1.data;
+    const responseTotal1 = await getAllRevenueByMonth(selectedMonth.value);
+    console.log("responseTotal1: ", responseTotal1);
+    totalRevenueOrderCurrentMonth.value = responseTotal1;
 
     totalRevenue.value =
       totalRevenueOrderCurrentMonth.value.totalAmountCurrentMonth;
@@ -144,13 +141,8 @@ export default function useReportRevenue() {
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
     selectedDay.value = `${dayf}-${monthf}-${yearf}`;
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_TIME,
-      {
-        date: selectedDay.value,
-      }
-    );
-    totalRevenueOrderCurrentDay.value = responseTotal1.data;
+    const responseTotal1 = await gettAllRevenueByDay(selectedDay.value);
+    totalRevenueOrderCurrentDay.value = responseTotal1;
 
     totalRevenue.value = totalRevenueOrderCurrentDay.value.totalAmount;
     totalRevenueYesterday.value =
@@ -163,19 +155,13 @@ export default function useReportRevenue() {
     const day = currentDate.getDate();
     selectedMonth.value = "";
     selectedDay.value = "";
-    // Định dạng lại thành "ngày/tháng/năm"
     const formattedDate = `${day < 10 ? "0" + day : day}-${
       currentMonth < 10 ? "0" + currentMonth : currentMonth
     }-${currentYear}`;
     selectedCurrentDay.value = formattedDate;
 
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_TIME,
-      {
-        date: selectedCurrentDay.value,
-      }
-    );
-    totalRevenueOrderCurrentDay.value = responseTotal1.data;
+    const responseTotal1 = await gettAllRevenueByDay(selectedCurrentDay.value);
+    totalRevenueOrderCurrentDay.value = responseTotal1;
 
     totalRevenue.value = totalRevenueOrderCurrentDay.value.totalAmount;
     totalRevenueYesterday.value =
@@ -184,7 +170,6 @@ export default function useReportRevenue() {
     totalOrdersYesterday.value =
       totalRevenueOrderCurrentDay.value.totalOrdersYesterday;
   }
-
   const previousDay = computed(() => {
     if (!selectedDay.value) return "";
     const [day, month, year] = selectedDay.value.split("-").map(Number);
@@ -220,7 +205,6 @@ export default function useReportRevenue() {
     const previousYear = currentDate.getFullYear(); // Năm không cần định dạng
     return `${previousDay}-${previousMonth}-${previousYear}`;
   });
-
   const calculateRevenuePercentage = computed(() => {
     if (totalRevenue.value == 0 && totalRevenueYesterday.value == 0) {
       return 0;
@@ -230,9 +214,9 @@ export default function useReportRevenue() {
       return 100;
     }
     if (totalRevenue.value > totalRevenueYesterday.value) {
-      return totalRevenue.value / totalRevenueYesterday.value;
+      return (totalRevenue.value / totalRevenueYesterday.value) * 100;
     } else {
-      return totalRevenueYesterday.value / totalRevenue.value;
+      return (totalRevenueYesterday.value / totalRevenue.value) * 100;
     }
   });
   const calculateOrderPercentage = computed(() => {
@@ -244,9 +228,9 @@ export default function useReportRevenue() {
       return 100;
     }
     if (totalOrders.value > totalOrdersYesterday.value) {
-      return totalOrders.value / totalOrdersYesterday.value;
+      return (totalOrders.value / totalOrdersYesterday.value) * 100;
     } else {
-      return totalOrdersYesterday.value / totalOrders.value;
+      return (totalOrdersYesterday.value / totalOrders.value) * 100;
     }
   });
   const resetTimeFillterRevenueOrder = () => {
@@ -256,25 +240,15 @@ export default function useReportRevenue() {
     selectCurrentDayAndCallAPI();
   };
 
-  const headersEmployee = ref([
-    { title: "Tên Nhân Viên", key: "fullName", width: "35%" },
-    { title: "Tổng doanh thu", key: "totalRevenue", width: "65%" },
-  ]);
-  const headersCategory = ref([
-    { title: "Tên Danh mục", key: "categoryName", width: "35%" },
-    { title: "Tổng doanh thu", key: "totalRevenue", width: "65%" },
-  ]);
-
+  // <== Init ==>
   async function callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH() {
     const formattedMonth = currentMonth.toString().padStart(2, "0");
-    const responseRevenue = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH,
-      {
-        date: `${formattedMonth}-${currentYear}`,
-      }
+    const responseRevenue = await gettAllRevenueWithEmployeeByMonth(
+      `${formattedMonth}-${currentYear}`
     );
+    console.log("gettAllRevenueWithEmployeeByMonth: ", responseRevenue);
     if (responseRevenue) {
-      filteredTotalRevenueForEmployee.value = responseRevenue.data.sort(
+      filteredTotalRevenueForEmployee.value = responseRevenue.sort(
         (a, b) => b.totalRevenue - a.totalRevenue
       );
     }
@@ -288,20 +262,17 @@ export default function useReportRevenue() {
       : 0;
   }
   async function callApi_GET_ALL_FOOD_CATEGORIES() {
-    const response = await axios.get(API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES);
-    foodCategories.value = response.data.data;
+    const response = await getAllCategory();
+    foodCategories.value = response.listCategory.data;
     listLabels.value = foodCategories.value.map((c) => c.categoryName);
   }
   async function callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH() {
     const formattedMonth = currentMonth.toString().padStart(2, "0");
-    const responseRevenueForCategory = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH,
-      {
-        date: `${formattedMonth}-${currentYear}`,
-      }
+    const responseRevenueForCategory = await gettAllRevenueWithCategoryByMonth(
+      `${formattedMonth}-${currentYear}`
     );
-    if (responseRevenueForCategory.data.length != 0) {
-      const revenueMap = responseRevenueForCategory.data.reduce((acc, item) => {
+    if (responseRevenueForCategory.length != 0) {
+      const revenueMap = responseRevenueForCategory.reduce((acc, item) => {
         acc[item.categoryName] = item.totalRevenue;
         return acc;
       }, {});
@@ -321,7 +292,6 @@ export default function useReportRevenue() {
       ],
     };
   }
-
   async function init() {
     callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH();
 
@@ -334,7 +304,7 @@ export default function useReportRevenue() {
     loading.value = false;
   }
 
-  // Xử lý ở phần NHÂN VIÊN
+  // <== Báo cáo doanh thu theo nhân viên ==>
   async function selectDayAndCallAPIForEmployee(day) {
     loading.value = true;
     selectedDayForEmp.value = day;
@@ -343,14 +313,11 @@ export default function useReportRevenue() {
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
     selectedDayForEmp.value = `${dayf}-${monthf}-${yearf}`;
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME,
-      {
-        date: selectedDayForEmp.value,
-      }
+    const responseTotal1 = await gettAllRevenueWithEmployeeByDay(
+      selectedDayForEmp.value
     );
     if (responseTotal1) {
-      filteredTotalRevenueForEmployee.value = responseTotal1.data.sort(
+      filteredTotalRevenueForEmployee.value = responseTotal1.sort(
         (a, b) => b.totalRevenue - a.totalRevenue
       );
     }
@@ -372,14 +339,11 @@ export default function useReportRevenue() {
     monthf = monthf.padStart(2, "0");
     selectedMonthForEmp.value = `${monthf}-${yearf}`;
 
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH,
-      {
-        date: selectedMonthForEmp.value,
-      }
+    const responseTotal1 = await gettAllRevenueWithEmployeeByMonth(
+      selectedMonthForEmp.value
     );
     if (responseTotal1) {
-      filteredTotalRevenueForEmployee.value = responseTotal1.data.sort(
+      filteredTotalRevenueForEmployee.value = responseTotal1.sort(
         (a, b) => b.totalRevenue - a.totalRevenue
       );
     }
@@ -399,7 +363,7 @@ export default function useReportRevenue() {
     callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH();
   };
 
-  // Xử lý ở nhần DANH MỤC
+  // <== Báo cáo doanh thu theo danh mục ==>
   async function selectDayAndCallAPIForCategory(day) {
     loading.value = true;
     selectedDayForCate.value = day;
@@ -408,14 +372,11 @@ export default function useReportRevenue() {
     dayf = dayf.padStart(2, "0");
     monthf = monthf.padStart(2, "0");
     selectedDayForCate.value = `${dayf}-${monthf}-${yearf}`;
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_CATEGORY_AND_TIME,
-      {
-        date: selectedDayForCate.value,
-      }
+    const responseTotal1 = await gettAllRevenueWithCategoryByDay(
+      selectedDayForCate.value
     );
-    if (responseTotal1.data.length != 0) {
-      const revenueMap = responseTotal1.data.reduce((acc, item) => {
+    if (responseTotal1.length != 0) {
+      const revenueMap = responseTotal1.reduce((acc, item) => {
         acc[item.categoryName] = item.totalRevenue;
         return acc;
       }, {});
@@ -444,14 +405,11 @@ export default function useReportRevenue() {
     monthf = monthf.padStart(2, "0");
     selectedMonthForCate.value = `${monthf}-${yearf}`;
 
-    const responseTotal1 = await axios.post(
-      API_ENDPOINTS.GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH,
-      {
-        date: selectedMonthForCate.value,
-      }
+    const responseTotal1 = await gettAllRevenueWithCategoryByMonth(
+      selectedMonthForCate.value
     );
-    if (responseTotal1.data.length != 0) {
-      const revenueMap = responseTotal1.data.reduce((acc, item) => {
+    if (responseTotal1.length != 0) {
+      const revenueMap = responseTotal1.reduce((acc, item) => {
         acc[item.categoryName] = item.totalRevenue;
         return acc;
       }, {});
@@ -478,6 +436,7 @@ export default function useReportRevenue() {
     selectedMonthForCate.value = "";
     callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH();
   };
+
   const formatCurencyFromApiToView = (time) => {
     return `${time.toLocaleString("vi-VN")} VND`;
   };

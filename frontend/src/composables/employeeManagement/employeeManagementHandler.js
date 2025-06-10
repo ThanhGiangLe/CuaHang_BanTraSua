@@ -1,0 +1,78 @@
+import API_ENDPOINTS from "@/api/api.js";
+import axiosClient from "@/services/utils/axiosClient";
+
+export function employeeManagementHandler() {
+  const getAllEmployee = async (date) => {
+    try {
+      const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
+      const listEmployee = response.data;
+      return listEmployee;
+    } catch (err) {
+      return err;
+    }
+  };
+  const addEmployee = async (request) => {
+    try {
+      const response = await axiosClient.post(API_ENDPOINTS.ADD_USER, request);
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  const deleteEmployee = async (userId) => {
+    try {
+      const response = await axiosClient.delete(
+        `${API_ENDPOINTS.DELETE_USER}/${userId}`
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  const updateEmployee = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        `${API_ENDPOINTS.UPDATE_USER}`,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  const getScheduleByUserId = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        `${API_ENDPOINTS.GET_SCHEDULE_BY_USERID}`,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  const updateScheduleByUserId = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        `${API_ENDPOINTS.UPDATE_SCHEDULE_BY_USERID}`,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  return {
+    getAllEmployee,
+    addEmployee,
+    deleteEmployee,
+    updateEmployee,
+    getScheduleByUserId,
+    updateScheduleByUserId,
+  };
+}

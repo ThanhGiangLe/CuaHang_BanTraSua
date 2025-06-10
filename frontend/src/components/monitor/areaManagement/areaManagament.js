@@ -20,6 +20,7 @@ export default function useAreaManagement() {
   const currentTableId = ref(0);
   const showListFoodOrderOfTableId = ref(false);
   const listFoodOrderOfTableId = ref([]);
+  const isShowQRCode = ref(false);
   const paymentInfo = ref({
     tax: 0,
     discount: 0,
@@ -180,6 +181,13 @@ export default function useAreaManagement() {
     confirmDialog.value = !confirmDialog.value;
     showListFoodOrderOfTableId.value = !showListFoodOrderOfTableId.value;
   }
+
+  const momoQRCodeUrl = computed(() => {
+    const amount = paymentInfo.value.resultTotalPayment || 0;
+    return `https://img.vietqr.io/image/TCB-192602032003-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(
+      "TraSuaSunSun"
+    )}`;
+  });
   return {
     tables,
     confirmDialog,
@@ -188,6 +196,8 @@ export default function useAreaManagement() {
     currentTableId,
     orderStore,
     paymentInfo,
+    isShowQRCode,
+    momoQRCodeUrl,
 
     formatDate,
     formatCurrency,

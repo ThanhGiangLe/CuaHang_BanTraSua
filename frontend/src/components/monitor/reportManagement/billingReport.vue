@@ -205,9 +205,12 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
-import { computed } from "vue";
-import API_ENDPOINTS from "@/api/api.js";
+import { reportManagementHandler } from "/src/composables/reportManagement/reportManagementHandler.js";
+import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
+
+const { getAllOrderByMonth, getAllOrderByDay, getAllOrderByFullName } =
+  reportManagementHandler();
+const { getAllEmployee } = employeeManagementHandler();
 const allBilling = ref([]);
 const loading = shallowRef(true);
 const employeeList = ref([]);
@@ -258,11 +261,8 @@ const monthList = ref(generateMonths(currentYear));
 
 async function init() {
   const monthFormat = currentMonth.toString().padStart(2, "0"); // Đảm bảo tháng có 2 chữ số
-  const response = await axios.post(API_ENDPOINTS.GET_ALL_ORDER_CURRENT_MONTH, {
-    date: `${monthFormat}-${currentYear}`,
-  });
-  console.log("allBilling: ", response.data);
-  allBilling.value = response.data;
+  const response = await getAllOrderByMonth(`${monthFormat}-${currentYear}`);
+  allBilling.value = response;
 
   // const quantitySoldMaxDataTable = allBilling.value
   //   ? allBilling.value.reduce((max, current) => {
@@ -273,14 +273,17 @@ async function init() {
   //   ? quantitySoldMaxDataTable.quantitySold
   //   : 0;
 
-  const responseEmp = await axios.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
-  employeeList.value = responseEmp.data;
+  const responseEmp = await getAllEmployee();
+  employeeList.value = responseEmp;
   employeeListFullName.value = employeeList.value.map((emp) => emp.fullName);
   loading.value = false;
 }
 init();
 
 async function selectCurrentDayAndCallAPI() {
+  selectedDay.value = "";
+  selectedEmployee.value = "";
+  selectedMonth.value = "";
   const day = currentDate.getDate();
   // Định dạng lại thành "ngày/tháng/năm"
   const formattedDate = `${day < 10 ? "0" + day : day}-${
@@ -292,43 +295,42 @@ async function selectCurrentDayAndCallAPI() {
   monthf = monthf.padStart(2, "0");
   selectedCurrentDay.value = `${dayf}-${monthf}-${yearf}`;
 
-  const response = await axios.post(API_ENDPOINTS.GET_ALL_ORDER_CURRENT_DAY, {
-    date: selectedCurrentDay.value,
-  });
-  allBilling.value = response.data;
+  const response = await getAllOrderByDay(selectedCurrentDay.value);
+  allBilling.value = response;
 }
 async function selectDayAndCallAPI(day) {
+  selectedEmployee.value = "";
+  selectedMonth.value = "";
+  selectedCurrentDay.value = "";
   selectedDay.value = day;
   let [dayf, monthf, yearf] = selectedDay.value.split("-");
   dayf = dayf.padStart(2, "0");
   monthf = monthf.padStart(2, "0");
   selectedDay.value = `${dayf}-${monthf}-${yearf}`;
-  const responseTotal1 = await axios.post(
-    API_ENDPOINTS.GET_ALL_ORDER_CURRENT_DAY,
-    {
-      date: selectedDay.value,
-    }
-  );
-  allBilling.value = responseTotal1.data;
+  const responseTotal1 = await getAllOrderByDay(selectedDay.value);
+
+  allBilling.value = responseTotal1;
 }
 async function selectMonthAndCallAPI(month) {
+  selectedDay.value = "";
+  selectedEmployee.value = "";
+  selectedCurrentDay.value = "";
   selectedMonth.value = month;
   let [monthf, yearf] = selectedMonth.value.split("-");
   monthf = monthf.padStart(2, "0");
   selectedMonth.value = `${monthf}-${yearf}`;
 
-  const response = await axios.post(API_ENDPOINTS.GET_ALL_ORDER_CURRENT_MONTH, {
-    date: selectedMonth.value,
-  });
-  allBilling.value = response.data;
+  const response = await getAllOrderByMonth(selectedMonth.value);
+  allBilling.value = response;
   allBilling.value = allBilling.value.sort((a, b) => b.orderTime - a.orderTime);
 }
 async function selectEmployeeAndCallAPI(emp) {
+  selectedDay.value = "";
+  selectedMonth.value = "";
+  selectedCurrentDay.value = "";
   selectedEmployee.value = emp;
-  const response = await axios.post(API_ENDPOINTS.GET_ALL_ORDER_FULL_NAME, {
-    date: selectedEmployee.value,
-  });
-  allBilling.value = response.data;
+  const response = await getAllOrderByFullName(selectedEmployee.value);
+  allBilling.value = response;
 }
 
 const resetTimeFillterRevenueOrder = () => {

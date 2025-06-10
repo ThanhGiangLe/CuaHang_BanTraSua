@@ -9,13 +9,14 @@ namespace testVue.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ScheduleId { get; set; } = default;
         public int UserId { get; set; } = default;
-        public DateTime? Date {  get; set; }
-        public int ShiftId { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime Date {  get; set; }
+        public string ShiftId { get; set; }
+        public DateTime? CreateDate { get; set; }
         public string? CreateBy {  get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? UpdateBy { get; set; }
-        public decimal OpeningCashAmount { get; set; }
-        public decimal CloseingCashAmount { get; set; }
+        public decimal CashAmount { get; set; }
+        public decimal BankAmount { get; set; }
+        public decimal ClosingCashAmount { get; set; }
     }
 }

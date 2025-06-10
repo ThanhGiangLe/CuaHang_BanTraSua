@@ -6,17 +6,8 @@
       <v-card-title class="pa-0 mb-2 d-flex justify-center">
         <div class="d-flex align-center">
           <v-icon class="ma-1" size="large">mdi-warehouse</v-icon>
-          <span style="font-size: 26px">Danh sách đăng nhập/xuất</span>
+          <span style="font-size: 26px">Doanh thu các phiên làm việc</span>
         </div>
-        <!-- <JsonExcel class="btn btn-default" 
-                    :data="dataTable" 
-                    :fields="datafieldExcel" 
-                    worksheet="My Worksheet" type="xlsx"
-                    :name="nameFileExcel">
-                    <VBtn class="text-none" size="small" prependIcon="mdi-crop" color="#8690A0">
-                    Xuất Excel
-                    </VBtn>
-                </JsonExcel> -->
       </v-card-title>
       <v-card-text
         class="pa-3 rounded"
@@ -36,18 +27,18 @@
                   size="small"
                   class="ms-2"
                 >
-                  {{ selectedEmployee || "Nhân viên" }}
+                  {{ selectedEmployee.fullName || "Nhân viên" }}
                 </v-btn>
               </template>
               <v-list max-height="200px" style="overflow-y: auto">
                 <v-list-item
-                  v-for="(emp, index) in employeeListFullName"
+                  v-for="(emp, index) in listEmployee"
                   :key="index"
                   :value="emp"
                   style="min-height: 36px !important"
                   @click="filerCashRegisterForEmployeeSelected(emp)"
                 >
-                  <v-list-item-title>{{ emp }}</v-list-item-title>
+                  <v-list-item-title>{{ emp.fullName }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -95,38 +86,38 @@
           <v-data-table
             :headers="header"
             :loading="loading"
-            :items="cashRegistersFilter"
+            :items="totalSalesFilter"
             height="calc(33vh - 2rem)"
             density="compact"
             fixed-footer
             fixed-header
           >
-            <template v-slot:item.userName="{ item }">
+            <template v-slot:item.fullName="{ item }">
               <span
                 style="font-weight: 500; color: rgba(var(--v-theme-primary), 1)"
                 class="cursor-pointer"
               >
-                {{ item.userName ? item.userName : "-" }}
+                {{ item.fullName ? item.fullName : "-" }}
               </span>
             </template>
-            <template v-slot:item.startTime="{ item }">
+            <template v-slot:item.date="{ item }">
               <span>
-                {{
-                  item.startTime ? formatDateFormApiToView(item.startTime) : "-"
-                }}
+                {{ item.date ? formatDateFormApiToView(item.date) : "-" }}
               </span>
             </template>
-            <template v-slot:item.endTime="{ item }">
+            <template v-slot:item.shiftId="{ item }">
+              <span> {{ shifs[item.shiftId] }}</span>
+            </template>
+            <template v-slot:item.cashAmount="{ item }">
+              <span> {{ formatCurencyFromApiToView(item.cashAmount) }}</span>
+            </template>
+            <template v-slot:item.bankAmount="{ item }">
+              <span> {{ formatCurencyFromApiToView(item.bankAmount) }}</span>
+            </template>
+            <template v-slot:item.closingCashAmount="{ item }">
               <span>
-                {{
-                  item.endTime != item.startTime
-                    ? formatDateFormApiToView(item.endTime)
-                    : "- - -"
-                }}</span
+                {{ formatCurencyFromApiToView(item.closingCashAmount) }}</span
               >
-            </template>
-            <template v-slot:item.totalIncome="{ item }">
-              <span> {{ formatCurencyFromApiToView(item.totalIncome) }}</span>
             </template>
             <template v-slot:loading>
               <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
@@ -136,7 +127,7 @@
                 class="d-event-info-item d-emp-activity-item-content d-emp-activity-no-data pa-6"
                 style="background: none"
               >
-                <!-- <VIcon icon="mdi-robot-dead-outline"></VIcon> -->
+                <VIcon icon="mdi-robot-dead-outline"></VIcon>
                 <span>Hệ thống không tìm thấy thông tin</span>
               </div>
             </template>
@@ -149,25 +140,37 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
-import API_ENDPOINTS from "@/api/api.js";
 import "underscore";
-import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import dayjs from "dayjs";
+import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
+import { totalSalesManagementHandler } from "/src/composables/totalSalesManagement/totalSalesManagementHandler.js";
+
+const { getTotalSaleAllEmployee, getTotalSalesEmployee } =
+  totalSalesManagementHandler();
+const { getAllEmployee } = employeeManagementHandler();
 const loading = shallowRef(true);
-const cashRegisters = ref([]);
-const cashRegistersFilter = ref([]);
-const employeeListFullName = ref([]);
+const totalSales = ref([]);
+const totalSalesFilter = ref([]);
+const listEmployee = ref([]);
 const selectedEmployee = ref("");
 const selectedDay = ref("");
 
 const header = ref([
-  { title: "Tên tài khoản", key: "userName" },
-  { title: "Thời gian đăng nhập", key: "startTime" },
-  { title: "Thời gian đăng xuất", key: "endTime" },
-  { title: "Tổng doanh thu", key: "totalIncome" },
+  { title: "Họ tên", key: "fullName" },
+  { title: "Ngày làm việc", key: "date" },
+  { title: "Ca làm việc", key: "shiftId" },
+  { title: "Tổng tiền mặt", key: "cashAmount" },
+  { title: "Tổng chuyển khoản", key: "bankAmount" },
+  { title: "Tổng", key: "closingCashAmount" },
 ]);
+const shifs = ref({
+  S: "Ca sáng",
+  C: "Ca chiều",
+  T: "Ca tối",
+  C1: "Ca 1",
+  C2: "Ca 2",
+  O: "Nghỉ",
+});
 const generateDates = (month, year) => {
   const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
   const dates = [];
@@ -179,59 +182,72 @@ const generateDates = (month, year) => {
   return dates;
 };
 const currentDate = new Date();
-const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
+const currentMonth = currentDate.getMonth(); // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
 const currentYear = currentDate.getFullYear(); // Năm hiện tại
 
-const dateList = ref(generateDates(currentMonth, currentYear));
+const dateList = ref(generateDates(currentMonth + 1, currentYear));
 
 async function init() {
-  const response = await axios.get(API_ENDPOINTS.GET_ALL_CASH_REGISTER);
+  const response = await getTotalSaleAllEmployee();
+  console.log("totalSales: ", totalSales.value);
+  totalSales.value = JSON.parse(JSON.stringify(response));
+  totalSalesFilter.value = JSON.parse(JSON.stringify(response));
 
-  cashRegisters.value = response.data;
-  console.log("cashRegisters.value: ", cashRegisters.value);
-  cashRegisters.value.sort((a, b) => b.cashRegisterId - a.cashRegisterId);
-
-  cashRegistersFilter.value = cashRegisters.value;
-
-  const responseEmp = await axios.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
-  employeeListFullName.value = responseEmp.data.map((emp) => emp.fullName);
+  const responseEmp = await getAllEmployee();
+  listEmployee.value = responseEmp.map((emp) => {
+    return {
+      userId: emp.userId,
+      fullName: emp.fullName,
+    };
+  });
 
   loading.value = false;
 }
 init();
 const formatDateFormApiToView = (inputDate) => {
   const date = new Date(inputDate);
-  const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
+  const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
     date.getMonth() + 1
   )
     .toString()
-    .padStart(2, "0")}/${date.getFullYear()} ${date
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
-    .getSeconds()
-    .toString()
-    .padStart(2, "0")}`;
+    .padStart(2, "0")}-${date.getFullYear()}`;
   return formattedDate;
 };
 const formatCurencyFromApiToView = (money) => {
   return `${money.toLocaleString("vi-VN")} VND`;
 };
 const filerCashRegisterForEmployeeSelected = (emp) => {
+  loading.value = true;
   selectedEmployee.value = emp;
-  selectedDay.value = "";
-  cashRegistersFilter.value = cashRegisters.value.filter(
-    (item) => item.userName == selectedEmployee.value.trim()
-  );
+  console.log("selectedEmployee: ", selectedEmployee.value);
+  if (selectedDay.value) {
+    totalSalesFilter.value = totalSales.value.filter(
+      (item) =>
+        item.fullName == selectedEmployee.value.fullName.trim() &&
+        formatDateFormApiToView(item.date) == selectedDay.value
+    );
+  } else {
+    totalSalesFilter.value = totalSales.value.filter(
+      (item) => item.fullName == selectedEmployee.value.fullName.trim()
+    );
+  }
+  loading.value = false;
 };
 const filerCashRegisterForDaySelected = (day) => {
+  loading.value = true;
   selectedDay.value = day;
-  selectedEmployee.value = "";
-  const formattedSelectedDay = dayjs(selectedDay.value).format("YYYY-DD-MM");
-  cashRegistersFilter.value = cashRegisters.value.filter((item) => {
-    const itemDate = dayjs(item.startTime).format("YYYY-MM-DD");
-    return itemDate === formattedSelectedDay;
-  });
+  if (selectedEmployee.value) {
+    totalSalesFilter.value = totalSales.value.filter(
+      (item) =>
+        formatDateFormApiToView(item.date) == selectedDay.value &&
+        item.fullName == selectedEmployee.value.fullName.trim()
+    );
+  } else {
+    totalSalesFilter.value = totalSales.value.filter(
+      (item) => formatDateFormApiToView(item.date) == selectedDay.value
+    );
+  }
+  loading.value = false;
 };
 const resetFilterCashRegister = () => {
   selectedEmployee.value = "";

@@ -375,6 +375,7 @@
               </div>
             </div>
           </div>
+          <!-- Báo cáo doanh thu theo danh mục -->
           <div class="mt-1 mb-2" style="width: 40%">
             <h2 class="text-center w-100 opacity-50">Theo Danh Mục</h2>
             <div

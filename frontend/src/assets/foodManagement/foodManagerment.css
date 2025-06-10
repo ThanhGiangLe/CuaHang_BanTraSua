@@ -320,3 +320,14 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+.foodManagement_listFoodOrder_bill_payment_paymentMethod
+  .v-selection-control
+  .v-label {
+  font-size: 14px !important;
+}
+
+.foodManagement_listFoodOrder_bill_payment_paymentMethod
+  .v-selection-control__wrapper {
+  height: 28px !important;
+}

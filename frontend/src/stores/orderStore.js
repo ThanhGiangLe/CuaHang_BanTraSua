@@ -15,6 +15,15 @@ export const userOrderStore = defineStore("order", {
   }),
 
   actions: {
+    isEqualListAdditionalFood(list1, list2) {
+      if (list1.length != list2.length) return false;
+      const sort1 = [...list1].sort((a, b) => a.foodItemId - b.foodItemId);
+      const sort2 = [...list2].sort((a, b) => a.foodItemId - b.foodItemId);
+
+      return sort1.every(
+        (item, index) => item.foodItemId === sort2[index].foodItemId
+      );
+    },
     setSelectedDishes(order) {
       this.selectedDishes = { ...order };
     },
@@ -33,8 +42,10 @@ export const userOrderStore = defineStore("order", {
             (d) =>
               d.FoodItemId === newDish.FoodItemId &&
               d.Note === newDish.Note &&
-              JSON.stringify(d.ListAdditionalFood) ===
-                JSON.stringify(newDish.ListAdditionalFood)
+              this.isEqualListAdditionalFood(
+                d.ListAdditionalFood,
+                newDish.ListAdditionalFood
+              )
           );
           if (existing) {
             existing.Quantity += newDish.Quantity || 1;

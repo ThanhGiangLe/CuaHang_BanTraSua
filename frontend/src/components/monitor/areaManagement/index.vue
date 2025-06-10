@@ -198,11 +198,28 @@
 
         <v-divider class="my-2"></v-divider>
 
-        <v-card-actions class="justify-end">
-          <v-btn color="primary" @click="ConfirmPayment">Thanh toán</v-btn>
-          <v-btn color="red" @click="closeShowListFoodOrderOfTableId"
-            >Đóng</v-btn
+        <v-card-actions class="d-flex justify-space-between">
+          <v-btn class="" color="primary" @click="isShowQRCode = !isShowQRCode"
+            >Mã thanh toán</v-btn
           >
+          <div>
+            <v-btn color="primary" @click="ConfirmPayment">Thanh toán</v-btn>
+            <v-btn color="red" @click="closeShowListFoodOrderOfTableId"
+              >Đóng</v-btn
+            >
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="isShowQRCode" width="650px" height="600px" persistent>
+      <v-card>
+        <v-card-title class="">Tên tài khoản: LE THANH GIANG </v-card-title>
+        <v-card-text style="padding: 0px 4px; width: 60%; margin: 0 auto">
+          <v-img cover :src="momoQRCodeUrl"></v-img>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn @click="isShowQRCode = false" color="red">Đóng</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -229,6 +246,8 @@ const {
   currentTableId,
   orderStore,
   paymentInfo,
+  isShowQRCode,
+  momoQRCodeUrl,
 
   formatDate,
   formatCurrency,

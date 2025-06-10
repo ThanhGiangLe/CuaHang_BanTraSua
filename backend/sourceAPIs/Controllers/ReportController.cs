@@ -321,8 +321,10 @@ namespace testVue.Controllers
                         {
                             f.FoodItemId,
                             f.FoodName,
+                            f.IsMain,
                             o.QuantitySold
                         })
+                    .Where(x => x.IsMain == 1)
                     .ToListAsync();
 
                 // Trả kết quả về client
@@ -365,8 +367,10 @@ namespace testVue.Controllers
                         {
                             f.FoodItemId,
                             f.FoodName,
+                            f.IsMain,
                             o.QuantitySold
                         })
+                    .Where(x => x.IsMain == 1)
                     .ToListAsync();
 
                 // Trả kết quả về client
@@ -411,8 +415,10 @@ namespace testVue.Controllers
                         {
                             f.FoodItemId,
                             f.FoodName,
+                            f.IsMain,
                             o.QuantitySold
                         })
+                    .Where(x => x.IsMain == 1)
                     .ToListAsync();
 
                 // Trả kết quả về client
