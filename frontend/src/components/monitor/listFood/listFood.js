@@ -484,7 +484,9 @@ export default function useFoodManagement() {
       if (response.response.status == 404) {
         showToast(response.response.data, "warn");
       }else if (response.response.status == 403) {
-        showToast(response.response.data, "warn");
+        showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
+      }else if (response.response.status == 500) {
+        showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
       }
     }
   }
