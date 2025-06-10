@@ -156,9 +156,10 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
-import { computed } from "vue";
-import API_ENDPOINTS from "@/api/api.js";
+import { reportManagementHandler } from "/src/composables/reportManagement/reportManagementHandler.js";
+
+const { getAllBestSellingByMonth, getAllBestSellingByDay } =
+  reportManagementHandler();
 const allItemBestSeling = ref([]);
 const loading = shallowRef(true);
 const quantitySoldMax = ref(0);
@@ -169,7 +170,6 @@ const selectedCurrentDay = ref("");
 const selectedDay = ref("");
 const selectedMonth = ref("");
 
-// Cho biết số ngày trong tháng và năm hiện tại
 const generateDates = (month, year) => {
   const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
   const dates = [];
@@ -180,7 +180,6 @@ const generateDates = (month, year) => {
   }
   return dates;
 };
-// Cho biết số tháng trong năm
 const generateMonths = (year) => {
   const months = [];
   for (let month = 1; month <= 12; month++) {
@@ -199,14 +198,12 @@ const headersBestSeling = ref([
 
 async function init() {
   const monthFormat = currentMonth.toString().padStart(2, "0"); // Đảm bảo tháng có 2 chữ số
-  const response = await axios.post(
-    API_ENDPOINTS.GET_ALL_ORDERITEM_BESTSELING_CURRENTMONTH,
-    {
-      date: `${monthFormat}-${currentYear}`,
-    }
+  const response = await getAllBestSellingByMonth(
+    `${monthFormat}-${currentYear}`
   );
-  console.log("response.data: ", response.data);
-  allItemBestSeling.value = response.data;
+  allItemBestSeling.value = response;
+
+  console.log("allItemBestSeling: ", allItemBestSeling.value);
 
   const quantitySoldMaxDataTable = allItemBestSeling.value
     ? allItemBestSeling.value.reduce((max, current) => {
@@ -222,6 +219,8 @@ async function init() {
 init();
 
 async function selectCurrentDayAndCallAPI() {
+  selectedDay.value = "";
+  selectedMonth.value = "";
   const day = currentDate.getDate();
   // Định dạng lại thành "ngày/tháng/năm"
   const formattedDate = `${day < 10 ? "0" + day : day}-${
@@ -233,13 +232,8 @@ async function selectCurrentDayAndCallAPI() {
   monthf = monthf.padStart(2, "0");
   selectedCurrentDay.value = `${dayf}-${monthf}-${yearf}`;
 
-  const response = await axios.post(
-    API_ENDPOINTS.GET_ALL_ORDERITEM_BESTSELING_CURRENTDAY,
-    {
-      date: selectedCurrentDay.value,
-    }
-  );
-  allItemBestSeling.value = response.data;
+  const response = await getAllBestSellingByDay(selectedCurrentDay.value);
+  allItemBestSeling.value = response;
 
   const quantitySoldMaxDataTable = allItemBestSeling.value
     ? allItemBestSeling.value.reduce((max, current) => {
@@ -251,18 +245,14 @@ async function selectCurrentDayAndCallAPI() {
     : 0;
 }
 async function selectDayAndCallAPI(day) {
+  selectedMonth.value = "";
   selectedDay.value = day;
   let [dayf, monthf, yearf] = selectedDay.value.split("-");
   dayf = dayf.padStart(2, "0");
   monthf = monthf.padStart(2, "0");
   selectedDay.value = `${dayf}-${monthf}-${yearf}`;
-  const responseTotal1 = await axios.post(
-    API_ENDPOINTS.GET_ALL_ORDERITEM_BESTSELING_CURRENTDAY,
-    {
-      date: selectedDay.value,
-    }
-  );
-  allItemBestSeling.value = responseTotal1.data;
+  const responseTotal1 = await getAllBestSellingByDay(selectedDay.value);
+  allItemBestSeling.value = responseTotal1;
 
   const quantitySoldMaxDataTable = allItemBestSeling.value
     ? allItemBestSeling.value.reduce((max, current) => {
@@ -274,18 +264,14 @@ async function selectDayAndCallAPI(day) {
     : 0;
 }
 async function selectMonthAndCallAPI(month) {
+  selectedDay.value = "";
   selectedMonth.value = month;
   let [monthf, yearf] = selectedMonth.value.split("-");
   monthf = monthf.padStart(2, "0");
   selectedMonth.value = `${monthf}-${yearf}`;
 
-  const response = await axios.post(
-    API_ENDPOINTS.GET_ALL_ORDERITEM_BESTSELING_CURRENTMONTH,
-    {
-      date: selectedMonth.value,
-    }
-  );
-  allItemBestSeling.value = response.data;
+  const response = await getAllBestSellingByMonth(selectedMonth.value);
+  allItemBestSeling.value = response;
 
   const quantitySoldMaxDataTable = allItemBestSeling.value
     ? allItemBestSeling.value.reduce((max, current) => {

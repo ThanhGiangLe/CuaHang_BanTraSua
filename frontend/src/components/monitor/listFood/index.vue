@@ -458,23 +458,23 @@
 
         <!-- Đơn giá danh sách các sản phẩm -->
         <div class="foodManagement_listFoodOrder_bill_payment rounded-lg mt-5">
-          <h4 class="mb-3">Tổng hóa đơn</h4>
+          <h4 class="mb-1">Tổng hóa đơn</h4>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between mb-2"
+            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between mb-1"
           >
-            <span style="font-size: 14px">Tổng tiền</span>
+            <span style="font-size: 12px">Tổng tiền</span>
             <span> {{ formatCurrency(currentOrder.total_amount) }}</span>
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between mb-2"
+            class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between mb-1"
           >
-            <span style="font-size: 14px">Thuế(%)</span>
+            <span style="font-size: 12px">Thuế(%)</span>
             <span>{{ currentOrder.tax }}</span>
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-2"
+            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-1"
           >
-            <span style="font-size: 14px">Giảm giá(%)</span>
+            <span style="font-size: 12px">Giảm giá(%)</span>
             <input
               type="number"
               v-model="currentOrder.discount"
@@ -502,7 +502,7 @@
           <div
             class="foodManagement_listFoodOrder_bill_payment_payment d-flex justify-space-between mt-2"
           >
-            <span style="font-size: 14px">Tổng thanh toán</span>
+            <h4 style="font-size: 14px">Tổng thanh toán</h4>
             <span>{{ formatCurrency(resultTotalAmount) }}</span>
           </div>
         </div>
@@ -515,14 +515,19 @@
           >Đặt món</v-btn
         >
         <v-btn
-          class="w-100"
-          style="margin-bottom: 20px"
+          class="w-100 mb-2"
           color="blue-darken-4"
           @click="callApiOrderFoodAndAddTable"
           >Đặt món và chọn bàn</v-btn
         >
+        <v-btn
+          class="w-100 mb-2"
+          color="blue-darken-4"
+          @click="isShowQRCode = !isShowQRCode"
+          >Mã QR</v-btn
+        >
 
-        <!-- <v-dialog
+        <v-dialog
           v-model="isShowQRCode"
           width="500px"
           height="500px"
@@ -539,7 +544,7 @@
               <v-btn @click="isShowQRCode = false" color="red">Đóng</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog> -->
+        </v-dialog>
 
         <!-- Dialog nếu chọn bàn -->
         <v-dialog
@@ -585,6 +590,7 @@ const {
   visibleUpdateCurrentFoodSelected,
   showComponentAreaManagement,
   loading,
+  isShowQRCode,
 
   // Computed properties
   filteredFoodItems,

@@ -46,6 +46,9 @@ const API_ENDPOINTS = {
   IMPORT_CASH_REGISTER: `/CashRegister/insert-cash-register`,
   UPDATE_ENDTIME_CASH_REGISTER: `/CashRegister/update-endtime-cash-register`,
   UPDATE_TOTALINCOME_CASH_REGISTER: `/CashRegister/update-totalimcome-cash-register`,
+
+  GET_SCHEDULE_BY_USERID: "/schedule/get-schedule-by-userid",
+  UPDATE_SCHEDULE_BY_USERID: "/schedule/update-schedule-by-userid",
 };
 
 export default API_ENDPOINTS;

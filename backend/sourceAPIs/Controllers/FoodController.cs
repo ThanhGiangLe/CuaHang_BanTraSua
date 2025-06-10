@@ -73,53 +73,72 @@ namespace testVue.Controllers
             var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
             {
-                return Unauthorized(new { message = "Vui lòng đăng nhập lại để thực hiện thao tác!" });
+                return Forbid("Vui lòng đăng nhập lại để thực hiện thao tác!");
             }
             if (!int.TryParse(userIdFromToken, out var userIdTryParse))
             {
-                return Unauthorized(new { message = "Token không hợp lệ" });
+                return Forbid("Token không hợp lệ");
             }
-            var order = new OrderMdl
+            int currentDay = DateTime.Now.Day;
+            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date == currentDay);
+            if(scheduleOfDay == null)
             {
-                UserId = userIdTryParse,
-                OrderTime = orderRequest.OrderTime,
-                TableId = orderRequest.TableId,
-                TotalAmount = orderRequest.TotalAmount,
-                TotalResult = orderRequest.TotalResult,
-                Status = orderRequest.Status,
-                Discount = orderRequest.Discount,
-                Tax = orderRequest.Tax,
-                PaymentMethod = orderRequest.PaymentMethod
-            };
-            _context.Orders.Add(order);
-            try
+                return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");
+            }else
             {
-                await _context.SaveChangesAsync();
-                return Ok(new
+                if (orderRequest.PaymentMethod == "Tiền mặt")
                 {
-                    success = 1,
-                    data = new
+                    scheduleOfDay.CashAmount += orderRequest.TotalResult;
+                    scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
+                }
+                else
+                {
+                    scheduleOfDay.BankAmount += orderRequest.TotalResult;
+                    scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
+                }
+                var order = new OrderMdl
+                {
+                    UserId = userIdTryParse,
+                    OrderTime = orderRequest.OrderTime,
+                    TableId = orderRequest.TableId,
+                    TotalAmount = orderRequest.TotalAmount,
+                    TotalResult = orderRequest.TotalResult,
+                    Status = orderRequest.Status,
+                    Discount = orderRequest.Discount,
+                    Tax = orderRequest.Tax,
+                    PaymentMethod = orderRequest.PaymentMethod
+                };
+                _context.Orders.Add(order);
+                _context.Schedules.Update(scheduleOfDay);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Ok(new
                     {
-                        order.OrderId, // Trả về OrderId tự tăng
-                        order.UserId,
-                        order.OrderTime,
-                        order.TableId,
-                        order.TotalAmount,
-                        order.Status,
-                        order.Discount,
-                        order.Tax,
-                        order.PaymentMethod
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                // Xử lý lỗi khi lưu vào cơ sở dữ liệu
-                return StatusCode(500, new
+                        success = 1,
+                        data = new
+                        {
+                            order.OrderId, // Trả về OrderId tự tăng
+                            order.UserId,
+                            order.OrderTime,
+                            order.TableId,
+                            order.TotalAmount,
+                            order.Status,
+                            order.Discount,
+                            order.Tax,
+                            order.PaymentMethod
+                        }
+                    });
+                }
+                catch (Exception ex)
                 {
-                    success = -1,
-                    message = ex.Message,
-                });
+                    // Xử lý lỗi khi lưu vào cơ sở dữ liệu
+                    return StatusCode(500, new
+                    {
+                        success = -1,
+                        message = ex.Message,
+                    });
+                }
             }
         }
 

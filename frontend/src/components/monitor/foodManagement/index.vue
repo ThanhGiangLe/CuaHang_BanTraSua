@@ -160,7 +160,7 @@
                         style="height: 19.94px; max-height: 19.94px"
                         class="hiddent-text-one-line"
                       >
-                        {{ formatCurrency(foodItem.priceListed) }} vnd/{{
+                        {{ formatCurrency(foodItem.priceListed) }}/{{
                           foodItem.unit
                         }}
                       </div>
@@ -174,7 +174,7 @@
                         style="height: 19.94px; max-height: 19.94px"
                         class="hiddent-text-one-line"
                       >
-                        {{ formatCurrency(foodItem.priceCustom) }} vnd/{{
+                        {{ formatCurrency(foodItem.priceCustom) }}/{{
                           foodItem.unit
                         }}
                       </div>
@@ -449,7 +449,6 @@ const {
   loading,
 
   // Computed properties
-  user,
   filteredFoodItems,
 
   // Data objects

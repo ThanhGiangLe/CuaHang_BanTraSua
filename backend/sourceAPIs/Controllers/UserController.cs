@@ -144,7 +144,6 @@ namespace testVue.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromBody] AddUserRequestDTO addUserRequest)
         {
-            // Kiểm tra thông tin đầu vào
             if (string.IsNullOrEmpty(addUserRequest.FullName) ||
                 string.IsNullOrEmpty(addUserRequest.Phone) ||
                 string.IsNullOrEmpty(addUserRequest.Email) ||
@@ -167,7 +166,7 @@ namespace testVue.Controllers
                 return Ok(new { success = 0 });
             }
 
-            // Tạo đối tượng người dùng mới
+            var currentTime = DateTime.UtcNow.AddHours(7);
             var user = new UserMdl
             {
                 FullName = addUserRequest.FullName,
@@ -176,7 +175,13 @@ namespace testVue.Controllers
                 Address = addUserRequest.Address,
                 Password = BCrypt.Net.BCrypt.HashPassword(addUserRequest.Password), // Hash mật khẩu
                 Role = addUserRequest.Role,
-                Avatar = "/public/meo.jpg",
+                Avatar = addUserRequest.Avatar ?? "/public/meo.jpg",
+                CreateDate = currentTime,
+                CreateBy = addUserRequest.CreateBy,
+                UpdateDate = currentTime,
+                UpdateBy = addUserRequest.UpdateBy,
+                Point = 10,
+                Status = "Busy"
             };
 
             // Thêm người dùng vào cơ sở dữ liệu
@@ -188,18 +193,11 @@ namespace testVue.Controllers
                 return Ok(new
                 {
                     success = 1,
-                    userId = user.UserId,
-                    fullName = user.FullName,
-                    phone = user.Phone,
-                    email = user.Email,
-                    role = user.Role,
-                    address = user.Address,
-                    avatar = user.Avatar
+                    data = user
                 });
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi khi lưu vào cơ sở dữ liệu
                 return StatusCode(500, "An error occurred while adding the user.");
             }
         }
@@ -208,10 +206,6 @@ namespace testVue.Controllers
         [HttpDelete("delete-user/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            if (userId == 0)
-            {
-                return BadRequest("UserId không hợp lệ");
-            }
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
@@ -239,16 +233,19 @@ namespace testVue.Controllers
             {
                 return BadRequest("Thông tin không hợp lệ");
             }
+
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
                 return Forbid("Bearer");
             }
+            var currentTime = DateTime.UtcNow.AddHours(7);
             var user = await _context.Users.FindAsync(request.UserId);
             if (user == null)
             {
                 return NotFound("Không tìm thấy User đang tương tác");
             }
+
             if (request.NewPassword != "")
             {
                 var newPass = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
@@ -260,6 +257,12 @@ namespace testVue.Controllers
             user.Address = request.Address;
             user.Phone = request.Phone;
             user.Role = request.Role;
+            user.UpdateDate = currentTime;
+            user.UpdateBy = request.UpdateBy;
+            if(request.Avatar != "")
+            {
+                user.Avatar = request.Avatar;
+            }
             try
             {
                 await _context.SaveChangesAsync();
