@@ -73,11 +73,11 @@ namespace testVue.Controllers
             var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
             {
-                return Forbid("Vui lòng đăng nhập lại để thực hiện thao tác!");
+                return Forbid("Bearer");
             }
             if (!int.TryParse(userIdFromToken, out var userIdTryParse))
             {
-                return Forbid("Token không hợp lệ");
+                return Forbid("Bearer");
             }
             var currentDay = DateTime.UtcNow;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
