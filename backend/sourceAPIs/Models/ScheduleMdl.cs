@@ -9,7 +9,7 @@ namespace testVue.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ScheduleId { get; set; } = default;
         public int UserId { get; set; } = default;
-        public int Date {  get; set; }
+        public DateTime Date {  get; set; }
         public string ShiftId { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreateBy {  get; set; }

@@ -3,7 +3,6 @@ import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
 import { useUserStore } from "@/stores/user.js";
 import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
-import axiosClient from "@/services/utils/axiosClient";
 
 export default function useEmployeeManagement() {
   const {

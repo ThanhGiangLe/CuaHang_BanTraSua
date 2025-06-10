@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OpenAI_API.Moderation;
 using sourceAPI.ModelsRequest;
-using System.Linq;
 using testVue.Datas;
 using testVue.Models;
 
@@ -89,8 +86,8 @@ namespace sourceAPI.Controllers
                 {
                     if (schedule.Day > 0 && schedule.Day <= DateTime.DaysInMonth(request.Year, request.Month))
                     {
-                        //var scheduleDate = new DateTime(request.Year, request.Month, schedule.Day);
-                        var existingSchedule = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == request.UserId && row.Date == schedule.Day);
+                        var scheduleDate = new DateTime(request.Year, request.Month, schedule.Day);
+                        var existingSchedule = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == request.UserId && row.Date.Date == scheduleDate.Date);
 
                         if (existingSchedule != null)
                         {
@@ -106,7 +103,7 @@ namespace sourceAPI.Controllers
                             var newSchedule = new ScheduleMdl
                             {
                                 UserId = request.UserId,
-                                Date = schedule.Day,
+                                Date = scheduleDate.Date,
                                 ShiftId = schedule.ShiftCode,
                                 CreateDate = currentTime,
                                 CreateBy = request.UpdateBy,

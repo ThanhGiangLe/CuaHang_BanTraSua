@@ -524,20 +524,19 @@
           class="w-100 mb-2"
           color="blue-darken-4"
           @click="isShowQRCode = !isShowQRCode"
-          >Mã QR</v-btn
+          >Mã thanh toán</v-btn
         >
 
         <v-dialog
           v-model="isShowQRCode"
-          width="500px"
-          height="500px"
+          width="650px"
+          height="600px"
           persistent
         >
           <v-card>
-            <v-card-text
-              style="padding: 16px 4px 0px; width: 88%; margin: 0 auto"
-            >
-              <v-img cover src="/public/qr.jpg"></v-img>
+            <v-card-title class="">Tên tài khoản: LE THANH GIANG </v-card-title>
+            <v-card-text style="padding: 0px 4px; width: 60%; margin: 0 auto">
+              <v-img cover :src="momoQRCodeUrl"></v-img>
             </v-card-text>
 
             <v-card-actions>
@@ -602,6 +601,7 @@ const {
   resultOrderItem,
   updateOrderItem,
   currentOrder,
+  momoQRCodeUrl,
 
   // Methods
   tonggleSelected,

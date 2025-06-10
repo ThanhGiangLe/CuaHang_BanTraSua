@@ -226,6 +226,12 @@ export default function useFoodManagement() {
     const taxAmount = (totalAmount * (currentOrder.value.tax || 0)) / 100;
     return totalAmount + taxAmount - discountAmount;
   });
+  const momoQRCodeUrl = computed(() => {
+    const amount = resultTotalAmount.value || 0;
+    return `https://img.vietqr.io/image/TCB-192602032003-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(
+      "TraSuaSunSun"
+    )}`;
+  });
   function formatCurrency(value) {
     if (value === null || value === undefined) return "0 VNĐ";
 
@@ -483,6 +489,10 @@ export default function useFoodManagement() {
     } else {
       if (response.response.status == 404) {
         showToast(response.response.data, "warn");
+      } else if (response.response.status == 403) {
+        showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
+      } else if (response.response.status == 500) {
+        showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
       }
     }
   }
@@ -533,6 +543,7 @@ export default function useFoodManagement() {
     updateOrderItem,
     resultUpdateOrderItem,
     currentOrder,
+    momoQRCodeUrl,
 
     // Methods
     init,

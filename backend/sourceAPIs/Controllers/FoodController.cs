@@ -79,8 +79,8 @@ namespace testVue.Controllers
             {
                 return Forbid("Token không hợp lệ");
             }
-            int currentDay = DateTime.Now.Day;
-            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date == currentDay);
+            var currentDay = DateTime.UtcNow;
+            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
             if(scheduleOfDay == null)
             {
                 return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");
