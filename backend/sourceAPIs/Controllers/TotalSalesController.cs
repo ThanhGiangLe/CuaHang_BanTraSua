@@ -26,7 +26,7 @@ namespace sourceAPI.Controllers
                             u => u.UserId,
                             s => s.UserId,
                             (u, s) => new { u, s })
-                        .Where(resJoin => resJoin.s.Date.Day <= currentDay)
+                        .Where(resJoin => resJoin.s.Date.Day <= currentDay && resJoin.s.ShiftId != "O")
                         .OrderByDescending(resJoin => resJoin.s.Date)
                         .Select(resJoin => new {
                             resJoin.u.FullName,
@@ -62,7 +62,7 @@ namespace sourceAPI.Controllers
                         u => u.UserId,
                         s => s.UserId,
                         (u, s) => new { u, s })
-                    .Where(resJoin => request.Day == default(DateTime) || resJoin.s.Date == request.Day && resJoin.s.Date.Day <= currentDay)
+                    .Where(resJoin => request.Day == default(DateTime) || resJoin.s.Date == request.Day && resJoin.s.Date.Day <= currentDay && resJoin.s.ShiftId != "O")
                     .OrderByDescending(resJoin => resJoin.s.Date)
                     .Select(resJoin => new {
                         resJoin.u.FullName,
