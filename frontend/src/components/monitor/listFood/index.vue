@@ -12,6 +12,12 @@
         single-line
         v-model="search"
       ></v-text-field>
+      <v-btn
+        class="ms-2"
+        color="blue-darken-4"
+        @click="isShowQRCode = !isShowQRCode"
+        >Mã thanh toán</v-btn
+      >
     </div>
 
     <div
@@ -76,7 +82,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="height: 140px; width: 95%"
+                    style="height: 140px; width: 92%"
                   />
                   <span
                     class="mt-3 hiddent-text-one-line"
@@ -84,18 +90,18 @@
                   >
                     {{ foodItem.foodName }}
                   </span>
-                  <h6 class="text-decoration-line-through">
+                  <!-- <h6 class="text-decoration-line-through">
                     {{ formatCurrency(foodItem.priceListed) }} /{{
                       foodItem.unit
                     }}
-                  </h6>
+                  </h6> -->
                   <h5>
                     {{ formatCurrency(foodItem.priceCustom) }} /{{
                       foodItem.unit
                     }}
                   </h5>
                   <v-btn
-                    class="mt-3 foodManagement_listFoodOrder_menu_foods_item_addFood"
+                    class="mt-2 foodManagement_listFoodOrder_menu_foods_item_addFood"
                     size="x-small"
                     style="height: 28px"
                     color="orange-darken-2"
@@ -103,6 +109,14 @@
                   >
                     Chọn món
                   </v-btn>
+                  <div
+                    v-if="
+                      listFoodItemIdBestSelling.includes(foodItem.foodItemId)
+                    "
+                    class="foodManagement_listFoodOrder_menu_foods_item-bestseller"
+                  >
+                    Best seller
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -520,12 +534,6 @@
           @click="callApiOrderFoodAndAddTable"
           >Đặt món và chọn bàn</v-btn
         >
-        <v-btn
-          class="w-100 mb-2"
-          color="blue-darken-4"
-          @click="isShowQRCode = !isShowQRCode"
-          >Mã thanh toán</v-btn
-        >
 
         <v-dialog
           v-model="isShowQRCode"
@@ -602,6 +610,7 @@ const {
   updateOrderItem,
   currentOrder,
   momoQRCodeUrl,
+  listFoodItemIdBestSelling,
 
   // Methods
   tonggleSelected,

@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using testVue.Datas;
+using testVue.ModelsRequest;
 
 namespace sourceAPI.Controllers
 {
@@ -20,6 +21,26 @@ namespace sourceAPI.Controllers
         {
             _context = context;
             _jwtSetting = jwtSettings;
+        }
+
+        [HttpPost("check")]
+        public async Task<IActionResult> CheckEmail([FromBody] EmailCheckRequestDTO request)
+        {
+            if (string.IsNullOrEmpty(request.Email))
+            {
+                return Ok(new { message = "Email không hợp lệ" });
+            }
+
+            var userExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+
+            if (userExists)
+            {
+                return Ok(new { exists = true });
+            }
+            else
+            {
+                return Ok(new { exists = false });
+            }
         }
 
         [HttpPost("refresh-token")]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sourceAPI.ModelsRequest;
 using System.Security.Claims;
 using testVue.Datas;
 using testVue.Models;
@@ -44,7 +45,6 @@ namespace testVue.Controllers
         [HttpGet("get-all-food-items")]
         public async Task<ActionResult<IEnumerable<FoodItemMdl>>> GetFoodItems()
         {
-            // Lấy danh sách người dùng từ cơ sở dữ liệu
             try
             {
                 var foodItems = await _context.FoodItems.ToListAsync();
@@ -186,7 +186,6 @@ namespace testVue.Controllers
         [HttpPost("add-food-item")]
         public async Task<IActionResult> AddFoodItem([FromBody] RequestFoodItemAddDTO request)
         {
-            // Kiểm tra dữ liệu đầu vào (Validation)
             if (request == null)
             {
                 return BadRequest("Invalid food item data.");
@@ -199,16 +198,15 @@ namespace testVue.Controllers
 
             var currentTime = DateTime.UtcNow.AddHours(7);
 
-            // Tạo một đối tượng FoodItem từ RequestFoodItemAdd
             var foodItem = new FoodItemMdl
             {
                 FoodName = request.FoodName,
                 PriceListed = request.PriceListed,
                 PriceCustom = request.PriceCustom,
                 ImageUrl = request.ImageUrl,
-                Unit = request.Unit ?? "Ly", // Nếu Unit không có, mặc định là "phần"
+                Unit = request.Unit ?? "Ly", 
                 CategoryId = request.CategoryId,
-                Status = "Đang kinh doanh", // Mặc định là "available"
+                Status = "Đang kinh doanh", 
                 CreateDate = currentTime,
                 CreateBy = request.CreateBy,
                 UpdateDate = currentTime,
@@ -218,11 +216,9 @@ namespace testVue.Controllers
 
             try
             {
-                // Thêm FoodItem vào cơ sở dữ liệu
                 _context.FoodItems.Add(foodItem);
                 await _context.SaveChangesAsync();
 
-                // Trả về ID của món ăn vừa thêm
                 return Ok(new
                 {
                     success = true,
@@ -243,7 +239,6 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -257,29 +252,23 @@ namespace testVue.Controllers
             {
                 return Forbid("Bearer");
             }
-            // Tìm món ăn theo ID trong cơ sở dữ liệu
             var foodItem = await _context.FoodItems.FindAsync(FoodItemId);
 
             if (foodItem == null)
             {
-                // Nếu không tìm thấy món ăn với ID này, trả về lỗi 404 (Not Found)
                 return NotFound(new { success = -1, message = "Food item not found." });
             }
 
-            // Xóa món ăn từ cơ sở dữ liệu
             _context.FoodItems.Remove(foodItem);
 
             try
             {
-                // Lưu thay đổi vào cơ sở dữ liệu
                 await _context.SaveChangesAsync();
 
-                // Trả về phản hồi thành công
                 return Ok(new { success = 1, message = "Food item deleted successfully." });
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
                 return StatusCode(500, new
                 {
                     success = -1,
@@ -289,30 +278,28 @@ namespace testVue.Controllers
             }
         }
 
-
         [Authorize]
         [HttpPut("update-food-item/{FoodItemId}")]
         public async Task<IActionResult> UpdateFoodItem(int FoodItemId, [FromBody] RequestUpdateFoodItemDTO updatedFoodItem)
         {
-            // Kiểm tra dữ liệu đầu vào
             if (updatedFoodItem == null || FoodItemId != updatedFoodItem.FoodItemId)
             {
                 return BadRequest(new { success = -1, message = "Dữ liệu yêu cầu không hợp lệ hoặc ID không khớp." });
             }
+
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken == "Customer" || roleFromToken == "Staff")
             {
                 return Forbid("Bearer");
             }
+
             var currentTime = DateTime.UtcNow.AddHours(7);
-            // Tìm FoodItem trong cơ sở dữ liệu
             var existingFoodItem = await _context.FoodItems.FindAsync(FoodItemId);
             if (existingFoodItem == null)
             {
                 return NotFound(new { success = -1, message = "Món ăn không tồn tại." });
             }
             var excludedIds = new List<int> { 0, 1 };
-            // Cập nhật thông tin món ăn
             existingFoodItem.FoodName = updatedFoodItem.FoodName ?? existingFoodItem.FoodName;
             existingFoodItem.PriceListed = updatedFoodItem.PriceListed > 0 ? updatedFoodItem.PriceListed : existingFoodItem.PriceListed;
             existingFoodItem.PriceCustom = updatedFoodItem.PriceCustom ?? existingFoodItem.PriceCustom;
@@ -326,7 +313,6 @@ namespace testVue.Controllers
 
             try
             {
-                // Lưu thay đổi vào cơ sở dữ liệu
                 _context.FoodItems.Update(existingFoodItem);
                 await _context.SaveChangesAsync();
                 return Ok(new
@@ -350,7 +336,6 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi
                 return StatusCode(500, new
                 {
                     success = -1,
@@ -359,5 +344,42 @@ namespace testVue.Controllers
                 });
             }
         }
+
+        [HttpPost("get-all-orderitem-top-bestselling")] 
+        public async Task<IActionResult> GetAllOrderItemTopBestSelling([FromBody] TopItemsRequest request)
+        {
+            try
+            {
+                var bestSellingItems = await _context.OrderDetails
+                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
+                    .Select(g => new
+                    {
+                        FoodItemId = g.Key.FoodItemId,
+                        QuantitySold = g.Sum(item => item.Quantity) // Đếm số lượng bán ra
+                    })
+                    .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
+                    .Join(_context.FoodItems,
+                        o => o.FoodItemId,
+                        f => f.FoodItemId,
+                        (o, f) => new
+                        {
+                            f.FoodItemId,
+                            f.FoodName,
+                            f.IsMain,
+                        })
+                    .Where(x => x.IsMain == 1)
+                    .Take(request.Top > 0 ? request.Top : 5)
+                    .ToListAsync();
+
+                // Trả kết quả về client
+                return Ok(bestSellingItems);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = ex.Message });
+            }
+        }
+
     }
 }

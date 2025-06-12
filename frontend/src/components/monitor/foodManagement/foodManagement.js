@@ -61,12 +61,19 @@ export default function useFoodManagement() {
     return null;
   }
   function formatDate(dateTime) {
-    const isoString = dateTime.toString();
-
-    return isoString
-      .replace("T", " ")
-      .replace(/\.\d+Z$/, "")
-      .replace(/\.\d+/, "");
+    const date = new Date(dateTime);
+    const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()} ${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+    return formattedDate;
   }
   function convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -79,10 +86,10 @@ export default function useFoodManagement() {
   // Hàm chạy đầu tiên
   async function init() {
     const responseFood = await getAllFood();
-    foodItems.value = responseFood.listFood.data;
+    foodItems.value = responseFood.listFood;
 
     const responseCate = await getAllCategory();
-    foodCategories.value = responseCate.listCategory.data;
+    foodCategories.value = responseCate.listCategory;
     loading.value = false;
   }
   init();
@@ -203,6 +210,9 @@ export default function useFoodManagement() {
       if (response.response.status == 403) {
         showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
         cancelSaveFood();
+      } else if (response.response.status == 400) {
+        showToast(`Món ăn thêm không hợp lệ!`, "warn");
+        cancelSaveFood();
       }
     }
   }
@@ -231,6 +241,12 @@ export default function useFoodManagement() {
     } else {
       if (response.response.status == 403) {
         showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
+        modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
+      } else if (response.response.status == 404) {
+        showToast(`Không tìm thấy món ăn cần xóa!`, "warn");
+        modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
+      } else if (response.response.status == 500) {
+        showToast(`Lỗi trong quá trình xử lý!`, "warn");
         modalConfirmDeleteFoodItem.value = !modalConfirmDeleteFoodItem.value;
       }
     }
@@ -306,6 +322,12 @@ export default function useFoodManagement() {
     } else {
       if (response.response.status == 403) {
         showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
+        modalUpdateFoodItem.value = false;
+      } else if (response.response.status == 404) {
+        showToast(`Không tìm thấy món ăn!`, "warn");
+        modalUpdateFoodItem.value = false;
+      } else if (response.response.status == 500) {
+        showToast(`Lỗi trong quá trình xử lý!`, "warn");
         modalUpdateFoodItem.value = false;
       }
     }

@@ -5,7 +5,7 @@ export function foodManagementHandler() {
   const getAllFood = async () => {
     try {
       const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_FOOD_ITEMS);
-      const listFood = response.data;
+      const listFood = response.data.data;
       return { listFood };
     } catch (err) {
       return err;
@@ -17,7 +17,7 @@ export function foodManagementHandler() {
       const response = await axiosClient.get(
         API_ENDPOINTS.GET_ALL_FOOD_CATEGORIES
       );
-      const listCategory = response.data;
+      const listCategory = response.data.data;
       return { listCategory };
     } catch (err) {
       return err;
@@ -27,7 +27,7 @@ export function foodManagementHandler() {
   const createFood = async (request) => {
     try {
       const response = await axiosClient.post(
-        API_ENDPOINTS.ADD_FOOD_ITEM,
+        API_ENDPOINTS.CREATE_FOOD_ITEM,
         request,
         {
           headers: {

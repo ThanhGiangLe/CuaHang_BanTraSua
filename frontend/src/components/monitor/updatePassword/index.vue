@@ -43,15 +43,6 @@
       >
         Update Password
       </v-btn>
-      <!-- <v-btn
-        color="red"
-        size="large"
-        variant="tonal"
-        block
-        @click="closeDialogInfo"
-      >
-        Close
-      </v-btn> -->
     </div>
   </v-card>
 </template>
@@ -59,12 +50,15 @@
 <script setup>
 import { useUserStore } from "@/stores/user.js";
 import { useRouter } from "vue-router";
-import { useGlobalStore } from "@/stores/app.js";
 import axios from "axios";
 import { computed, ref } from "vue";
 import API_ENDPOINTS from "@/api/api.js";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { showToast } from "@/styles/handmade";
+import { useLogin } from "/src/composables/authen/useLogin.js";
+
+const { updatePassword } = useLogin();
 
 const visible = ref(false);
 const router = useRouter();
@@ -73,81 +67,34 @@ const dialogVisibleInfo = ref(false);
 const newPassword = ref("");
 const newConfirmPassword = ref("");
 
-// Lấy thông tin người dùng từ store
 const user = computed(() => userStore.user);
-
-// const closeDialogInfo = () => {
-//   dialogVisibleInfo.value = false;
-// };
 
 async function UpdatePassword() {
   if (newPassword.value.trim() == "" || newConfirmPassword.value.trim() == "") {
-    toast.warn("Please enter a valid Password.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false, // Hiện thanh tiến trình
-      closeOnClick: true, // Đóng khi nhấp vào thông báo
-      pauseOnHover: true, // Dừng khi di chuột lên thông báo
-      draggable: true, // Kéo thông báo
-      progress: undefined, // Tiến độ (nếu có)
-    });
+    showToast("Không được để trống thông tin!", "warn");
     return;
   }
   if (newPassword.value !== newConfirmPassword.value) {
-    toast.warn("Passwords do not match. Please try again.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false, // Hiện thanh tiến trình
-      closeOnClick: true, // Đóng khi nhấp vào thông báo
-      pauseOnHover: true, // Dừng khi di chuột lên thông báo
-      draggable: true, // Kéo thông báo
-      progress: undefined, // Tiến độ (nếu có)
-    });
+    showToast("Mật khẩu không trùng khớp!", "warn");
     return;
   }
   try {
-    const response = await axios.post(API_ENDPOINTS.UPDATE_PASSWORD, {
+    const request = {
       Email: user.value.email,
       NewPassword: newConfirmPassword.value,
-    });
+    };
+    const response = await updatePassword(request);
 
-    if (response.data.success) {
-      toast.success("Password updated successfully!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false, // Hiện thanh tiến trình
-        closeOnClick: true, // Đóng khi nhấp vào thông báo
-        pauseOnHover: true, // Dừng khi di chuột lên thông báo
-        draggable: true, // Kéo thông báo
-        progress: undefined, // Tiến độ (nếu có)
-      });
+    if (response.result.success) {
+      showToast("Thay đổi mật khẩu thành công!", "success");
       setTimeout(() => {
         router.push("/login");
       }, 2000);
     } else {
-      toast.error("Failed to update password. Please check your OTP.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false, // Hiện thanh tiến trình
-        closeOnClick: true, // Đóng khi nhấp vào thông báo
-        pauseOnHover: true, // Dừng khi di chuột lên thông báo
-        draggable: true, // Kéo thông báo
-        progress: undefined, // Tiến độ (nếu có)
-      });
+      showToast("Thay đổi mật khẩu thất bại!", "error");
     }
   } catch (error) {
-    toast.error(
-      "An error occurred while updating the password. Please try again.",
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false, // Hiện thanh tiến trình
-        closeOnClick: true, // Đóng khi nhấp vào thông báo
-        pauseOnHover: true, // Dừng khi di chuột lên thông báo
-        draggable: true, // Kéo thông báo
-        progress: undefined, // Tiến độ (nếu có)
-      }
-    );
+    showToast("Lỗi hệ thống!", "error");
   }
 }
 </script>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sourceAPI.ModelsRequest;
+using System.Linq;
 using testVue.Datas;
 using testVue.Models;
 using testVue.ModelsRequest;
@@ -19,7 +21,7 @@ namespace testVue.Controllers
         }
 
         // Phần BÁO CÁO THEO DOANH THU
-        [HttpGet("total-revenue-employee")]
+        [HttpGet("total-revenue-employee")] // Không dùng 
         public async Task<IActionResult> GetTotalRevenueByUser()
         {
             var result = await _context.Orders
@@ -41,8 +43,8 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
-        [HttpPost("total-revenue-employee-time")]
-        public async Task<IActionResult> GetTotalRevenueByUserTime([FromBody] RequestTimeFilterTotalRevenueDTO request)
+        [HttpPost("total-revenue-employee-time")] // Có dùng
+        public async Task<IActionResult> GetTotalRevenueByUserTime([FromBody] TimeRequestDTO request)
         {
             try
             {
@@ -83,8 +85,8 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("total-revenue-employee-time-month")]
-        public async Task<IActionResult> GetTotalRevenueByUserTimeMonth([FromBody] RequestTimeFilterTotalRevenueDTO request)
+        [HttpPost("total-revenue-employee-time-month")] // Có dùng 
+        public async Task<IActionResult> GetTotalRevenueByUserTimeMonth([FromBody] TimeRequestDTO request)
         {
             try
             {
@@ -126,7 +128,7 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpGet("total-revenue-category")]
+        [HttpGet("total-revenue-category")] // Không dùng 
         public async Task<IActionResult> GetTotalRevenueByCategory()
         {
             // Truy vấn tổng doanh thu theo từng danh mục món ăn
@@ -146,8 +148,8 @@ namespace testVue.Controllers
             return Ok(revenueByCategory);
         }
 
-        [HttpPost("total-revenue-category-time")]
-        public async Task<IActionResult> GetTotalRevenueByCategoryTime(RequestTimeFilterTotalRevenueDTO request)
+        [HttpPost("total-revenue-category-time")] // Có dùng
+        public async Task<IActionResult> GetTotalRevenueByCategoryTime(TimeRequestDTO request)
         {
             try
             {
@@ -184,8 +186,8 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("total-revenue-category-time-month")]
-        public async Task<IActionResult> GetTotalRevenueByCategoryTimeMonth(RequestTimeFilterTotalRevenueDTO request)
+        [HttpPost("total-revenue-category-time-month")] //Có dùng
+        public async Task<IActionResult> GetTotalRevenueByCategoryTimeMonth(TimeRequestDTO request)
         {
             try
             {
@@ -222,7 +224,7 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("total-revenue-time")]
+        [HttpPost("total-revenue-time")] // Có dùng
         public async Task<IActionResult> GetTotalAmountByDate([FromBody] TimeRequestDTO dateRequest)
         {
             try
@@ -261,8 +263,8 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("total-revenue-time-month")]
-        public async Task<IActionResult> GetTotalAmountByMonth([FromBody] TimeMonthRequestDTO monthRequest)
+        [HttpPost("total-revenue-time-month")] // Có dùng
+        public async Task<IActionResult> GetTotalAmountByMonth([FromBody] TimeRequestDTO monthRequest)
         {
             try
             {
@@ -301,7 +303,7 @@ namespace testVue.Controllers
         }
 
         // Phần BÁO CÁO THEO CÁC MÓN BÁN CHẠY
-        [HttpGet("get-all-orderitem-bestseling")]
+        [HttpGet("get-all-orderitem-bestseling")] // Không dùng 
         public async Task<IActionResult> getAllOrderItemBestSeling()
         {
             try
@@ -337,7 +339,7 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("get-all-orderitem-bestseling-currentday")]
+        [HttpPost("get-all-orderitem-bestseling-currentday")] // Có dùng
         public async Task<IActionResult> getAllOrderItemBestSelingurrent(TimeRequestDTO request)
         {
             try
@@ -383,7 +385,7 @@ namespace testVue.Controllers
             }
         }
 
-        [HttpPost("get-all-orderitem-bestseling-currentmonth")]
+        [HttpPost("get-all-orderitem-bestseling-currentmonth")] // Có dùng
         public async Task<IActionResult> getAllOrderItemBestSelingurrentMonth(TimeRequestDTO request)
         {
             try
@@ -432,7 +434,7 @@ namespace testVue.Controllers
         }
 
         // Phần BÁO CÁO THEO TỔNG HÓA ĐƠN
-        [HttpGet("get-all-order")]
+        [HttpGet("get-all-order")] // Không dùng 
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrders()
         {
             var query = from order in _context.Orders
@@ -454,7 +456,7 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
-        [HttpPost("get-all-order-currentday")]
+        [HttpPost("get-all-order-currentday")] // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDate([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
@@ -484,7 +486,7 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
-        [HttpPost("get-all-order-currentmonth")]
+        [HttpPost("get-all-order-currentmonth")]  // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDateMonth([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
@@ -514,7 +516,7 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
-        [HttpPost("get-all-order-fullname")]
+        [HttpPost("get-all-order-fullname")] // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByFullName([FromBody] TimeRequestDTO timeRequest)
         {
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime

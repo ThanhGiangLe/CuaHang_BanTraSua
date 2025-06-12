@@ -16,7 +16,6 @@ namespace testVue.Controllers
             _context = context;
         }
 
-        // GET: api/area/get-all-table
         [HttpGet("get-all-table")]
         public async Task<ActionResult<IEnumerable<TableMdl>>> GetAllTable()
         {

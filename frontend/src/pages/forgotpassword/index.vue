@@ -125,7 +125,9 @@ import API_ENDPOINTS from "@/api/api.js";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
 import axiosClient from "@/services/utils/axiosClient";
+import { useLogin } from "/src/composables/authen/useLogin.js";
 
+const { checkEmail, updatePassword } = useLogin();
 const router = useRouter();
 const visible = ref(false); // Dùng để hiển thị mật khẩu...
 const email = ref(""); // email để đăng nhập hoặc xác thực
@@ -156,13 +158,13 @@ async function sendOTP() {
     showToast("Vui lòng nhập Email!", "warn");
     return;
   }
-
-  const response = await axiosClient.post(API_ENDPOINTS.CHECK_EMAIL_EXISTS, {
+  const request = {
     email: email.value,
-  });
+  };
+  const response = await checkEmail(request);
 
   try {
-    if (response.data.exists) {
+    if (response.result.exists) {
       otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
       otp.value = generateOTP();
       const templateParams = {
@@ -219,12 +221,13 @@ async function UpdatePassword() {
     return;
   }
   try {
-    const response = await axios.post(API_ENDPOINTS.UPDATE_PASSWORD, {
+    const request = {
       Email: email.value,
       NewPassword: confirmPassword.value,
-    });
+    };
+    const response = await updatePassword(request);
 
-    if (response.data.success) {
+    if (response.result.success) {
       showToast("Thay đổi mật khẩu thành công!", "success");
       setTimeout(() => {
         router.push("/login");

@@ -8,10 +8,11 @@ import { useUserStore } from "@/stores/user.js";
 import { userOrderStore } from "@/stores/orderStore.js";
 import { showToast } from "@/styles/handmade";
 import { orderFoodHandler } from "/src/composables/listFood/orderFoodHandler.js";
+import _ from "underscore";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
-  const { orderFood, orderDetail, getAllFood, getAllCategory } =
+  const { orderFood, orderDetail, getAllFood, getAllCategory, topBestSelling } =
     orderFoodHandler();
   const orderStore = userOrderStore();
   const showDialogUpdate = ref(false);
@@ -26,6 +27,8 @@ export default function useFoodManagement() {
   const showComponentAreaManagement = ref(false);
   const loading = shallowRef(true);
   const isShowQRCode = ref(false);
+  const listItemBestSelling = ref([]);
+  const listFoodItemIdBestSelling = ref([]);
 
   const currentItemIsUpdate = ref(-1);
 
@@ -38,10 +41,19 @@ export default function useFoodManagement() {
   // Hàm chạy đầu tiên
   async function init() {
     const responseFood = await getAllFood();
-    foodItems.value = responseFood.listFood;
+    foodItems.value = responseFood.listFood.data;
 
     const responseCate = await getAllCategory();
     foodCategories.value = responseCate.listCategory.data;
+
+    const responseBestselling = await topBestSelling({
+      Top: 5,
+    });
+    listItemBestSelling.value = responseBestselling.top;
+    listFoodItemIdBestSelling.value = _.pluck(
+      listItemBestSelling.value,
+      "foodItemId"
+    );
 
     loading.value = false;
   }
@@ -57,12 +69,13 @@ export default function useFoodManagement() {
     }
   }
   const filteredFoodItems = computed(() => {
-    if (!Array.isArray(foodItems.value.data)) {
+    const items = foodItems.value;
+    if (!Array.isArray(foodItems.value)) {
       console.error("FoodItems is not an array:", foodItems.value);
       return [];
     }
 
-    return foodItems.value.data.filter((foodItem) => {
+    const filtered = items.filter((foodItem) => {
       const isCategoryMatch =
         listFoodCategorySelected.value.length === 0 ||
         listFoodCategorySelected.value.some(
@@ -74,6 +87,16 @@ export default function useFoodManagement() {
         .includes(search.value.toLowerCase());
 
       return isCategoryMatch && isSearchMatch;
+    });
+
+    return filtered.sort((a, b) => {
+      const aIsBest = listFoodItemIdBestSelling.value.includes(a.foodItemId)
+        ? 0
+        : 1;
+      const bIsBest = listFoodItemIdBestSelling.value.includes(b.foodItemId)
+        ? 0
+        : 1;
+      return aIsBest - bIsBest;
     });
   });
   function getCurrentDateTimeForSQL() {
@@ -257,8 +280,7 @@ export default function useFoodManagement() {
   const openDialogShowDetail = (foodItem) => {
     resetOrderItem();
 
-    // Lọc và map các món ăn thêm với quantity mặc định là 0
-    const additionalFoodsWithQuantity = foodItems.value.data
+    const additionalFoods = foodItems.value
       .filter((item) => item.isMain === 0)
       .map((item) => ({
         ...item,
@@ -273,7 +295,7 @@ export default function useFoodManagement() {
       Unit: foodItem.unit,
       Price: foodItem.priceCustom,
       CategoryId: foodItem.categoryId,
-      ListAdditionalFood: additionalFoodsWithQuantity,
+      ListAdditionalFood: additionalFoods,
       Note: "",
       IsMain: foodItem.isMain,
     };
@@ -286,7 +308,7 @@ export default function useFoodManagement() {
       Unit: foodItem.unit,
       Price: foodItem.priceCustom,
       CategoryId: foodItem.categoryId,
-      ListAdditionalFood: additionalFoodsWithQuantity,
+      ListAdditionalFood: additionalFoods,
       ListAdditionalFoodSelected: [],
       IsMain: foodItem.IsMain,
       Note: "",
@@ -373,7 +395,7 @@ export default function useFoodManagement() {
     currentItemIsUpdate.value = index;
 
     // Lấy ra danh sách các món thêm
-    const allAdditionalFoods = foodItems.value.data
+    const allAdditionalFoods = foodItems.value
       .filter((i) => i.isMain === 0)
       .map((food) => {
         // Tìm món ăn thêm tương ứng trong danh sách đã chọn để 'tick'
@@ -425,86 +447,94 @@ export default function useFoodManagement() {
 
   // <== ĐẶT MÓN ==>
   async function callApiOrderFood() {
-    let orderTimeCurrent = getCurrentDateTimeForSQL();
-    const request = {
-      userId: currentOrder.value.user_id,
-      orderTime: orderTimeCurrent,
-      tableId: currentOrder.value.table_id,
-      totalAmount: currentOrder.value.total_amount,
-      totalResult: resultTotalAmount.value,
-      status: currentOrder.value.status,
-      discount: currentOrder.value.discount,
-      tax: currentOrder.value.tax,
-      paymentMethod: currentOrder.value.paymentMethod,
-    };
-    const response = await orderFood(request);
-    console.log("response: ", response);
-    if (response.responseOrder) {
-      if (response.responseOrder.success === -1) {
-        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-      } else if (response.responseOrder.success === 1) {
-        const orderId = response.responseOrder.data.orderId;
-        await Promise.all(
-          currentOrder.value.items.map(async (item) => {
-            const mainRequest = {
-              orderId: orderId,
-              foodItemId: item.FoodItemId,
-              foodName: item.FoodName,
-              quantity: item.Quantity,
-              price: item.Price,
-              isMainItem: item.IsMain ?? 1,
-              unit: item.Unit,
-              note: item.Note,
-              categoryId: item.CategoryId,
-              orderTime: orderTimeCurrent,
-            };
-            const mainItemResponse = await orderDetail(mainRequest);
-            await Promise.all(
-              item.ListAdditionalFood.map(async (addFood) => {
-                const subRequest = {
-                  orderId: orderId,
-                  foodItemId: addFood.foodItemId,
-                  foodName: addFood.foodName,
-                  quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                  price: addFood.priceCustom,
-                  isMainItem: 0,
-                  unit: addFood.unit,
-                  note: "",
-                  categoryId: addFood.categoryId,
-                  orderTime: orderTimeCurrent,
-                };
-                const subItemResponse = await orderDetail(subRequest);
-              })
-            );
-          })
-        );
-        showToast("Đặt món thành công!", "success");
-        resetCurrentOrder();
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
-      } else {
-        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-      }
+    if (currentOrder.value.items.length == 0) {
+      showToast("Hãy chọn món cần phục vụ!");
     } else {
-      if (response.response.status == 404) {
-        showToast(response.response.data, "warn");
-      } else if (response.response.status == 403) {
-        showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
-      } else if (response.response.status == 500) {
-        showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
+      let orderTimeCurrent = getCurrentDateTimeForSQL();
+      const request = {
+        userId: currentOrder.value.user_id,
+        orderTime: orderTimeCurrent,
+        tableId: currentOrder.value.table_id,
+        totalAmount: currentOrder.value.total_amount,
+        totalResult: resultTotalAmount.value,
+        status: currentOrder.value.status,
+        discount: currentOrder.value.discount,
+        tax: currentOrder.value.tax,
+        paymentMethod: currentOrder.value.paymentMethod,
+      };
+      const response = await orderFood(request);
+      console.log("response: ", response);
+      if (response.responseOrder) {
+        if (response.responseOrder.success === -1) {
+          showToast("Đơn hàng không hợp lệ!", "error");
+        } else if (response.responseOrder.success === 1) {
+          const orderId = response.responseOrder.data.orderId;
+          await Promise.all(
+            currentOrder.value.items.map(async (item) => {
+              const mainRequest = {
+                orderId: orderId,
+                foodItemId: item.FoodItemId,
+                foodName: item.FoodName,
+                quantity: item.Quantity,
+                price: item.Price,
+                isMainItem: item.IsMain ?? 1,
+                unit: item.Unit,
+                note: item.Note,
+                categoryId: item.CategoryId,
+                orderTime: orderTimeCurrent,
+              };
+              const mainItemResponse = await orderDetail(mainRequest);
+              await Promise.all(
+                item.ListAdditionalFood.map(async (addFood) => {
+                  const subRequest = {
+                    orderId: orderId,
+                    foodItemId: addFood.foodItemId,
+                    foodName: addFood.foodName,
+                    quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
+                    price: addFood.priceCustom,
+                    isMainItem: 0,
+                    unit: addFood.unit,
+                    note: "",
+                    categoryId: addFood.categoryId,
+                    orderTime: orderTimeCurrent,
+                  };
+                  const subItemResponse = await orderDetail(subRequest);
+                })
+              );
+            })
+          );
+          showToast("Đặt món thành công!", "success");
+          resetCurrentOrder();
+          setTimeout(() => {
+            window.location.reload();
+          }, 3200);
+        } else {
+          showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+        }
+      } else {
+        if (response.response.status == 404) {
+          showToast(response.response.data, "warn");
+        } else if (response.response.status == 403) {
+          showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
+        } else if (response.response.status == 500) {
+          showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
+        }
       }
     }
   }
 
   // <== ĐẶT MÓN VÀ CHỌN BÀN ==>
   async function callApiOrderFoodAndAddTable() {
-    showComponentAreaManagement.value = !showComponentAreaManagement.value;
-    currentOrderClone.value = {
-      ...currentOrder.value,
-    };
+    if (currentOrder.value.items.length == 0) {
+      showToast("Hãy chọn món cần phục vụ!");
+    } else {
+      showComponentAreaManagement.value = !showComponentAreaManagement.value;
+      currentOrderClone.value = {
+        ...currentOrder.value,
+      };
 
-    orderStore.setSelectedDishes(currentOrderClone.value);
+      orderStore.setSelectedDishes(currentOrderClone.value);
+    }
   }
   const handleCloseComponentAreaManagement = () => {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
@@ -544,6 +574,7 @@ export default function useFoodManagement() {
     resultUpdateOrderItem,
     currentOrder,
     momoQRCodeUrl,
+    listFoodItemIdBestSelling,
 
     // Methods
     init,

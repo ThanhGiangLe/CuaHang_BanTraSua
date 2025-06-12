@@ -89,7 +89,7 @@
           class="foodManagement_listFoodOrder_menu_dishes d-flex justify-center flex-wrap mt-2"
         >
           <v-chip
-            class="ma-2 foodManagement_listFoodOrder_menu_dishes_item"
+            class="ma-1 foodManagement_listFoodOrder_menu_dishes_item"
             label
             v-for="foodCategory in foodCategories"
             :key="foodCategory.categoryId"
