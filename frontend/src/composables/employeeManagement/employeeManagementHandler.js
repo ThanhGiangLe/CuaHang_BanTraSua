@@ -2,7 +2,7 @@ import API_ENDPOINTS from "@/api/api.js";
 import axiosClient from "@/services/utils/axiosClient";
 
 export function employeeManagementHandler() {
-  const getAllEmployee = async (date) => {
+  const getAllEmployee = async () => {
     try {
       const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
       const listEmployee = response.data;

@@ -82,12 +82,19 @@ export default function useAreaManagement() {
     return localTime.toISOString(); // Format: YYYY-MM-DDTHH:MM:SS.SSSZ
   }
   function formatDate(dateString) {
-    const isoString = dateString.toString();
-
-    return isoString
-      .replace("T", " ")
-      .replace(/\.\d+Z$/, "")
-      .replace(/\.\d+/, "");
+    const date = new Date(dateString);
+    const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()} ${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+    return formattedDate;
   }
 
   async function viewTableAndSetCurrentOrders() {

@@ -90,6 +90,9 @@
 .scheduleTable .change-shift-with-before {
   background-color: rgba(246, 236, 20, 0.7);
 }
+.scheduleTable .current-day {
+  background-color: rgba(84, 0, 120, 0.7);
+}
 
 .scheduleTable .scheduleTable_item {
   width: 100px;

@@ -48,10 +48,24 @@ export function orderFoodHandler() {
     }
   };
 
+  const topBestSelling = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.TOP_BEST_SELLING,
+        request
+      );
+      const top = response.data;
+      return { top };
+    } catch (err) {
+      return err;
+    }
+  };
+
   return {
     getAllFood,
     getAllCategory,
     orderFood,
     orderDetail,
+    topBestSelling,
   };
 }

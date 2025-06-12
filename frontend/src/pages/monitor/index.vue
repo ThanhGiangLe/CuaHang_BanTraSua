@@ -59,11 +59,8 @@ import ListFoodManagement from "@/components/monitor/listFood/index.vue";
 import MonitorFoodManagement from "@/components/monitor/foodManagement/index.vue";
 import MonitorReportManagement from "@/components/monitor/reportManagement/index.vue";
 import MonitorEmployeeManagement from "@/components/monitor/employeeManagement/index.vue";
-import MonitorSalesManagement from "@/components/monitor/salesManagement/index.vue";
 import MonitorTotalSalesManagement from "@/components/monitor/totalSalesManagement/index.vue";
-import MonitorInventoryManagement from "@/components/monitor/inventoryManagement/index.vue";
 import MonitorAreaManagement from "@/components/monitor/areaManagement/index.vue";
-import MonitorTaxFeesDiscountsManagement from "@/components/monitor/taxFeesDiscounts/index.vue";
 import MonitorUpdatePasswordManagement from "@/components/monitor/updatePassword/index.vue";
 import LogoutUser from "@/components/monitor/logoutUser/index.vue";
 

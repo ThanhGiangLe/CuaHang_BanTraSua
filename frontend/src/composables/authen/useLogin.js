@@ -15,8 +15,34 @@ export function useLogin() {
       return err;
     }
   };
+  const checkEmail = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.CHECK_EMAIL_EXISTS,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
+  const updatePassword = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.UPDATE_PASSWORD,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
 
   return {
     login,
+    checkEmail,
+    updatePassword,
   };
 }

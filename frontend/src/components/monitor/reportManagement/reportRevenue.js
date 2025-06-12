@@ -263,7 +263,7 @@ export default function useReportRevenue() {
   }
   async function callApi_GET_ALL_FOOD_CATEGORIES() {
     const response = await getAllCategory();
-    foodCategories.value = response.listCategory.data;
+    foodCategories.value = response.listCategory;
     listLabels.value = foodCategories.value.map((c) => c.categoryName);
   }
   async function callApi_GET_ALL_REVENUE_BY_CATEGORY_AND_TIME_MONTH() {

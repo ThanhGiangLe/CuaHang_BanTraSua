@@ -87,7 +87,7 @@ namespace testVue.Controllers
                 Expires = refreshToken.ExpiresAt
             });
 
-            // CHỉ trả về token
+            // Chỉ trả về token
             return Ok(new
             {
                 token = tokenString,
@@ -108,23 +108,19 @@ namespace testVue.Controllers
         [HttpPost("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequestDTO request)
         {
-            // Kiểm tra thông tin đầu vào
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.NewPassword))
             {
                 return BadRequest("Invalid input.");
             }
 
-            // Lấy thông tin người dùng
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
 
-            // Hash mật khẩu mới
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-            // Cập nhật mật khẩu
             user.Password = hashedPassword; // Lưu mật khẩu đã được mã hóa
             _context.Users.Update(user);
 
