@@ -31,6 +31,7 @@ namespace sourceAPI.Controllers
                     .AsNoTracking()
                     .Where(row => row.UserId == request.UserId)
                     .ToListAsync();
+
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
 

@@ -182,6 +182,18 @@
 
                     <div class="d-flex align-center">
                       <div style="min-width: 130px; color: #666">
+                        Điểm quy đổi
+                      </div>
+                      <div
+                        style="height: 19.94px; max-height: 19.94px"
+                        class="hiddent-text-one-line"
+                      >
+                        {{ foodItem.points }} Điểm/{{ foodItem.unit }}
+                      </div>
+                    </div>
+
+                    <div class="d-flex align-center">
+                      <div style="min-width: 130px; color: #666">
                         Loại danh mục:
                       </div>
                       <div>{{ getCategoryName(foodItem.categoryId) }}</div>
@@ -463,6 +475,7 @@ const {
   getCategoryName,
   tonggleSelected,
   formatCurrency,
+  formatPoint,
   openDialogShowDeleteFoodItemSelected,
   confimDeleteFoodItem,
   openDialogShowUpdateFoodItemSelected,

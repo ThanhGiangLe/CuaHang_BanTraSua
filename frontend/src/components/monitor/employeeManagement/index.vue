@@ -198,7 +198,7 @@
       </v-dialog>
     </div>
 
-    <!-- Form lịch trực -->
+    <!-- Form lịch làm việc -->
     <div>
       <v-dialog persistent max-width="800" v-model="displayMonitorSchedule">
         <v-card class="pa-2">
@@ -225,7 +225,7 @@
                     <template v-if="swapModeSchedule">
                       <tr v-for="(week, index) in weeks" :key="'update-' + index">
                         <td v-for="(day, idx) in week" :key="idx" class="scheduleTable_item">
-                          <div class="d-flex flex-column justify-center" :class="{ 'disable-day': day <= currentDay, 'current-day': day == currentDay }">
+                          <div class="d-flex flex-column justify-center" :class="{ 'disable-day': day < currentDay, 'current-day': day == currentDay }">
                             <span style="font-size: 14px; opacity: 0.6;">{{ formatDay(day) || '' }}</span>
                             <span>{{ (scheduleOfUser[day - 1] && shifs[scheduleOfUser[day - 1].shiftCode]) || '_'
                             }}</span>
@@ -237,9 +237,9 @@
                     <template v-else>
                       <tr v-for="(week, index) in weeks" :key="'view-' + index">
                         <td v-for="(day, idx) in week" :key="idx" class="scheduleTable_item"
-                          @click="day > currentDay ? handleClickItemScheduleTable(day, idx) : null"
-                          :class="{ 'selected-day': selectedDay === day && day > currentDay, 'change-shift-with-before': isShiftChanged(day) && day > currentDay, 'cursor-pointer': day > currentDay, 'current-day': day == currentDay }">
-                          <div class="d-flex flex-column justify-center" :class="{ 'disable-day': day <= currentDay }">
+                          @click="day >= currentDay ? handleClickItemScheduleTable(day, idx) : null"
+                          :class="{ 'selected-day': selectedDay === day && day >= currentDay, 'change-shift-with-before': isShiftChanged(day) && day >= currentDay, 'cursor-pointer': day >= currentDay, 'current-day': day == currentDay }">
+                          <div class="d-flex flex-column justify-center" :class="{ 'disable-day': day < currentDay }">
                             <span style="font-size: 14px; opacity: 0.6;">{{ formatDay(day) || '' }}</span>
                             <span>{{ (scheduleOfUser[day - 1] && shifs[scheduleOfUser[day - 1].shiftCode]) || '_'
                             }}</span>

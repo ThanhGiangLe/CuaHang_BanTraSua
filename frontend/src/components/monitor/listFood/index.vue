@@ -1,5 +1,5 @@
 <template>
-  <div class="foodManagement mt-1 d-flex flex-column">
+  <div class="foodManagement d-flex flex-column">
     <!-- Chức năng tìm kiếm -->
     <div class="foodManagement_search d-flex align-center">
       <v-text-field
@@ -11,17 +11,33 @@
         hide-details
         single-line
         v-model="search"
+        style="flex: 3"
       ></v-text-field>
+      <v-combobox
+        class="foodManagement_search-phone ms-2"
+        placeholder="Tên hoặc số điện thoại..."
+        v-model="searchPhoneNumbers"
+        :items="filteredPhoneNumbers"
+        item-title="display"
+        item-value="phone"
+        :return-object="true"
+        hide-no-data
+        hide-selected
+        clearable
+        variant="outlined"
+        style="flex: 2"
+        :search-input.sync="searchPhoneKeyword"
+      />
       <v-btn
-        class="ms-2"
-        color="blue-darken-4"
+        class="ms-2 my_btn_custommer"
+        style="background-color: #002051 !important"
         @click="isShowQRCode = !isShowQRCode"
-        >Mã thanh toán</v-btn
+        >Mã QR</v-btn
       >
     </div>
 
     <div
-      class="foodManagement_listFoodOrder flex-1-0 mt-3 d-flex justify-space-between"
+      class="foodManagement_listFoodOrder flex-1-0 mt-2 d-flex justify-space-between"
       style="margin-bottom: 52px"
     >
       <!-- Hiển thị MENU để thao tác -->
@@ -32,7 +48,7 @@
       >
         <!-- Categories -->
         <div
-          class="foodManagement_listFoodOrder_menu_dishes d-flex justify-center flex-wrap mt-2"
+          class="foodManagement_listFoodOrder_menu_dishes d-flex justify-center flex-wrap mt-1"
         >
           <v-chip
             class="ma-1 foodManagement_listFoodOrder_menu_dishes_item"
@@ -43,6 +59,7 @@
               foodCategory.categoryName +
               foodCategory.icon
             "
+            variant="tonal"
             :type="foodCategory.categoryId"
             :class="{
               selected: listFoodCategorySelected.includes(foodCategory),
@@ -58,53 +75,49 @@
           </v-chip>
         </div>
 
-        <v-divider class="mt-2"></v-divider>
+        <v-divider class="mt-1"></v-divider>
 
         <!-- Food Items -->
         <div class="foodManagement_listFoodOrder_menu_foods">
-          <v-container class="pa-2">
+          <v-container class="pa-2 mt-1">
             <!-- Hiển thị danh sách các món hiện có -->
-            <v-row class="pa-2" gutters="16">
+            <v-row class="pa-1" gutters="16">
               <v-col
                 v-for="foodItem in filteredFoodItems"
                 :key="foodItem.foodItemId"
                 :cols="12"
-                :lg="4"
+                :lg="3"
                 :md="4"
                 :sm="6"
                 :xs="12"
-                class="pa-2"
+                class="pa-1"
               >
                 <div
-                  class="foodManagement_listFoodOrder_menu_foods_item rounded-lg pa-3 position-relative"
+                  class="foodManagement_listFoodOrder_menu_foods_item rounded-lg pa-2 position-relative"
                 >
                   <img
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="height: 140px; width: 92%"
+                    style="height: 130px; width: 98%"
                   />
-                  <span
-                    class="mt-3 hiddent-text-one-line"
-                    style="max-height: 24px; line-height: 24px"
-                  >
+                  <h4 class="mt-2 hiddent-text-one-line">
                     {{ foodItem.foodName }}
-                  </span>
-                  <!-- <h6 class="text-decoration-line-through">
-                    {{ formatCurrency(foodItem.priceListed) }} /{{
-                      foodItem.unit
-                    }}
-                  </h6> -->
+                  </h4>
                   <h5>
-                    {{ formatCurrency(foodItem.priceCustom) }} /{{
+                    {{ formatCurrency(foodItem.priceCustom) }}/{{
                       foodItem.unit
                     }}
                   </h5>
+                  <h6>
+                    {{ formatPoint(foodItem.points) }}/{{ foodItem.unit }}
+                  </h6>
                   <v-btn
                     class="mt-2 foodManagement_listFoodOrder_menu_foods_item_addFood"
                     size="x-small"
-                    style="height: 28px"
+                    style="height: 26px; font-size: 12px; min-width: 130px"
                     color="orange-darken-2"
+                    variant="tonal"
                     @click="openDialogShowDetail(foodItem)"
                   >
                     Chọn món
@@ -115,7 +128,7 @@
                     "
                     class="foodManagement_listFoodOrder_menu_foods_item-bestseller"
                   >
-                    Best seller
+                    Best selling
                   </div>
                 </div>
               </v-col>
@@ -127,11 +140,8 @@
               max-width="900px"
             >
               <v-card>
-                <v-card-title class="headline d-flex align-center">
-                  Chi tiết món được chọn
-                  <v-icon class="ml-2" color="" size="small"
-                    >mdi-check-circle-outline</v-icon
-                  >
+                <v-card-title class="headline d-flex align-center pb-0">
+                  Thêm món phụ nào ...
                 </v-card-title>
 
                 <v-card-text class="px-4 py-2">
@@ -161,14 +171,14 @@
                     />
                   </div>
 
-                  <v-divider class="my-4"></v-divider>
+                  <v-divider class="my-3"></v-divider>
 
                   <!-- Danh sách món gọi thêm -->
                   <div class="w-100">
                     <h4>Các món gọi thêm</h4>
                     <div
                       class="AdditionalItems d-flex flex-wrap"
-                      style="max-height: 200px; overflow-y: auto"
+                      style="max-height: 220px; overflow-y: auto"
                     >
                       <v-checkbox
                         v-for="item in currentOrderItem.ListAdditionalFood"
@@ -213,16 +223,16 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
-                    color="green darken-1"
-                    text
-                    @click="selectedFoodItemToCart(currentOrderItem)"
-                    >Thêm vào giỏ</v-btn
-                  >
-                  <v-btn
                     color="red darken-1"
                     text
                     @click="nonSelectedFoodItemToCart"
                     >Hủy</v-btn
+                  >
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    @click="selectedFoodItemToCart(currentOrderItem)"
+                    >Thêm vào giỏ</v-btn
                   >
                 </v-card-actions>
               </v-card>
@@ -275,7 +285,8 @@
         class="foodManagement_listFoodOrder_bill px-2 rounded"
         :style="{ backgroundColor: 'var(--bg-color-item)' }"
       >
-        <h4 class="my-3">Các món đã chọn</h4>
+        <h4 class="mt-2 mb-1">Các món đã chọn</h4>
+        <v-divider></v-divider>
         <div class="foodManagement_listFoodOrder_bill_orderList">
           <!-- Thông tin danh sách các món đã chọn -->
           <v-container>
@@ -285,7 +296,7 @@
                 class="foodManagement_listFoodOrder_bill_orderList_item"
                 v-for="(item, index) in currentOrder.items"
                 :key="item.FoodItemId"
-                style="padding: 4px !important"
+                style="padding: 2px 0 !important"
               >
                 <!-- Thông tin chính cần biết -->
                 <div
@@ -303,25 +314,30 @@
                     <h5 class="hiddent-text-one-line">
                       {{ item.FoodName }}
                     </h5>
-                    <span style="font-size: smaller"
-                      >x{{ item.Quantity }} {{ item.Unit }}</span
+                    <span style="font-size: 11px; line-height: 12px"
+                      >+{{ item.Quantity }} {{ item.Unit }}</span
                     >
                     <div
                       v-if="item.ListAdditionalFood.length > 0"
                       class="hiddent-text-one-line"
+                      style="line-height: 14px"
                     >
                       <span
                         style="font-size: smaller"
                         v-for="(foodName, index) in item.ListAdditionalFood"
                         :key="foodName.id"
                       >
-                        {{ foodName.foodName }}x{{ foodName.quantity }}
+                        {{ foodName.foodName }}+{{ foodName.quantity }}
                         <span v-if="index < item.ListAdditionalFood.length - 1"
                           >,
                         </span>
                       </span>
                     </div>
-                    <div v-if="item.Note" class="hiddent-text-one-line">
+                    <div
+                      v-if="item.Note"
+                      class="hiddent-text-one-line"
+                      style="line-height: 14px !important"
+                    >
                       <span style="font-size: smaller">{{ item.Note }} </span>
                     </div>
                   </div>
@@ -372,7 +388,9 @@
             max-width="900px"
           >
             <v-card>
-              <v-card-title class="headline">Thông tin món đã gọi</v-card-title>
+              <v-card-title class="headline pb-0"
+                >Thông tin món đã gọi</v-card-title
+              >
 
               <v-card-text class="px-4 py-2">
                 <!-- Thông tin chính món được cập nhật -->
@@ -399,14 +417,14 @@
                   />
                 </div>
 
-                <v-divider class="my-4"></v-divider>
+                <v-divider class="my-2"></v-divider>
 
                 <!-- Thông tin thay đổi về phần topping -->
                 <div class="w-100">
                   <h4>Các món gọi thêm đã chọn</h4>
                   <div
                     class="AdditionalItems d-flex flex-wrap"
-                    style="max-height: 175px; overflow-y: auto"
+                    style="max-height: 220px; overflow-y: auto"
                   >
                     <v-checkbox
                       v-for="item in updateOrderItem.ListAdditionalFood"
@@ -451,12 +469,6 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                  color="green darken-1"
-                  text
-                  @click="updateFoodItem(updateOrderItem)"
-                  >Xác nhận thay đổi</v-btn
-                >
-                <v-btn
                   color="red darken-1"
                   text
                   @click="
@@ -465,28 +477,37 @@
                   "
                   >Hủy</v-btn
                 >
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="updateFoodItem(updateOrderItem)"
+                  >Xác nhận thay đổi</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-dialog>
         </div>
 
         <!-- Đơn giá danh sách các sản phẩm -->
-        <div class="foodManagement_listFoodOrder_bill_payment rounded-lg mt-5">
+        <div class="foodManagement_listFoodOrder_bill_payment rounded-lg mt-2">
           <h4 class="mb-1">Tổng hóa đơn</h4>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between mb-1"
+            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between"
           >
             <span style="font-size: 12px">Tổng tiền</span>
-            <span> {{ formatCurrency(currentOrder.total_amount) }}</span>
+            <span>
+              {{ formatCurrency(currentOrder.total_amount) }} /
+              {{ formatPoint(currentOrder.total_amount) }}</span
+            >
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between mb-1"
+            class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between"
           >
             <span style="font-size: 12px">Thuế(%)</span>
             <span>{{ currentOrder.tax }}</span>
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-1"
+            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between"
           >
             <span style="font-size: 12px">Giảm giá(%)</span>
             <input
@@ -498,7 +519,7 @@
             />
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mb-2"
+            class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mb-1"
           >
             <v-radio-group v-model="currentOrder.paymentMethod">
               <v-radio
@@ -509,6 +530,7 @@
                 label="Thanh toán bằng chuyển khoản"
                 value="Chuyển khoản"
               ></v-radio>
+              <v-radio label="Thanh toán bằng điểm" value="Điểm"></v-radio>
             </v-radio-group>
           </div>
 
@@ -517,24 +539,28 @@
             class="foodManagement_listFoodOrder_bill_payment_payment d-flex justify-space-between mt-2"
           >
             <h4 style="font-size: 14px">Tổng thanh toán</h4>
-            <span>{{ formatCurrency(resultTotalAmount) }}</span>
+            <span
+              >{{ formatCurrency(resultTotalAmount) }} /
+              {{ formatPoint(resultTotalAmount) }}</span
+            >
           </div>
         </div>
 
         <!-- Thực hiện thao tác -->
         <v-btn
-          class="w-100 mb-2 mt-2"
+          class="w-100 mb-2 mt-2 my_btn_custommer"
           @click="callApiOrderFood()"
           color="orange-darken-2"
           >Đặt món</v-btn
         >
         <v-btn
-          class="w-100 mb-2"
+          class="w-100 mb-2 my_btn_custommer"
           color="blue-darken-4"
           @click="callApiOrderFoodAndAddTable"
           >Đặt món và chọn bàn</v-btn
         >
 
+        <!-- Mã QR -->
         <v-dialog
           v-model="isShowQRCode"
           width="650px"
@@ -549,6 +575,35 @@
 
             <v-card-actions>
               <v-btn @click="isShowQRCode = false" color="red">Đóng</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- Xác thực thanh toán otp -->
+        <v-dialog v-model="isShowOTPPoints" width="650px" persistent>
+          <v-card class="confirm_otp_payment">
+            <v-card-title>Thanh toán bằng điểm</v-card-title>
+            <v-card-text
+              style="padding: 0px 4px; width: 80%; margin: 0 auto"
+              class="d-flex flex-column align-center"
+            >
+              <template v-if="isOTPSent">
+                <v-text-field
+                  v-model="otpCode"
+                  label="Nhập mã OTP"
+                  maxlength="6"
+                  variant="outlined"
+                  class="mb-3"
+                  style="width: 100%"
+                />
+                <v-btn @click="verifyOTP" color="success" block>
+                  Xác minh OTP
+                </v-btn>
+              </template>
+              <div id="recaptcha-container" v-else class="mt-7"></div>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click="isShowOTPPoints = false" color="red">Đóng</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -611,6 +666,12 @@ const {
   currentOrder,
   momoQRCodeUrl,
   listFoodItemIdBestSelling,
+  searchPhoneNumbers,
+  filteredPhoneNumbers,
+  searchPhoneKeyword,
+  isShowOTPPoints,
+  otpCode,
+  isOTPSent,
 
   // Methods
   tonggleSelected,
@@ -618,6 +679,7 @@ const {
   nonSelectedFoodItemToCart,
   totalAmountAdditionalFoodItem,
   formatCurrency,
+  formatPoint,
   openDialogShowDetail,
   handleCloseComponentAreaManagement,
   handleCloseAndReset,
@@ -626,5 +688,6 @@ const {
   deleteCurrentFoodSelected,
   callApiOrderFood,
   callApiOrderFoodAndAddTable,
+  verifyOTP,
 } = useFoodManagement();
 </script>

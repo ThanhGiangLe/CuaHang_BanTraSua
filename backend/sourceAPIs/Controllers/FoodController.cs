@@ -71,6 +71,7 @@ namespace testVue.Controllers
                 return Ok(new { success = -1 });
             }
             var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var fullNameFromToken = User.FindFirst(ClaimTypes.Name)?.Value;
             if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
             {
                 return Forbid("Bearer");
@@ -79,6 +80,7 @@ namespace testVue.Controllers
             {
                 return Forbid("Bearer");
             }
+
             var currentDay = DateTime.UtcNow;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
             if(scheduleOfDay == null)
@@ -86,15 +88,63 @@ namespace testVue.Controllers
                 return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");
             }else
             {
+                var customer = await _context.Users.FirstOrDefaultAsync(u => u.Phone == orderRequest.Phone);
+                if (customer == null && orderRequest.Phone != "")
+                {
+                    var currentTime = DateTime.UtcNow.AddHours(7);
+                    var newUser = new UserMdl
+                    {
+                        FullName = "",
+                        Phone = orderRequest.Phone,
+                        Email = "",
+                        Address = "addUserRequest.Address",
+                        Password = BCrypt.Net.BCrypt.HashPassword("190203"), // Hash mật khẩu
+                        Role = "Customer",
+                        Avatar = "/public/meo.jpg",
+                        CreateDate = currentTime,
+                        CreateBy = fullNameFromToken ?? "",
+                        UpdateDate = currentTime,
+                        UpdateBy = fullNameFromToken ?? "",
+                        Point = (decimal)orderRequest.TotalResult * 0.1m,
+                        Status = "Busy"
+                    };
+                    _context.Users.Add(newUser);
+                }
                 if (orderRequest.PaymentMethod == "Tiền mặt")
                 {
                     scheduleOfDay.CashAmount += orderRequest.TotalResult;
                     scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
+                    if (customer != null)
+                    {
+                        customer.Point += orderRequest.TotalResult * 0.1m;
+                    }
                 }
-                else
+                else if(orderRequest.PaymentMethod == "Chuyển khoản")
                 {
                     scheduleOfDay.BankAmount += orderRequest.TotalResult;
                     scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
+                    if (customer != null)
+                    {
+                        customer.Point += orderRequest.TotalResult * 0.1m;
+                    }
+                }
+                else
+                {
+                    if(customer != null)
+                    {
+                        if (customer.Point < orderRequest.TotalResult)
+                        {
+                            return Ok(new { success = -20 });
+                        }
+                        else
+                        {
+                            customer.Point -= orderRequest.TotalResult;
+                        }
+                    }else
+                    {
+                        await _context.SaveChangesAsync();
+                        return Ok(new { success = -26 });
+                    }
                 }
                 var order = new OrderMdl
                 {
@@ -108,6 +158,10 @@ namespace testVue.Controllers
                     Tax = orderRequest.Tax,
                     PaymentMethod = orderRequest.PaymentMethod
                 };
+                if(customer != null)
+                {
+                    _context.Users.Update(customer);
+                }
                 _context.Orders.Add(order);
                 _context.Schedules.Update(scheduleOfDay);
                 try
@@ -381,5 +435,33 @@ namespace testVue.Controllers
             }
         }
 
+        [HttpPost("addition-point-by-userid")]
+        public async Task<IActionResult> AdditionPointByUserId([FromBody] AdditonPointRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Phone == request.Phone);
+            if (user == null)
+            {
+                return Ok(new
+                {
+                    susseces = -1
+                });
+            }
+            user.Point += request.Point;
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                return Ok(new
+                {
+                    susseces = 1
+                });
+            }
+            catch (Exception ex) {
+                return Ok(new
+                {
+                    susseces = -1
+                });
+            }
+        }
     }
 }

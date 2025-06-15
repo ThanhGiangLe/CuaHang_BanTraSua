@@ -60,6 +60,18 @@ export function orderFoodHandler() {
       return err;
     }
   };
+  const additionPoint = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.ADDITION_POINT,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
 
   return {
     getAllFood,
@@ -67,5 +79,6 @@ export function orderFoodHandler() {
     orderFood,
     orderDetail,
     topBestSelling,
+    additionPoint,
   };
 }

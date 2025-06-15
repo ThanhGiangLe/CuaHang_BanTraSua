@@ -1,19 +1,45 @@
 <template>
   <v-card style="height: 100vh; max-width: 1280px; margin: 0 auto">
-    <v-tabs v-model="tab">
-      <v-tab prepend-icon="mdi-menu" value="listFood">Danh sách món ăn</v-tab>
-      <v-tab prepend-icon="mdi-food" value="food">Quản lý món ăn</v-tab>
-      <v-tab prepend-icon="mdi-map-outline" value="map">Khu vực</v-tab>
-      <v-tab prepend-icon="mdi-file-chart-outline" value="report"
+    <v-tabs v-model="tab" class="my-tabs">
+      <v-tab prepend-icon="mdi-menu" value="listFood" class="my-vtab-custommer"
+        >Danh sách món ăn</v-tab
+      >
+      <v-tab prepend-icon="mdi-food" value="food" class="my-vtab-custommer"
+        >Quản lý món ăn</v-tab
+      >
+      <v-tab
+        prepend-icon="mdi-map-outline"
+        value="map"
+        class="my-vtab-custommer"
+        >Khu vực</v-tab
+      >
+      <v-tab
+        prepend-icon="mdi-file-chart-outline"
+        value="report"
+        class="my-vtab-custommer"
         >Báo cáo</v-tab
       >
-      <v-tab prepend-icon="mdi-account-group" value="users">Nhân viên</v-tab>
-      <v-tab prepend-icon="mdi-currency-usd" value="currency">Két tiền</v-tab>
-      <v-tab prepend-icon="mdi-cog" value="settings">Thay đổi mật khẩu</v-tab>
-      <v-tab prepend-icon="mdi-logout" value="exit">Đăng xuất</v-tab>
+      <v-tab
+        prepend-icon="mdi-account-group"
+        value="users"
+        class="my-vtab-custommer"
+        >Nhân viên</v-tab
+      >
+      <v-tab
+        prepend-icon="mdi-currency-usd"
+        value="currency"
+        class="my-vtab-custommer"
+        >Két tiền</v-tab
+      >
+      <v-tab prepend-icon="mdi-cog" value="settings" class="my-vtab-custommer"
+        >Thay đổi mật khẩu</v-tab
+      >
+      <v-tab prepend-icon="mdi-logout" value="exit" class="my-vtab-custommer"
+        >Đăng xuất</v-tab
+      >
     </v-tabs>
 
-    <v-card-text style="height: 100%" class="pa-2">
+    <v-card-text style="height: 100%" class="px-2 py-1">
       <v-tabs-window v-model="tab" style="height: 100%">
         <v-tabs-window-item value="listFood" style="height: 100%">
           <ListFoodManagement />

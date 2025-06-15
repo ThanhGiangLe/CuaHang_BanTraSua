@@ -12,6 +12,7 @@ const API_ENDPOINTS = {
   ADD_ORDER: `/food/add-order`,
   ADD_ORDER_DETAIL: `/food/add-order-detail`,
   TOP_BEST_SELLING: "/food/get-all-orderitem-top-bestselling",
+  ADDITION_POINT: "/food/addition-point-by-userid",
 
   // Food managament
   CREATE_FOOD_ITEM: `/food/add-food-item`,
