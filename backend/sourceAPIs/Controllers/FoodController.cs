@@ -89,27 +89,7 @@ namespace testVue.Controllers
             }else
             {
                 var customer = await _context.Users.FirstOrDefaultAsync(u => u.Phone == orderRequest.Phone);
-                if (customer == null && orderRequest.Phone != "")
-                {
-                    var currentTime = DateTime.UtcNow.AddHours(7);
-                    var newUser = new UserMdl
-                    {
-                        FullName = "",
-                        Phone = orderRequest.Phone,
-                        Email = "",
-                        Address = "addUserRequest.Address",
-                        Password = BCrypt.Net.BCrypt.HashPassword("190203"), // Hash mật khẩu
-                        Role = "Customer",
-                        Avatar = "/public/meo.jpg",
-                        CreateDate = currentTime,
-                        CreateBy = fullNameFromToken ?? "",
-                        UpdateDate = currentTime,
-                        UpdateBy = fullNameFromToken ?? "",
-                        Point = (decimal)orderRequest.TotalResult * 0.1m,
-                        Status = "Busy"
-                    };
-                    _context.Users.Add(newUser);
-                }
+                
                 if (orderRequest.PaymentMethod == "Tiền mặt")
                 {
                     scheduleOfDay.CashAmount += orderRequest.TotalResult;
@@ -142,7 +122,6 @@ namespace testVue.Controllers
                         }
                     }else
                     {
-                        await _context.SaveChangesAsync();
                         return Ok(new { success = -26 });
                     }
                 }

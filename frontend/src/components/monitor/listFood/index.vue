@@ -559,6 +559,12 @@
           @click="callApiOrderFoodAndAddTable"
           >Đặt món và chọn bàn</v-btn
         >
+        <v-btn
+          class="w-100 mb-2 my_btn_custommer"
+          style="background-color: #002051 !important"
+          @click="isShowQRCode = !isShowQRCode"
+          >Mã QR</v-btn
+        >
 
         <!-- Mã QR -->
         <v-dialog
@@ -582,25 +588,23 @@
         <!-- Xác thực thanh toán otp -->
         <v-dialog v-model="isShowOTPPoints" width="650px" persistent>
           <v-card class="confirm_otp_payment">
-            <v-card-title>Thanh toán bằng điểm</v-card-title>
+            <v-card-title>Xác thực thanh toán bằng điểm</v-card-title>
             <v-card-text
               style="padding: 0px 4px; width: 80%; margin: 0 auto"
               class="d-flex flex-column align-center"
             >
-              <template v-if="isOTPSent">
-                <v-text-field
-                  v-model="otpCode"
-                  label="Nhập mã OTP"
-                  maxlength="6"
-                  variant="outlined"
-                  class="mb-3"
-                  style="width: 100%"
-                />
-                <v-btn @click="verifyOTP" color="success" block>
-                  Xác minh OTP
-                </v-btn>
-              </template>
-              <div id="recaptcha-container" v-else class="mt-7"></div>
+              <v-otp-input v-model="enteredOtp" focus-all focused></v-otp-input>
+              <v-btn
+                @click="verifyOTP"
+                color="success"
+                block
+                v-if="!visibleResendOtp"
+              >
+                Xác minh OTP
+              </v-btn>
+              <v-btn @click="sendOTP" color="primary" block v-else>
+                Gửi lại OTP
+              </v-btn>
             </v-card-text>
             <v-card-actions>
               <v-btn @click="isShowOTPPoints = false" color="red">Đóng</v-btn>
@@ -670,8 +674,8 @@ const {
   filteredPhoneNumbers,
   searchPhoneKeyword,
   isShowOTPPoints,
-  otpCode,
-  isOTPSent,
+  enteredOtp,
+  visibleResendOtp,
 
   // Methods
   tonggleSelected,
@@ -688,6 +692,7 @@ const {
   deleteCurrentFoodSelected,
   callApiOrderFood,
   callApiOrderFoodAndAddTable,
+  sendOTP,
   verifyOTP,
 } = useFoodManagement();
 </script>

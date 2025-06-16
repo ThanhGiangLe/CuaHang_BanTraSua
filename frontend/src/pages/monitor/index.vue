@@ -2,16 +2,16 @@
   <v-card style="height: 100vh; max-width: 1280px; margin: 0 auto">
     <v-tabs v-model="tab" class="my-tabs">
       <v-tab prepend-icon="mdi-menu" value="listFood" class="my-vtab-custommer"
-        >Danh sách món ăn</v-tab
+        >Menu</v-tab
       >
       <v-tab prepend-icon="mdi-food" value="food" class="my-vtab-custommer"
-        >Quản lý món ăn</v-tab
+        >Món ăn</v-tab
       >
       <v-tab
         prepend-icon="mdi-map-outline"
         value="map"
         class="my-vtab-custommer"
-        >Khu vực</v-tab
+        >Bàn</v-tab
       >
       <v-tab
         prepend-icon="mdi-file-chart-outline"
@@ -23,7 +23,7 @@
         prepend-icon="mdi-account-group"
         value="users"
         class="my-vtab-custommer"
-        >Nhân viên</v-tab
+        >Tài khoản</v-tab
       >
       <v-tab
         prepend-icon="mdi-currency-usd"

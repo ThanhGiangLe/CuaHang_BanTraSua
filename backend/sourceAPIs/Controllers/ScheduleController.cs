@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sourceAPI.ModelsRequest;
+using System.Security.Claims;
 using testVue.Datas;
 using testVue.Models;
 
@@ -129,6 +131,69 @@ namespace sourceAPI.Controllers
                     message = "Cập nhật lịch làm việc thành công"
                 });
             }catch(Exception e)
+            {
+                return StatusCode(500, $"Đã xảy ra lỗi khi xử lý yêu cầu: {e.Message}");
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost("swap-schedule-shift")]
+        public async Task<IActionResult> SwapScheduleShift([FromBody] SwapScheduleShiftRequest request)
+        {
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            {
+                return Forbid("Bearer");
+            }
+
+            if (request == null || request.FromUserId < 1 || request.ToUserId < 1)
+            {
+                return BadRequest("Thông tin truyền đi không hợp lệ!");
+            }
+
+            var fromUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.FromUserId);
+            var toUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.ToUserId);
+
+            if (fromUser == null || toUser == null)
+            {
+                return NotFound("Không tim thấy nhân sự!");
+            }
+
+            var scheduleDate = new DateTime(request.Year, request.Month, request.Day);
+
+            var scheduleFromUser = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == fromUser.UserId &&
+                row.Date.Date == scheduleDate.Date);
+            var scheduleToUser = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == toUser.UserId &&
+                row.Date.Date == scheduleDate.Date);
+            if (scheduleFromUser == null || scheduleToUser == null)
+            {
+                return NotFound("Không tìm thấy lịch làm việc của một trong hai nhân sự.");
+            }
+
+            try
+            {
+                var temp = scheduleFromUser.ShiftId;
+                scheduleFromUser.ShiftId = scheduleToUser.ShiftId;
+                scheduleToUser.ShiftId = temp;
+
+                _context.Schedules.Update(scheduleFromUser);
+                _context.Schedules.Update(scheduleToUser);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = 1,
+                    data = new
+                    {
+                        FromUserId = scheduleFromUser.UserId,
+                        NewShiftCodeFromUser = scheduleFromUser.ShiftId,
+                        ToUserId = scheduleToUser.UserId,
+                        NewShiftCodeToUser = scheduleToUser.ShiftId
+                    }
+                });
+            }
+            catch (Exception e)
             {
                 return StatusCode(500, $"Đã xảy ra lỗi khi xử lý yêu cầu: {e.Message}");
             }

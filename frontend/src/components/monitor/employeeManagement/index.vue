@@ -24,7 +24,7 @@
               <v-text-field label="Tên nhân viên" v-model="employeeInfo.FullName"></v-text-field>
               <v-text-field label="Số điện thoại" v-model="employeeInfo.Phone"></v-text-field>
               <v-text-field label="Mật khẩu" v-model="employeeInfo.Password"></v-text-field>
-              <v-combobox label="Vị trí" :items="['Owner', 'Manager', 'Staff']" v-model="employeeInfo.Role"
+              <v-combobox label="Vị trí" :items="['Owner', 'Manager', 'Staff', 'Customer']" v-model="employeeInfo.Role"
                 class="mb-6"></v-combobox>
               <v-text-field label="Email" v-model="employeeInfo.Email"></v-text-field>
               <v-text-field label="Địa chỉ" v-model="employeeInfo.Address"></v-text-field>
@@ -162,8 +162,8 @@
                       Vai trò:
                     </v-col>
                     <v-col cols="9" class="pa-1">
-                      <v-combobox :items="['Owner', 'Manager', 'Staff']" v-model="employeeCurrentChoose.role"
-                        outlined></v-combobox>
+                      <v-combobox :items="['Owner', 'Manager', 'Staff', 'Customer']"
+                        v-model="employeeCurrentChoose.role" outlined></v-combobox>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -203,7 +203,7 @@
       <v-dialog persistent max-width="800" v-model="displayMonitorSchedule">
         <v-card class="pa-2">
           <v-card-title class="pb-0">
-            Lịch làm việc
+            Lịch làm việc của: {{ employeeNameCurrentChoose }}
           </v-card-title>
           <v-card-text class="pa-3 pb-0">
             <v-container class="pa-0 d-flex flex-column justify-center">
@@ -225,7 +225,8 @@
                     <template v-if="swapModeSchedule">
                       <tr v-for="(week, index) in weeks" :key="'update-' + index">
                         <td v-for="(day, idx) in week" :key="idx" class="scheduleTable_item">
-                          <div class="d-flex flex-column justify-center" :class="{ 'disable-day': day < currentDay, 'current-day': day == currentDay }">
+                          <div class="d-flex flex-column justify-center"
+                            :class="{ 'disable-day': day < currentDay, 'current-day': day == currentDay }">
                             <span style="font-size: 14px; opacity: 0.6;">{{ formatDay(day) || '' }}</span>
                             <span>{{ (scheduleOfUser[day - 1] && shifs[scheduleOfUser[day - 1].shiftCode]) || '_'
                             }}</span>
@@ -251,17 +252,36 @@
                 </table>
               </div>
               <div class="mt-2" v-if="swapModeSchedule" style="margin: 0 auto;">
-                <v-btn color="info mt-2" @click="swapModeSchedule = false">Cập nhật lịch trực</v-btn>
+                <v-btn color="info mt-2" @click="swapModeSchedule = false">Cập nhật lịch làm việc</v-btn>
               </div>
               <div class="d-flex flex-column justify-center align-center mt-2" v-else>
                 <v-chip-group>
                   <v-chip v-for="(shif, shifCode) in shifs" :class="{ 'text-primary': selectedShift === shifCode }"
                     :key="JSON.stringify(shif)" :text="shif" @click="handleClickItemShift(shifCode, shif)"></v-chip>
                 </v-chip-group>
+
                 <div class="mt-1">
                   <v-btn variant="outlined" color="info" style="min-width: 150px;" class="me-3"
                     @click="cancelUpdateSchedule">Hủy</v-btn>
-                  <v-btn color="info" style="min-width: 150px;" @click="handleUpdateSchedule">Cập nhật</v-btn>
+                  <v-btn color="info" style="min-width: 150px;" class="me-3" @click="handleUpdateSchedule">Cập nhật</v-btn>
+                  <v-btn color="info" style="min-width: 150px;" @click="showListEmployee">
+                    Thay đổi với nhân sự khác</v-btn>
+                </div>
+                <div class="mt-3" v-if="isShowListEmployeeSwapSchedule">
+                  <v-menu>
+                    <template v-slot:activator="{ props }">
+                      <v-btn v-bind="props" append-icon="mdi-chevron-down" min-width="200px"
+                        style="border: 1px solid #333; height: 34px;" size="small" class="ms-2">
+                        {{ employeeSelectedSwapSchedule?.fullName || "Nhân viên" }}
+                      </v-btn>
+                    </template>
+                    <v-list max-height="200px" style="overflow-y: auto">
+                      <v-list-item v-for="(emp, index) in employeeList" :key="index" :value="emp"
+                        style="min-height: 40px !important" @click="confirmSelectedEmployee(emp)">
+                        <v-list-item-title>{{ emp.fullName }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </div>
               </div>
             </v-container>
@@ -270,6 +290,15 @@
           <v-card-actions class="">
             <v-spacer></v-spacer>
             <v-btn text="Đóng" color="info" @click="closeDisplayMonitorSchedule"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="isConfirmSelectedEmployeeSwapSchedule" max-width="400px" class="text-center" persistent>
+        <v-card>
+          <v-card-title class="text-h5 text-center"> Xác nhận </v-card-title>
+          <v-card-actions class="justify-center" style="gap: 1.2rem">
+            <v-btn color="green" @click="swapSchedule">Đồng ý</v-btn>
+            <v-btn color="error" @click="cancelSwapSchedule">Hủy</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -289,6 +318,7 @@ const {
   displayMonitorSchedule,
   displayMonitorDeleteUser,
   employeeCurrentChoose,
+  employeeNameCurrentChoose,
   filterEmployeeList,
   weeks,
   scheduleOfUser,
@@ -297,6 +327,9 @@ const {
   selectedDay,
   selectedShift,
   currentDay,
+  isShowListEmployeeSwapSchedule,
+  employeeSelectedSwapSchedule,
+  isConfirmSelectedEmployeeSwapSchedule,
 
   formatDay,
   cancelAddEmployee,
@@ -310,6 +343,10 @@ const {
   handleClickItemShift,
   isShiftChanged,
   closeDisplayMonitorSchedule,
+  showListEmployee,
+  confirmSelectedEmployee,
+  swapSchedule,
+  cancelSwapSchedule,
 } = useEmployeeManagement();
 
 </script>

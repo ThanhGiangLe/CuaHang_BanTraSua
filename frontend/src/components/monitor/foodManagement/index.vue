@@ -129,7 +129,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="width: 75%; height: 180px; margin: 0 auto"
+                    style="width: 75%; height: 160px; margin: 0 auto"
                   />
                   <!-- Thông tin món ăn -->
                   <div class="d-flex flex-column mt-3" style="gap: 8px">

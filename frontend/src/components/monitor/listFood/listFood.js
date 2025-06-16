@@ -9,6 +9,7 @@ import { employeeManagementHandler } from "/src/composables/employeeManagement/e
 import _ from "underscore";
 import { auth } from "/src/services/utils/firebase.js";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import emailjs from "emailjs-com";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
@@ -19,6 +20,7 @@ export default function useFoodManagement() {
     getAllCategory,
     topBestSelling,
     additionPoint,
+    getEmailByPhone,
   } = orderFoodHandler();
   const { getAllEmployee } = employeeManagementHandler();
   const orderStore = userOrderStore();
@@ -52,13 +54,16 @@ export default function useFoodManagement() {
   const searchPhoneKeyword = ref("");
 
   // Xác thực sử dụng điểm
-  const isShowOTPPoints = ref(false);
-  const otpCode = ref("");
-  const phoneNumber = ref(""); // <- CHUYỂN THÀNH string
-  const isOTPSent = ref(false);
-
-  const confirmationResult = ref(null);
-
+  const isShowOTPPoints = ref(false); // Hiển thị form nhập mã OTP
+  const visibleResendOtp = ref(false);
+  const otpCode = ref(""); // Lưu OTP dùng để xác thực
+  const enteredOtp = ref(""); // Lưu OTP dùng để xác thực
+  const serviceID = "service_cojqzzb";
+  const templateID = "template_bql1hr5";
+  const publicKey = "YVFyP3Zy91mr0Jc5W";
+  emailjs.init(publicKey);
+  const otpSendTime = ref(null); // Lưu thời gian lúc gửi OTP
+  const otpTimeout = 1 * 60 * 1000; // Thời gian 1 phút
   // Hàm chạy đầu tiên
   async function init() {
     const responseFood = await getAllFood();
@@ -525,7 +530,10 @@ export default function useFoodManagement() {
       } else if (success === -20) {
         showToast("Số điểm không đủ để thanh toán!", "warn");
       } else if (success === -26) {
-        showToast("Vui lòng thay đổi phương thức thanh toán!", "warn");
+        showToast(
+          "Tài khoản không hợp lệ. Vui lòng thay đổi phương thức thanh toán!",
+          "warn"
+        );
       } else {
         showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
       }
@@ -597,81 +605,74 @@ export default function useFoodManagement() {
       );
       if (val !== oldVal) {
         searchPhoneNumbers.value = val;
-        const normalizedPhone = val.startsWith("0")
-          ? "+84" + val.slice(1)
-          : val;
-        phoneNumber.value = normalizedPhone;
       }
     } else if (typeof val === "object" && val !== null) {
       const newVal = val.phone;
       if (newVal !== oldVal) {
         searchPhoneNumbers.value = newVal;
-        const normalizedPhone = newVal.startsWith("0")
-          ? "+84" + newVal.slice(1)
-          : newVal;
-        phoneNumber.value = normalizedPhone;
       }
     }
   });
-
-  const setupRecaptcha = async () => {
-    await nextTick();
-
-    if (!window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          {
-            size: "normal",
-            callback: () => {
-              console.log("reCAPTCHA resolved");
-            },
-          },
-          auth
-        );
-        await window.recaptchaVerifier.render();
-      } catch (err) {
-        console.error("RecaptchaVerifier error:", err);
-      }
-    }
-  };
-
+  function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // Mã OTP 6 chữ số
+  }
   const sendOTP = async () => {
-    if (!phoneNumber.value || !phoneNumber.value.startsWith("+84")) {
-      showToast("Số điện thoại không hợp lệ.", "error");
-      return;
-    }
+    visibleResendOtp.value = false;
+    const request = {
+      Phone: searchPhoneNumbers.value,
+    };
+    const responseEmail = await getEmailByPhone(request);
+    if (responseEmail.result.success) {
+      const emailResponse = responseEmail.result.email;
 
-    try {
-      await setupRecaptcha();
-      const appVerifier = window.recaptchaVerifier;
+      try {
+        otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
+        otpCode.value = generateOTP();
+        const templateParams = {
+          email: emailResponse,
+          otp_code: otpCode.value,
+        };
 
-      confirmationResult.value = await signInWithPhoneNumber(
-        auth,
-        phoneNumber.value,
-        appVerifier
-      );
-      isOTPSent.value = true;
-      showToast("Đã gửi mã OTP về số điện thoại.", "success");
-    } catch (error) {
-      showToast("Không gửi được OTP. Vui lòng thử lại.", "error");
+        emailjs
+          .send(serviceID, templateID, templateParams)
+          .then((response) => {
+            showToast("Hãy kiểm tra thông báo email!", "success");
+          })
+          .catch((err) => {
+            showToast("Có lỗi trong quá trình gửi mail.", "warn");
+          });
+      } catch (error) {
+        showToast("Lỗi trong quá trình xác minh tài khoản.", "error");
+      }
+    } else {
+      if (responseEmail.result.response.status == 400) {
+        showToast("Thông tin yêu cầu không hợp lệ!", "warn");
+      } else if (responseEmail.result.response.status == 404) {
+        showToast("Số điện thoại chưa đăng kí email để thực hiện xác nhận OTP");
+      }
     }
   };
 
   const verifyOTP = async () => {
-    if (!otpCode.value || !confirmationResult) {
-      showToast("Vui lòng nhập mã OTP.", "warn");
+    if (!enteredOtp.value) {
+      showToast("Nhập mã nhận được từ email!", "warn");
       return;
     }
-    try {
-      const result = await confirmationResult.value.confirm(otpCode.value);
-      // showToast("Xác minh OTP thành công.", "success");
+    let currentTime = new Date().getTime();
+    if (currentTime - otpSendTime.value > otpTimeout) {
+      showToast("OTP đã hết thời gian sử dụng!", "error");
+      visibleResendOtp.value = true;
+      otpCode.value = "";
+      enteredOtp.value = "";
+      return;
+    }
+    if (enteredOtp.value === otpCode.value) {
+      showToast("Xác nhận thành công!", "success");
       await processOrder();
+      otpCode.value = ""; // Reset mã OTP
       isShowOTPPoints.value = false;
-      isOTPSent.value = false;
-    } catch (error) {
-      console.error("Lỗi xác minh:", error);
-      showToast("Mã OTP không hợp lệ hoặc đã hết hạn.");
+    } else {
+      showToast("OTP không chính xác!", "warn");
     }
   };
 
@@ -684,9 +685,8 @@ export default function useFoodManagement() {
         );
         return;
       }
-      isShowOTPPoints.value = true;
-      await nextTick();
-      setTimeout(() => sendOTP(), 300);
+      await sendOTP();
+      setTimeout(() => (isShowOTPPoints.value = true), 2000);
     } else {
       await processOrder();
     }
@@ -708,7 +708,6 @@ export default function useFoodManagement() {
   const handleCloseComponentAreaManagement = () => {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
     orderStore.clearSelectedDishes();
-    // resetCurrentOrder();
   };
   function handleCloseAndReset() {
     resetCurrentOrder();
@@ -748,8 +747,8 @@ export default function useFoodManagement() {
     filteredPhoneNumbers,
     searchPhoneKeyword,
     isShowOTPPoints,
-    otpCode,
-    isOTPSent,
+    enteredOtp,
+    visibleResendOtp,
 
     // Methods
     init,
@@ -771,6 +770,7 @@ export default function useFoodManagement() {
     resetCurrentOrder,
     callApiOrderFood,
     callApiOrderFoodAndAddTable,
+    sendOTP,
     verifyOTP,
   };
 }

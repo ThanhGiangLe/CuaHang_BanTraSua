@@ -72,6 +72,18 @@ export function orderFoodHandler() {
       return err;
     }
   };
+  const getEmailByPhone = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_EMAIL_BY_PHONE,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
 
   return {
     getAllFood,
@@ -80,5 +92,6 @@ export function orderFoodHandler() {
     orderDetail,
     topBestSelling,
     additionPoint,
+    getEmailByPhone,
   };
 }

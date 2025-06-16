@@ -3,6 +3,7 @@ import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
 import { useUserStore } from "@/stores/user.js";
 import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
+import emailjs from "emailjs-com";
 
 export default function useEmployeeManagement() {
   const {
@@ -12,26 +13,20 @@ export default function useEmployeeManagement() {
     updateEmployee,
     getScheduleByUserId,
     updateScheduleByUserId,
+    swapScheduleShift,
   } = employeeManagementHandler();
   const userStore = useUserStore();
   const user = computed(() => userStore.user);
   const search = ref("");
   const showDialogAddEmployee = ref(false);
   const employeeList = ref([]);
-  const employeeInfo = ref({
-    FullName: "",
-    Phone: "",
-    Email: "",
-    Address: "",
-    Password: "",
-    Role: "",
-    ImageUrl: "",
-  });
+
   const displayMonitorUpdateUser = ref(false);
   const displayMonitorSchedule = ref(false);
   const displayMonitorDeleteUser = ref(false);
   const employeeCurrentChoose = ref();
   const employeeIdCurrentChoose = ref(-1);
+  const employeeNameCurrentChoose = ref("");
   const scheduleOfUser = ref([]);
   const scheduleOfUserBackup = ref([]);
   const currentDay = ref(null);
@@ -43,9 +38,28 @@ export default function useEmployeeManagement() {
     C2: "Ca 2",
     O: "Nghỉ",
   });
+  const employeeInfo = ref({
+    FullName: "",
+    Phone: "",
+    Email: "",
+    Address: "",
+    Password: "",
+    Role: "",
+    ImageUrl: "",
+  });
   const swapModeSchedule = ref(true);
   const selectedDay = ref(-1);
   const selectedShift = ref(null);
+
+  const isShowListEmployeeSwapSchedule = ref(false);
+  const isConfirmSelectedEmployeeSwapSchedule = ref(false);
+  const employeeSelectedSwapSchedule = ref(null);
+
+  // Thông tin tài khoản EmailJS
+  const serviceID = "service_cojqzzb";
+  const templateID = "template_yykkt9a";
+  const publicKey = "YVFyP3Zy91mr0Jc5W";
+  emailjs.init(publicKey);
 
   async function init() {
     const response = await getAllEmployee();
@@ -93,6 +107,24 @@ export default function useEmployeeManagement() {
       reader.onerror = (error) => reject(error);
     });
   }
+
+  async function sendMainRegisterAccount(email) {
+    try {
+      const templateParams = {
+        email: email,
+      };
+      emailjs
+        .send(serviceID, templateID, templateParams)
+        .then((response) => {
+          showToast("Hãy kiểm tra thông báo email!", "success");
+        })
+        .catch((err) => {
+          showToast("Có lỗi trong quá trình gửi mail.", "warn");
+        });
+    } catch (error) {
+      showToast("Lỗi trong quá trình tạo tài khoản.", "error");
+    }
+  }
   async function handleAddEmployee() {
     let imageString = employeeInfo.value.ImageUrl;
     if (employeeInfo.value.ImageUrl instanceof File) {
@@ -123,6 +155,7 @@ export default function useEmployeeManagement() {
       } else if (response.success == 1) {
         showToast("Thêm thành công!", "success");
         employeeList.value.push(response.data); // Thêm user mới vào danh sách hiển thị
+        sendMainRegisterAccount(response.data.email);
         showDialogAddEmployee.value = false; // Đóng dialog
         employeeInfo.value = {
           FullName: "",
@@ -133,6 +166,7 @@ export default function useEmployeeManagement() {
           Role: "",
           ImageUrl: "",
         };
+        setTimeout(() => window.location.reload(), 3200);
       }
     } else {
       if (response.response.status == 403) {
@@ -149,6 +183,7 @@ export default function useEmployeeManagement() {
     if (index === 0) {
       displayMonitorSchedule.value = true;
       employeeIdCurrentChoose.value = employee.userId;
+      employeeNameCurrentChoose.value = employee.fullName;
       const request = {
         UserId: employee.userId,
       };
@@ -296,6 +331,7 @@ export default function useEmployeeManagement() {
     selectedDay.value = -1;
     selectedShift.value = null;
     swapModeSchedule.value = true;
+    isShowListEmployeeSwapSchedule.value = false;
   }
 
   function cancelUpdateSchedule() {
@@ -305,6 +341,7 @@ export default function useEmployeeManagement() {
     );
     selectedDay.value = -1;
     selectedShift.value = null;
+    isShowListEmployeeSwapSchedule.value = false;
   }
 
   async function handleUpdateSchedule() {
@@ -333,6 +370,57 @@ export default function useEmployeeManagement() {
     }
   }
 
+  function showListEmployee() {
+    isShowListEmployeeSwapSchedule.value = true;
+  }
+
+  function confirmSelectedEmployee(emp) {
+    console.log("emp: ", emp);
+    isConfirmSelectedEmployeeSwapSchedule.value = true;
+    employeeSelectedSwapSchedule.value = emp;
+  }
+  async function swapSchedule() {
+    const request = {
+      FromUserId: employeeIdCurrentChoose.value,
+      ToUserId: employeeSelectedSwapSchedule.value.userId,
+      Year: currentYear,
+      Month: currentMonth + 1,
+      Day: selectedDay.value,
+    };
+    const response = await swapScheduleShift(request);
+    if (response.success) {
+      showToast("Thay đổi lịch làm việc thành công!", "success");
+      // Ẩn form xác nhận và listEmployee
+      isConfirmSelectedEmployeeSwapSchedule.value = false;
+      isShowListEmployeeSwapSchedule.value = false;
+      employeeSelectedSwapSchedule.value = null;
+      // Cập nhật hiển thị
+      scheduleOfUser.value[selectedDay.value - 1].shiftCode =
+        response.data.newShiftCodeFromUser;
+      scheduleOfUserBackup.value = JSON.parse(
+        JSON.stringify(scheduleOfUser.value)
+      );
+      // Reset
+      selectedDay.value = -1;
+      selectedShift.value = null;
+    } else {
+      if (response.response.status == 403) {
+        showToast("Bạn không có quyền thực hiện thao tác này!", "warn");
+      } else if (response.response.status == 400) {
+        showToast("Thông tin gửi đi không hợp lệ!", "error");
+      } else if (response.response.status == 404) {
+        showToast(`${response.response.data}`, "error");
+      } else {
+        showToast("Có lỗi trong quá trình xử lý!", "error");
+      }
+    }
+  }
+  function cancelSwapSchedule() {
+    isConfirmSelectedEmployeeSwapSchedule.value = false;
+    isShowListEmployeeSwapSchedule.value = false;
+    employeeSelectedSwapSchedule.value = null;
+  }
+
   return {
     search,
     showDialogAddEmployee,
@@ -342,6 +430,7 @@ export default function useEmployeeManagement() {
     displayMonitorSchedule,
     displayMonitorDeleteUser,
     employeeCurrentChoose,
+    employeeNameCurrentChoose,
     filterEmployeeList,
     weeks,
     scheduleOfUser,
@@ -350,6 +439,9 @@ export default function useEmployeeManagement() {
     selectedDay,
     selectedShift,
     currentDay,
+    isShowListEmployeeSwapSchedule,
+    employeeSelectedSwapSchedule,
+    isConfirmSelectedEmployeeSwapSchedule,
 
     formatDay,
     cancelAddEmployee,
@@ -363,5 +455,9 @@ export default function useEmployeeManagement() {
     handleClickItemShift,
     isShiftChanged,
     closeDisplayMonitorSchedule,
+    showListEmployee,
+    confirmSelectedEmployee,
+    swapSchedule,
+    cancelSwapSchedule,
   };
 }
