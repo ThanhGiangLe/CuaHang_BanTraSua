@@ -178,6 +178,7 @@
                     label="Thanh toán bằng chuyển khoản"
                     value="Chuyển khoản"
                   ></v-radio>
+                  <v-radio label="Thanh toán bằng điểm" value="Điểm"></v-radio>
                 </v-radio-group>
               </div>
             </div>

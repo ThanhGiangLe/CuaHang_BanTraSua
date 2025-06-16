@@ -1,19 +1,28 @@
-import { ref } from "vue";
-import axios from "axios";
+import { ref, watch } from "vue";
 import { computed } from "vue";
-import API_ENDPOINTS from "@/api/api.js";
-import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { userOrderStore } from "@/stores/orderStore.js";
 import { showToast } from "@/styles/handmade";
 import { orderFoodHandler } from "/src/composables/listFood/orderFoodHandler.js";
+import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
 import _ from "underscore";
+import { auth } from "/src/services/utils/firebase.js";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import emailjs from "emailjs-com";
 
 export default function useFoodManagement() {
   const userStore = useUserStore();
-  const { orderFood, orderDetail, getAllFood, getAllCategory, topBestSelling } =
-    orderFoodHandler();
+  const {
+    orderFood,
+    orderDetail,
+    getAllFood,
+    getAllCategory,
+    topBestSelling,
+    additionPoint,
+    getEmailByPhone,
+  } = orderFoodHandler();
+  const { getAllEmployee } = employeeManagementHandler();
   const orderStore = userOrderStore();
   const showDialogUpdate = ref(false);
   const isStaff = ref(true);
@@ -29,7 +38,6 @@ export default function useFoodManagement() {
   const isShowQRCode = ref(false);
   const listItemBestSelling = ref([]);
   const listFoodItemIdBestSelling = ref([]);
-
   const currentItemIsUpdate = ref(-1);
 
   // Lấy thông tin người dùng từ store
@@ -38,6 +46,24 @@ export default function useFoodManagement() {
   // Danh sách categories được chọn
   const listFoodCategorySelected = ref([]);
   const currentOrderClone = ref({});
+
+  // Số điện thoại để cộng điểm
+  const searchPhoneNumbers = ref(null); // Dùng để chọn object
+  const allPhoneNumbers = ref([]); // Dữ liệu gốc
+  const filteredPhoneNumbers = ref([]); // Dữ liệu đã lọc
+  const searchPhoneKeyword = ref("");
+
+  // Xác thực sử dụng điểm
+  const isShowOTPPoints = ref(false); // Hiển thị form nhập mã OTP
+  const visibleResendOtp = ref(false);
+  const otpCode = ref(""); // Lưu OTP dùng để xác thực
+  const enteredOtp = ref(""); // Lưu OTP dùng để xác thực
+  const serviceID = "service_cojqzzb";
+  const templateID = "template_bql1hr5";
+  const publicKey = "YVFyP3Zy91mr0Jc5W";
+  emailjs.init(publicKey);
+  const otpSendTime = ref(null); // Lưu thời gian lúc gửi OTP
+  const otpTimeout = 1 * 60 * 1000; // Thời gian 1 phút
   // Hàm chạy đầu tiên
   async function init() {
     const responseFood = await getAllFood();
@@ -45,6 +71,17 @@ export default function useFoodManagement() {
 
     const responseCate = await getAllCategory();
     foodCategories.value = responseCate.listCategory.data;
+
+    const responseEmp = await getAllEmployee();
+    allPhoneNumbers.value = responseEmp.map((item) => ({
+      ...item,
+      display: `${item.fullName == "" ? "/*name*/" : item.fullName} - ${
+        item.phone
+      } - ${formatPoint(item.point)}`,
+    }));
+    filteredPhoneNumbers.value = JSON.parse(
+      JSON.stringify(allPhoneNumbers.value)
+    );
 
     const responseBestselling = await topBestSelling({
       Top: 5,
@@ -164,6 +201,7 @@ export default function useFoodManagement() {
     discount: 0,
     tax: 0,
     paymentMethod: "Tiền mặt",
+    paymentType: "Tiền",
     items: [],
   });
   function resetOrderItem() {
@@ -262,6 +300,14 @@ export default function useFoodManagement() {
     if (isNaN(numericValue)) return "0 VNĐ";
 
     return numericValue.toLocaleString("vi-VN") + " VNĐ";
+  }
+  function formatPoint(value) {
+    if (value === null || value === undefined) return "0 Điểm";
+
+    const numericValue = Number(value);
+    if (isNaN(numericValue)) return "0 Điểm";
+
+    return numericValue.toLocaleString("vi-VN") + " Điểm";
   }
   const resetCurrentOrder = () => {
     currentOrder.value = {
@@ -446,80 +492,203 @@ export default function useFoodManagement() {
   }
 
   // <== ĐẶT MÓN ==>
-  async function callApiOrderFood() {
-    if (currentOrder.value.items.length == 0) {
-      showToast("Hãy chọn món cần phục vụ!");
-    } else {
-      let orderTimeCurrent = getCurrentDateTimeForSQL();
-      const request = {
-        userId: currentOrder.value.user_id,
-        orderTime: orderTimeCurrent,
-        tableId: currentOrder.value.table_id,
-        totalAmount: currentOrder.value.total_amount,
-        totalResult: resultTotalAmount.value,
-        status: currentOrder.value.status,
-        discount: currentOrder.value.discount,
-        tax: currentOrder.value.tax,
-        paymentMethod: currentOrder.value.paymentMethod,
-      };
+  const processOrder = async () => {
+    if (currentOrder.value.items.length === 0) {
+      showToast("Hãy chọn món cần phục vụ!", "warn");
+      return;
+    }
+
+    const orderTimeCurrent = getCurrentDateTimeForSQL();
+    const request = {
+      userId: currentOrder.value.user_id,
+      orderTime: orderTimeCurrent,
+      tableId: currentOrder.value.table_id,
+      totalAmount: currentOrder.value.total_amount,
+      totalResult: resultTotalAmount.value,
+      status: currentOrder.value.status,
+      discount: currentOrder.value.discount,
+      tax: currentOrder.value.tax,
+      paymentMethod: currentOrder.value.paymentMethod,
+      phone: searchPhoneNumbers.value ?? "",
+    };
+
+    try {
       const response = await orderFood(request);
-      console.log("response: ", response);
-      if (response.responseOrder) {
-        if (response.responseOrder.success === -1) {
-          showToast("Đơn hàng không hợp lệ!", "error");
-        } else if (response.responseOrder.success === 1) {
-          const orderId = response.responseOrder.data.orderId;
-          await Promise.all(
-            currentOrder.value.items.map(async (item) => {
-              const mainRequest = {
-                orderId: orderId,
-                foodItemId: item.FoodItemId,
-                foodName: item.FoodName,
-                quantity: item.Quantity,
-                price: item.Price,
-                isMainItem: item.IsMain ?? 1,
-                unit: item.Unit,
-                note: item.Note,
-                categoryId: item.CategoryId,
-                orderTime: orderTimeCurrent,
-              };
-              const mainItemResponse = await orderDetail(mainRequest);
-              await Promise.all(
-                item.ListAdditionalFood.map(async (addFood) => {
-                  const subRequest = {
-                    orderId: orderId,
-                    foodItemId: addFood.foodItemId,
-                    foodName: addFood.foodName,
-                    quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                    price: addFood.priceCustom,
-                    isMainItem: 0,
-                    unit: addFood.unit,
-                    note: "",
-                    categoryId: addFood.categoryId,
-                    orderTime: orderTimeCurrent,
-                  };
-                  const subItemResponse = await orderDetail(subRequest);
-                })
-              );
-            })
-          );
-          showToast("Đặt món thành công!", "success");
-          resetCurrentOrder();
-          setTimeout(() => {
-            window.location.reload();
-          }, 3200);
-        } else {
-          showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-        }
-      } else {
-        if (response.response.status == 404) {
-          showToast(response.response.data, "warn");
-        } else if (response.response.status == 403) {
-          showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
-        } else if (response.response.status == 500) {
-          showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
-        }
+      if (!response.responseOrder) {
+        handleOrderHttpError(response);
+        return;
       }
+
+      const { success, data } = response.responseOrder;
+      if (success === 1) {
+        const orderId = data.orderId;
+        await createOrderItems(orderId, orderTimeCurrent);
+        showToast("Đặt món thành công!", "success");
+        searchPhoneNumbers.value = null;
+        resetCurrentOrder();
+        setTimeout(() => window.location.reload(), 3200);
+      } else if (success === -20) {
+        showToast("Số điểm không đủ để thanh toán!", "warn");
+      } else if (success === -26) {
+        showToast(
+          "Tài khoản không hợp lệ. Vui lòng thay đổi phương thức thanh toán!",
+          "warn"
+        );
+      } else {
+        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+      }
+    } catch (err) {
+      console.error("Order error:", err);
+      showToast("Không thể tạo đơn hàng!", "error");
+    }
+  };
+
+  const handleOrderHttpError = (response) => {
+    const status = response.response?.status;
+    if (status === 404) {
+      showToast(response.response.data, "warn");
+    } else if (status === 403) {
+      showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
+    } else {
+      showToast("Xảy ra lỗi trong quá trình xử lý đơn hàng.", "error");
+    }
+  };
+
+  const createOrderItems = async (orderId, orderTime) => {
+    await Promise.all(
+      currentOrder.value.items.map(async (item) => {
+        const mainRequest = {
+          orderId,
+          foodItemId: item.FoodItemId,
+          foodName: item.FoodName,
+          quantity: item.Quantity,
+          price: item.Price,
+          isMainItem: item.IsMain ?? 1,
+          unit: item.Unit,
+          note: item.Note,
+          categoryId: item.CategoryId,
+          orderTime,
+        };
+        await orderDetail(mainRequest);
+
+        await Promise.all(
+          item.ListAdditionalFood.map((addFood) => {
+            const subRequest = {
+              orderId,
+              foodItemId: addFood.foodItemId,
+              foodName: addFood.foodName,
+              quantity: addFood.quantity,
+              price: addFood.priceCustom,
+              isMainItem: 0,
+              unit: addFood.unit,
+              note: "",
+              categoryId: addFood.categoryId,
+              orderTime,
+            };
+            return orderDetail(subRequest);
+          })
+        );
+      })
+    );
+  };
+
+  watch(searchPhoneNumbers, (val, oldVal) => {
+    if (!val) {
+      filteredPhoneNumbers.value = allPhoneNumbers.value;
+      return;
+    }
+    if (typeof val === "string") {
+      filteredPhoneNumbers.value = allPhoneNumbers.value.filter(
+        (item) =>
+          item.fullName.toLowerCase().includes(val.toLowerCase()) ||
+          item.phone.toLowerCase().includes(val.toLowerCase())
+      );
+      if (val !== oldVal) {
+        searchPhoneNumbers.value = val;
+      }
+    } else if (typeof val === "object" && val !== null) {
+      const newVal = val.phone;
+      if (newVal !== oldVal) {
+        searchPhoneNumbers.value = newVal;
+      }
+    }
+  });
+  function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // Mã OTP 6 chữ số
+  }
+  const sendOTP = async () => {
+    visibleResendOtp.value = false;
+    const request = {
+      Phone: searchPhoneNumbers.value,
+    };
+    const responseEmail = await getEmailByPhone(request);
+    if (responseEmail.result.success) {
+      const emailResponse = responseEmail.result.email;
+
+      try {
+        otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
+        otpCode.value = generateOTP();
+        const templateParams = {
+          email: emailResponse,
+          otp_code: otpCode.value,
+        };
+
+        emailjs
+          .send(serviceID, templateID, templateParams)
+          .then((response) => {
+            showToast("Hãy kiểm tra thông báo email!", "success");
+          })
+          .catch((err) => {
+            showToast("Có lỗi trong quá trình gửi mail.", "warn");
+          });
+      } catch (error) {
+        showToast("Lỗi trong quá trình xác minh tài khoản.", "error");
+      }
+    } else {
+      if (responseEmail.result.response.status == 400) {
+        showToast("Thông tin yêu cầu không hợp lệ!", "warn");
+      } else if (responseEmail.result.response.status == 404) {
+        showToast("Số điện thoại chưa đăng kí email để thực hiện xác nhận OTP");
+      }
+    }
+  };
+
+  const verifyOTP = async () => {
+    if (!enteredOtp.value) {
+      showToast("Nhập mã nhận được từ email!", "warn");
+      return;
+    }
+    let currentTime = new Date().getTime();
+    if (currentTime - otpSendTime.value > otpTimeout) {
+      showToast("OTP đã hết thời gian sử dụng!", "error");
+      visibleResendOtp.value = true;
+      otpCode.value = "";
+      enteredOtp.value = "";
+      return;
+    }
+    if (enteredOtp.value === otpCode.value) {
+      showToast("Xác nhận thành công!", "success");
+      await processOrder();
+      otpCode.value = ""; // Reset mã OTP
+      isShowOTPPoints.value = false;
+    } else {
+      showToast("OTP không chính xác!", "warn");
+    }
+  };
+
+  async function callApiOrderFood() {
+    if (currentOrder.value.paymentMethod === "Điểm") {
+      if (!searchPhoneNumbers.value) {
+        showToast(
+          "Vui lòng chọn số điện thoại để thanh toán bằng điểm!",
+          "warn"
+        );
+        return;
+      }
+      await sendOTP();
+      setTimeout(() => (isShowOTPPoints.value = true), 2000);
+    } else {
+      await processOrder();
     }
   }
 
@@ -539,7 +708,6 @@ export default function useFoodManagement() {
   const handleCloseComponentAreaManagement = () => {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
     orderStore.clearSelectedDishes();
-    // resetCurrentOrder();
   };
   function handleCloseAndReset() {
     resetCurrentOrder();
@@ -575,6 +743,12 @@ export default function useFoodManagement() {
     currentOrder,
     momoQRCodeUrl,
     listFoodItemIdBestSelling,
+    searchPhoneNumbers,
+    filteredPhoneNumbers,
+    searchPhoneKeyword,
+    isShowOTPPoints,
+    enteredOtp,
+    visibleResendOtp,
 
     // Methods
     init,
@@ -586,6 +760,7 @@ export default function useFoodManagement() {
     updateTotalAmount,
     totalAmountAdditionalFoodItem,
     formatCurrency,
+    formatPoint,
     openDialogShowDetail,
     updateCurrentFoodSelected,
     updateFoodItem,
@@ -595,5 +770,7 @@ export default function useFoodManagement() {
     resetCurrentOrder,
     callApiOrderFood,
     callApiOrderFoodAndAddTable,
+    sendOTP,
+    verifyOTP,
   };
 }

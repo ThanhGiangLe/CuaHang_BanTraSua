@@ -67,6 +67,18 @@ export function employeeManagementHandler() {
       return err;
     }
   };
+  const swapScheduleShift = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.SWAP_SCHEDULE_SHIFT,
+        request
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
   return {
     getAllEmployee,
     addEmployee,
@@ -74,5 +86,6 @@ export function employeeManagementHandler() {
     updateEmployee,
     getScheduleByUserId,
     updateScheduleByUserId,
+    swapScheduleShift,
   };
 }

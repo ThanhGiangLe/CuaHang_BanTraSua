@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using sourceAPI.Models.Token;
 using Microsoft.AspNetCore.Authorization;
+using sourceAPI.ModelsRequest;
 
 namespace testVue.Controllers
 {
@@ -143,7 +144,6 @@ namespace testVue.Controllers
             if (string.IsNullOrEmpty(addUserRequest.FullName) ||
                 string.IsNullOrEmpty(addUserRequest.Phone) ||
                 string.IsNullOrEmpty(addUserRequest.Email) ||
-                string.IsNullOrEmpty(addUserRequest.Password) ||
                 string.IsNullOrEmpty(addUserRequest.Role))
             {
                 return Ok(new { success = -1 });
@@ -169,14 +169,14 @@ namespace testVue.Controllers
                 Phone = addUserRequest.Phone,
                 Email = addUserRequest.Email,
                 Address = addUserRequest.Address,
-                Password = BCrypt.Net.BCrypt.HashPassword(addUserRequest.Password), // Hash mật khẩu
+                Password = BCrypt.Net.BCrypt.HashPassword(addUserRequest.Password ?? "123"), // Hash mật khẩu
                 Role = addUserRequest.Role,
                 Avatar = addUserRequest.Avatar ?? "/public/meo.jpg",
                 CreateDate = currentTime,
                 CreateBy = addUserRequest.CreateBy,
                 UpdateDate = currentTime,
                 UpdateBy = addUserRequest.UpdateBy,
-                Point = 10,
+                Point = 10000,
                 Status = "Busy"
             };
 
@@ -278,6 +278,25 @@ namespace testVue.Controllers
                     details = ex.InnerException?.Message
                 });
             }
+        }
+
+        [HttpPost("get-email-by-phone")]
+        public async Task<IActionResult> GetEmailByPhone([FromBody] PhoneRequest request)
+        {
+            if (request == null || request.Phone.Length < 10)
+            {
+                return BadRequest("Thông tin không hợp lệ!");
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone);
+            if (user == null)
+            {
+                return NotFound("Không tìm thấy người dùng!");
+            }
+            return Ok(new
+            {
+                success = 1,
+                email = user.Email,
+            });
         }
     }
 }

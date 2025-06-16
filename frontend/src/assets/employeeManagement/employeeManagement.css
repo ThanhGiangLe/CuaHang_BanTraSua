@@ -85,10 +85,10 @@
 
 /* Schedule table */
 .scheduleTable .selected-day {
-  background-color: rgba(var(--v-theme-primary), 0.6);
+  background-color: rgba(var(--v-theme-primary), 0.6) !important;
 }
 .scheduleTable .change-shift-with-before {
-  background-color: rgba(246, 236, 20, 0.7);
+  background-color: rgba(246, 236, 20, 0.7) !important;
 }
 .scheduleTable .current-day {
   background-color: rgba(84, 0, 120, 0.7);

@@ -134,54 +134,64 @@ export default function useAreaManagement() {
       paymentMethod: paymentInfo.value.paymentMethod ?? "Tiền mặt",
     };
     const orderResponse = await orderFood(request);
-    if (orderResponse.responseOrder.success === -1) {
-      showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
-    } else if (orderResponse.responseOrder.success === 1) {
-      const orderId = orderResponse.responseOrder.data.orderId;
-      await Promise.all(
-        listFoodOrderOfTableId.value.map(async (item) => {
-          const mainRequest = {
-            orderId: orderId,
-            foodItemId: item.FoodItemId,
-            foodName: item.FoodName,
-            quantity: item.Quantity,
-            price: item.Price,
-            isMainItem: 1,
-            unit: item.Unit,
-            note: item.Note,
-            categoryId: item.CategoryId,
-            orderTime: orderTimeCurrent,
-          };
-          const mainItemResponse = await orderDetail(mainRequest);
-          // Gửi các món phụ với parentItemId là mainItemId và các món phụ đi kèm món chính đó
-          await Promise.all(
-            item.ListAdditionalFood.map(async (addFood) => {
-              const subRequest = {
-                orderId: orderId,
-                foodItemId: addFood.foodItemId,
-                foodName: addFood.foodName,
-                quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
-                price: addFood.priceCustom,
-                isMainItem: 0,
-                unit: addFood.unit,
-                note: "",
-                categoryId: addFood.categoryId,
-                orderTime: orderTimeCurrent,
-              };
-              const subItemResponse = await orderDetail(subRequest);
-            })
-          );
-        })
-      );
-      showToast("Thanh toán thành công!", "success");
-      showListFoodOrderOfTableId.value = !showListFoodOrderOfTableId.value;
-      confirmDialog.value = !confirmDialog.value;
-      orderStore.clearTableOrder(currentTableId.value);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3200);
+    if (response.responseOrder) {
+      if (orderResponse.responseOrder.success === -1) {
+        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+      } else if (orderResponse.responseOrder.success === 1) {
+        const orderId = orderResponse.responseOrder.data.orderId;
+        await Promise.all(
+          listFoodOrderOfTableId.value.map(async (item) => {
+            const mainRequest = {
+              orderId: orderId,
+              foodItemId: item.FoodItemId,
+              foodName: item.FoodName,
+              quantity: item.Quantity,
+              price: item.Price,
+              isMainItem: 1,
+              unit: item.Unit,
+              note: item.Note,
+              categoryId: item.CategoryId,
+              orderTime: orderTimeCurrent,
+            };
+            const mainItemResponse = await orderDetail(mainRequest);
+            // Gửi các món phụ với parentItemId là mainItemId và các món phụ đi kèm món chính đó
+            await Promise.all(
+              item.ListAdditionalFood.map(async (addFood) => {
+                const subRequest = {
+                  orderId: orderId,
+                  foodItemId: addFood.foodItemId,
+                  foodName: addFood.foodName,
+                  quantity: addFood.quantity, // Số lượng mặc định là 1 nếu không chọn khác
+                  price: addFood.priceCustom,
+                  isMainItem: 0,
+                  unit: addFood.unit,
+                  note: "",
+                  categoryId: addFood.categoryId,
+                  orderTime: orderTimeCurrent,
+                };
+                const subItemResponse = await orderDetail(subRequest);
+              })
+            );
+          })
+        );
+        showToast("Thanh toán thành công!", "success");
+        showListFoodOrderOfTableId.value = !showListFoodOrderOfTableId.value;
+        confirmDialog.value = !confirmDialog.value;
+        orderStore.clearTableOrder(currentTableId.value);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
+      } else {
+        showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+      }
     } else {
-      showToast("Có lỗi trong quá trình tạo đơn hàng!", "error");
+      if (response.response.status == 404) {
+        showToast(response.response.data, "warn");
+      } else if (response.response.status == 403) {
+        showToast("Đăng nhập lại để thực hiện thao tác!", "warn");
+      } else if (response.response.status == 500) {
+        showToast("Xãy ra lỗi trong quá trình xử lý đơn hàng.", "error");
+      }
     }
   }
   function closeShowListFoodOrderOfTableId() {

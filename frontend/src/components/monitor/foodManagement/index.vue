@@ -129,7 +129,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="width: 75%; height: 180px; margin: 0 auto"
+                    style="width: 75%; height: 160px; margin: 0 auto"
                   />
                   <!-- Thông tin món ăn -->
                   <div class="d-flex flex-column mt-3" style="gap: 8px">
@@ -177,6 +177,18 @@
                         {{ formatCurrency(foodItem.priceCustom) }}/{{
                           foodItem.unit
                         }}
+                      </div>
+                    </div>
+
+                    <div class="d-flex align-center">
+                      <div style="min-width: 130px; color: #666">
+                        Điểm quy đổi
+                      </div>
+                      <div
+                        style="height: 19.94px; max-height: 19.94px"
+                        class="hiddent-text-one-line"
+                      >
+                        {{ foodItem.points }} Điểm/{{ foodItem.unit }}
                       </div>
                     </div>
 
@@ -463,6 +475,7 @@ const {
   getCategoryName,
   tonggleSelected,
   formatCurrency,
+  formatPoint,
   openDialogShowDeleteFoodItemSelected,
   confimDeleteFoodItem,
   openDialogShowUpdateFoodItemSelected,

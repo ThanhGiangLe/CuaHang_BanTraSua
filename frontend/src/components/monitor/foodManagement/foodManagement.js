@@ -142,6 +142,14 @@ export default function useFoodManagement() {
 
     return numericValue.toLocaleString("vi-VN") + " VNĐ";
   }
+  function formatPoint(value) {
+    if (value === null || value === undefined) return "0 Điểm";
+
+    const numericValue = Number(value);
+    if (isNaN(numericValue)) return "0 Điểm";
+
+    return numericValue.toLocaleString("vi-VN") + " Điểm";
+  }
 
   // <=== CHỨC NĂNG CREATE ===>
   function cancelSaveFood() {
@@ -359,6 +367,7 @@ export default function useFoodManagement() {
     getCategoryName,
     tonggleSelected,
     formatCurrency,
+    formatPoint,
     openDialogShowDeleteFoodItemSelected,
     confimDeleteFoodItem,
     openDialogShowUpdateFoodItemSelected,

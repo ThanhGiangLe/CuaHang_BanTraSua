@@ -26,6 +26,44 @@
   /* background-color: rgb(44, 42, 42); */
 }
 
+.user_debt_equipment-search .v-input__control {
+  height: 34px;
+}
+.user_debt_equipment-search .v-field--center-affix .v-label.v-field-label {
+  top: unset;
+  transform: unset;
+  line-height: 34px;
+  font-size: 13px !important;
+  margin-top: 1px;
+}
+.user_debt_equipment-search .v-field--center-affix .v-field__append-inner {
+  height: 34px;
+}
+.user_debt_equipment-search input.v-field__input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 34px !important;
+}
+
+.foodManagement_search-phone .v-combobox .v-field .v-text-field__prefix,
+.v-combobox .v-field .v-text-field__suffix,
+.v-combobox .v-field .v-field__input {
+  padding: 0 8px !important;
+  margin: 0 !important;
+  min-height: 36px;
+  font-size: 13px;
+}
+.foodManagement_search-phone .v-combobox .v-field .v-text-field__prefix,
+.v-combobox .v-field .v-text-field__suffix,
+.v-combobox .v-field .v-field__input,
+.v-combobox .v-field.v-field {
+  height: 34px !important;
+}
+
+.confirm_otp_payment .v-text-field .v-input__details {
+  display: none;
+}
+
 .foodManagement_listFoodOrder
   .foodManagement_listFoodOrder_menu
   .foodManagement_listFoodOrder_menu_dishes {
@@ -41,7 +79,8 @@
   .foodManagement_listFoodOrder_menu_dishes_item {
   font-size: 13px;
   cursor: pointer;
-  padding: 8px;
+  padding: 0px 8px;
+  height: 26px !important;
 }
 
 /* .foodManagement_listFoodOrder
@@ -131,8 +170,9 @@
   top: 0;
   left: -3%;
   width: 80px;
-  height: 22px;
-  line-height: 22px;
+  font-size: 13px;
+  height: 20px;
+  line-height: 20px;
   background-color: #bf360c;
   text-align: center;
   border-top-left-radius: 4px;
@@ -149,7 +189,7 @@
   width: 0;
   height: 0;
   border-bottom: 5px solid transparent;
-  border-left: 8px solid transparent;
+  border-left: 7px solid transparent;
   border-top: 5px solid #bf360c; /* Màu của tam giác */
 }
 
@@ -248,8 +288,8 @@
   .foodManagement_listFoodOrder_bill_orderList
   .foodManagement_listFoodOrder_bill_orderList_item
   .foodManagement_listFoodOrder_bill_orderList_item_img {
-  width: 65px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
 }
 
@@ -257,7 +297,7 @@
   .foodManagement_listFoodOrder_bill
   .foodManagement_listFoodOrder_bill_payment {
   background-color: rgb(63, 65, 65);
-  padding: 8px 16px;
+  padding: 4px 8px;
 }
 
 .foodManagement_listFoodOrder_menu_foods .AdditionalItems {
@@ -286,6 +326,10 @@
 
 #nodefooditem .v-textarea.v-text-field .v-input__details {
   display: none;
+}
+#nodefooditem .v-field__input {
+  height: 112px !important;
+  padding: 8px;
 }
 
 #showComponentAreaManagement .areaManagement {
@@ -352,10 +396,11 @@
 .foodManagement_listFoodOrder_bill_payment_paymentMethod
   .v-selection-control
   .v-label {
-  font-size: 14px !important;
+  font-size: 13px !important;
 }
 
 .foodManagement_listFoodOrder_bill_payment_paymentMethod
   .v-selection-control__wrapper {
-  height: 28px !important;
+  height: 22px !important;
+  font-size: 13px;
 }

@@ -13,5 +13,7 @@ namespace testVue.ModelsRequest
         public decimal Discount { get; set; } = default;
         public decimal Tax { get; set; } = default;
         public string PaymentMethod { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+
     }
 }

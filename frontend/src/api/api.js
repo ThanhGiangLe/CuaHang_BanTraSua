@@ -12,6 +12,7 @@ const API_ENDPOINTS = {
   ADD_ORDER: `/food/add-order`,
   ADD_ORDER_DETAIL: `/food/add-order-detail`,
   TOP_BEST_SELLING: "/food/get-all-orderitem-top-bestselling",
+  ADDITION_POINT: "/food/addition-point-by-userid",
 
   // Food managament
   CREATE_FOOD_ITEM: `/food/add-food-item`,
@@ -46,10 +47,14 @@ const API_ENDPOINTS = {
   // Employee management
   GET_ALL_EMPLOYEES: `/user`,
   ADD_USER: `/user/add`,
-  GET_SCHEDULE_BY_USERID: "/schedule/get-schedule-by-userid",
   UPDATE_USER: `/user/update-user`,
   DELETE_USER: `/user/delete-user`,
+  GET_EMAIL_BY_PHONE: "/user/get-email-by-phone",
+
+  // Schedule
+  GET_SCHEDULE_BY_USERID: "/schedule/get-schedule-by-userid",
   UPDATE_SCHEDULE_BY_USERID: "/schedule/update-schedule-by-userid",
+  SWAP_SCHEDULE_SHIFT: "/schedule/swap-schedule-shift",
 };
 
 export default API_ENDPOINTS;
