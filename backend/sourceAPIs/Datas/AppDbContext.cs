@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using sourceAPI.Models;
 using sourceAPI.Models.Token;
 using testVue.Models;
 
@@ -17,5 +18,6 @@ namespace testVue.Datas
         public DbSet<TableMdl> Tables { get; set; }
         public DbSet<UserMdl> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<ScheduleShiftMdl> ScheduleShifts { get; set; }
     }
 }

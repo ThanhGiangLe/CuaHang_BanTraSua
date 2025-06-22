@@ -5,7 +5,7 @@ export function employeeManagementHandler() {
   const getAllEmployee = async () => {
     try {
       const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
-      const listEmployee = response.data;
+      const listEmployee = response.data.data;
       return listEmployee;
     } catch (err) {
       return err;
@@ -79,6 +79,42 @@ export function employeeManagementHandler() {
       return err;
     }
   };
+  const OpenShift = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.OPEN_SHIFT,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
+  const CloseShift = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.CLOSE_SHIFT,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
+  const getScheduleToDay = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_SCHEDULE_TODAY,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
   return {
     getAllEmployee,
     addEmployee,
@@ -87,5 +123,8 @@ export function employeeManagementHandler() {
     getScheduleByUserId,
     updateScheduleByUserId,
     swapScheduleShift,
+    OpenShift,
+    CloseShift,
+    getScheduleToDay,
   };
 }

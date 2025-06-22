@@ -119,12 +119,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import emailjs from "emailjs-com";
-import API_ENDPOINTS from "@/api/api.js";
 import "vue3-toastify/dist/index.css";
 import { showToast } from "@/styles/handmade";
-import axiosClient from "@/services/utils/axiosClient";
 import { useLogin } from "/src/composables/authen/useLogin.js";
 
 const { checkEmail, updatePassword } = useLogin();
@@ -162,9 +159,9 @@ async function sendOTP() {
     email: email.value,
   };
   const response = await checkEmail(request);
-
+  console.log("response: ", response);
   try {
-    if (response.result.exists) {
+    if (response.exists) {
       otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng
       otp.value = generateOTP();
       const templateParams = {

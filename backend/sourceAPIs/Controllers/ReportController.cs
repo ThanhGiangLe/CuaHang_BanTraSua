@@ -442,12 +442,14 @@ namespace testVue.Controllers
                         join table in _context.Tables on order.TableId equals table.TableId
                         select new OrderDetailShowViewReportDTO
                         {
+                            OrderId = order.OrderId,
                             FullName = user.FullName,
                             OrderTime = order.OrderTime,
                             TableName = table.TableName,
-                            TotalAmount = order.TotalAmount,
+                            TotalAmount = (decimal)order.TotalAmount,
+                            ReturnedAmount = (decimal)order.ReturnedAmount,
+                            ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            Tax = (decimal)order.Tax,
                             PaymentMethod = order.PaymentMethod,
                         };
 
@@ -472,12 +474,14 @@ namespace testVue.Controllers
                         where order.OrderTime.Date == parsedDate.Date // So sánh ngày-tháng-năm
                         select new OrderDetailShowViewReportDTO
                         {
+                            OrderId = order.OrderId,
                             FullName = user.FullName,
                             OrderTime = order.OrderTime,
                             TableName = table.TableName,
-                            TotalAmount = order.TotalAmount,
+                            TotalAmount = (decimal)order.TotalAmount,
+                            ReturnedAmount = (decimal)order.ReturnedAmount,
+                            ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            Tax = (decimal)order.Tax,
                             PaymentMethod = order.PaymentMethod,
                         };
 
@@ -502,12 +506,14 @@ namespace testVue.Controllers
                         where order.OrderTime.Month == parsedDate.Month && order.OrderTime.Year == parsedDate.Year
                         select new OrderDetailShowViewReportDTO
                         {
+                            OrderId = order.OrderId,
                             FullName = user.FullName,
                             OrderTime = order.OrderTime,
                             TableName = table.TableName,
-                            TotalAmount = order.TotalResult,
+                            TotalAmount = (decimal)order.TotalAmount,
+                            ReturnedAmount = (decimal)order.ReturnedAmount,
+                            ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            Tax = (decimal)order.Tax,
                             PaymentMethod = order.PaymentMethod,
                         };
 
@@ -532,12 +538,15 @@ namespace testVue.Controllers
                         where (string.IsNullOrEmpty(timeRequest.Date) || user.FullName.Contains(timeRequest.Date))
                         select new OrderDetailShowViewReportDTO
                         {
+                            OrderId = order.OrderId,
                             FullName = user.FullName,
                             OrderTime = order.OrderTime,
                             TableName = table.TableName,
-                            TotalAmount = order.TotalAmount,
+                            TotalAmount = (decimal)order.TotalAmount,
+                            ReturnedAmount = (decimal)order.ReturnedAmount,
+                            ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            Tax = (decimal)order.Tax
+                            PaymentMethod = order.PaymentMethod,
                         };
 
             var result = await query.OrderByDescending(x => x.OrderTime).ToListAsync();
@@ -545,5 +554,24 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
+        [HttpPost("get-orderdetails-by-orderid")]
+        public async Task<IActionResult> GetOrderDetailsByOrderId([FromBody] OrderIdRequest request)
+        {
+            var query = from orderDetail in _context.OrderDetails
+                        join foodItem in _context.FoodItems
+                            on orderDetail.FoodItemId equals foodItem.FoodItemId
+                        where orderDetail.OrderId == request.OrderId
+                        select new
+                        {
+                            foodItem.FoodName,
+                            orderDetail.Quantity,
+                            orderDetail.Price,
+                            orderDetail.Note,
+                            orderDetail.IsMainItem
+                        };
+
+            var result = await query.ToListAsync();
+            return Ok(result);
+        }
     }
 }

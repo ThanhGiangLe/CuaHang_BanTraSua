@@ -10,7 +10,6 @@ const userStore = useUserStore();
 
 // Lấy thông tin người dùng từ store
 const user = computed(() => userStore.user);
-console.log("user", user.value);
 sessionStorage.removeItem("token");
 userStore.clearUser();
 router.push("/login");

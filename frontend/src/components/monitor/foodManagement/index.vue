@@ -19,54 +19,60 @@
       >
 
       <!-- Dialog thêm món ăn mới -->
-      <v-dialog v-model="showDialogAdd" max-width="600px">
+      <v-dialog v-model="showDialogAdd" max-width="960px">
         <v-card class="pa-2">
           <v-card-title> Thông tin món mới </v-card-title>
-          <v-card-text>
+          <v-card-text class="py-0">
             <v-text-field
               label="Tên món"
               v-model="foodAdd.foodName"
+              :rules="[(v) => !!v || 'Trường này là bắt buộc']"
             ></v-text-field>
-            <v-text-field
-              label="Giá niêm yết"
-              v-model="foodAdd.priceListed"
-            ></v-text-field>
-            <v-text-field
-              label="Giá bán ra"
-              v-model="foodAdd.priceCustom"
-            ></v-text-field>
-            <v-text-field
-              label="Đơn vị tính"
-              v-model="foodAdd.unit"
-            ></v-text-field>
-            <v-combobox
-              label="Loại danh mục"
-              :items="[
-                'Best thèm',
-                'Món mới',
-                'Đậm vị',
-                'Trà sữa truyền thống',
-                'Trà sữa mix',
-                'Thèm nhai đã',
-                'Siêu tiết kiệm / Combo hot',
-                'Thơm béo ngất ngây',
-                'Món thêm',
-              ]"
-              v-model="foodAdd.categoryIdString"
-            ></v-combobox>
-            <v-combobox
-              class="mt-6"
-              label="Phân loại"
-              :items="['Món chính', 'Món thêm']"
-              v-model="foodAdd.isMainString"
-            ></v-combobox>
+            <div class="d-flex justify-space-between ga-3">
+              <v-text-field
+                label="Giá niêm yết"
+                v-model="foodAdd.priceListed"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              ></v-text-field>
+              <v-text-field
+                label="Giá bán ra"
+                v-model="foodAdd.priceCustom"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              ></v-text-field>
+            </div>
+            <div class="d-flex justify-space-between ga-3">
+              <v-text-field
+                label="Điểm quy đổi"
+                v-model="foodAdd.point"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              ></v-text-field>
+              <v-text-field
+                label="Đơn vị tính"
+                v-model="foodAdd.unit"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              ></v-text-field>
+            </div>
+            <div class="d-flex justify-space-between ga-3">
+              <v-select
+                label="Loại danh mục"
+                :items="_.pluck(categoriesDataDefault, 'categoryName')"
+                v-model="foodAdd.categoryIdString"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              />
+              <v-select
+                label="Phân loại"
+                :items="['Món chính', 'Món thêm']"
+                v-model="foodAdd.isMainString"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              />
+            </div>
             <v-file-input
               label="Hình ảnh món"
               accept="image/*"
               v-model="foodAdd.imageUrl"
               prepend-icon="mdi-camera"
-              class="mt-6"
               :show-size="true"
+              :rules="[(v) => !!v || 'Trường này là bắt buộc']"
             ></v-file-input>
           </v-card-text>
           <v-card-actions>
@@ -116,7 +122,7 @@
                 :key="foodItem.foodItemId"
                 :cols="12"
                 :lg="4"
-                :md="4"
+                :md="6"
                 :sm="6"
                 :xs="12"
                 class="pa-2"
@@ -133,12 +139,12 @@
                   />
                   <!-- Thông tin món ăn -->
                   <div class="d-flex flex-column mt-3" style="gap: 8px">
-                    <div class="d-flex align-center">
+                    <!-- <div class="d-flex align-center">
                       <div style="min-width: 130px; color: #666">
                         Mã món ăn:
                       </div>
                       <div>{{ foodItem.foodItemId }}</div>
-                    </div>
+                    </div> -->
 
                     <div class="d-flex align-center">
                       <div style="min-width: 130px; color: #666">
@@ -182,13 +188,13 @@
 
                     <div class="d-flex align-center">
                       <div style="min-width: 130px; color: #666">
-                        Điểm quy đổi
+                        Điểm quy đổi:
                       </div>
                       <div
                         style="height: 19.94px; max-height: 19.94px"
                         class="hiddent-text-one-line"
                       >
-                        {{ foodItem.points }} Điểm/{{ foodItem.unit }}
+                        {{ formatPoint(foodItem.point) }}/{{ foodItem.unit }}
                       </div>
                     </div>
 
@@ -196,7 +202,7 @@
                       <div style="min-width: 130px; color: #666">
                         Loại danh mục:
                       </div>
-                      <div>{{ getCategoryName(foodItem.categoryId) }}</div>
+                      <div>{{ getNameByIdCategory(foodItem.categoryId) }}</div>
                     </div>
 
                     <div class="d-flex align-center">
@@ -208,7 +214,9 @@
 
                     <div class="d-flex align-center">
                       <div style="min-width: 130px; color: #666">Món:</div>
-                      <div>{{ foodItem.isMain === 1 ? "Chính" : "Phụ" }}</div>
+                      <div>
+                        {{ getNameByIdMain(foodItem.isMain) }}
+                      </div>
                     </div>
 
                     <div class="d-flex align-center">
@@ -306,18 +314,18 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
-                    color="green darken-1"
-                    text
-                    @click="confimDeleteFoodItem(currentOrderItem)"
-                    >Xác Nhận</v-btn
-                  >
-                  <v-btn
                     color="red darken-1"
                     text
                     @click="
                       modalConfirmDeleteFoodItem = !modalConfirmDeleteFoodItem
                     "
                     >Hủy</v-btn
+                  >
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    @click="confimDeleteFoodItem(currentOrderItem)"
+                    >Xác Nhận</v-btn
                   >
                 </v-card-actions>
               </v-card>
@@ -333,47 +341,39 @@
                       label="Tên món"
                       v-model="foodItemCurrentUpdate.foodName"
                     ></v-text-field>
-                    <v-text-field
-                      label="Giá mặc định"
-                      v-model="foodItemCurrentUpdate.priceListed"
-                    ></v-text-field>
-                    <v-text-field
-                      label="Giá bán"
-                      v-model="foodItemCurrentUpdate.priceCustom"
-                    ></v-text-field>
-                    <v-text-field
-                      label="Đơn vị"
-                      v-model="foodItemCurrentUpdate.unit"
-                    ></v-text-field>
-                    <v-combobox
-                      label="Loại danh mục"
-                      :items="[
-                        'Best thèm',
-                        'Món mới',
-                        'Đậm vị',
-                        'Trà sữa truyền thống',
-                        'Trà sữa mix',
-                        'Thèm nhai đã',
-                        'Siêu tiết kiệm / Combo hot',
-                        'Thơm béo ngất ngây',
-                        'Món thêm',
-                      ]"
-                      v-model="foodItemCurrentUpdate.categoryIdString"
-                    ></v-combobox>
-                    <v-combobox
-                      class="mt-6"
-                      label="Phân loại"
-                      :items="['Món chính', 'Món thêm']"
-                      v-model="foodItemCurrentUpdate.isMainString"
-                    ></v-combobox>
-                    <v-combobox
-                      class="mt-6"
-                      label="Tình trạng món"
-                      :items="['Đang kinh doanh', 'Ngừng kinh doanh']"
-                      v-model="foodItemCurrentUpdate.status"
-                    ></v-combobox>
+                    <div class="d-flex justify-space-between ga-3">
+                      <v-text-field
+                        label="Giá mặc định"
+                        v-model="foodItemCurrentUpdate.priceListed"
+                      ></v-text-field>
+                      <v-text-field
+                        label="Giá bán"
+                        v-model="foodItemCurrentUpdate.priceCustom"
+                      ></v-text-field>
+                    </div>
+                    <div class="d-flex justify-space-between ga-3">
+                      <v-text-field
+                        label="Điểm quy đổi"
+                        v-model="foodItemCurrentUpdate.point"
+                      ></v-text-field>
+                      <v-text-field
+                        label="Đơn vị"
+                        v-model="foodItemCurrentUpdate.unit"
+                      ></v-text-field>
+                    </div>
+                    <div class="d-flex justify-space-between ga-3">
+                      <v-select
+                        label="Loại danh mục"
+                        :items="_.pluck(categoriesDataDefault, 'categoryName')"
+                        v-model="foodItemCurrentUpdate.categoryIdString"
+                      />
+                      <v-select
+                        label="Phân loại"
+                        :items="['Món chính', 'Món thêm']"
+                        v-model="foodItemCurrentUpdate.isMainString"
+                      />
+                    </div>
                     <v-file-input
-                      class="mt-6"
                       label="Hình ảnh món"
                       accept="image/*"
                       v-model="foodItemCurrentUpdate.imageUrl"
@@ -386,16 +386,16 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
-                    color="green darken-1"
-                    text
-                    @click="confirmUpdateFoodItem(foodItemCurrentUpdate)"
-                    >Xác Nhận</v-btn
-                  >
-                  <v-btn
                     color="red darken-1"
                     text
                     @click="cancelConfirmUpdateFoodItem"
                     >Hủy</v-btn
+                  >
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    @click="confirmUpdateFoodItem(foodItemCurrentUpdate)"
+                    >Xác Nhận</v-btn
                   >
                 </v-card-actions>
               </v-card>
@@ -449,6 +449,7 @@
 <script setup>
 import useFoodManagement from "./foodManagement.js";
 import AreaManagement from "@/components/monitor/areaManagement/index.vue";
+import _ from "underscore";
 
 const {
   // State variables
@@ -467,12 +468,14 @@ const {
   listDashSelected,
   foodAdd,
   currentOrderItem,
+  categoriesDataDefault,
 
   // Methods
   formatDate,
   cancelSaveFood,
   saveFood,
-  getCategoryName,
+  getNameByIdCategory,
+  getNameByIdMain,
   tonggleSelected,
   formatCurrency,
   formatPoint,

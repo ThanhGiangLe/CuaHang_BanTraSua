@@ -3,12 +3,11 @@ import { computed } from "vue";
 import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
 import { userOrderStore } from "@/stores/orderStore.js";
+import { useShiftStore } from "/src/stores/useShiftStore.js";
 import { showToast } from "@/styles/handmade";
 import { orderFoodHandler } from "/src/composables/listFood/orderFoodHandler.js";
 import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
 import _ from "underscore";
-import { auth } from "/src/services/utils/firebase.js";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import emailjs from "emailjs-com";
 
 export default function useFoodManagement() {
@@ -22,8 +21,10 @@ export default function useFoodManagement() {
     additionPoint,
     getEmailByPhone,
   } = orderFoodHandler();
-  const { getAllEmployee } = employeeManagementHandler();
+  const { getAllEmployee, OpenShift, CloseShift, getScheduleToDay } =
+    employeeManagementHandler();
   const orderStore = userOrderStore();
+  const shiftStore = useShiftStore();
   const showDialogUpdate = ref(false);
   const isStaff = ref(true);
   const currentDish = ref({});
@@ -39,6 +40,15 @@ export default function useFoodManagement() {
   const listItemBestSelling = ref([]);
   const listFoodItemIdBestSelling = ref([]);
   const currentItemIsUpdate = ref(-1);
+
+  // Chấm công
+  const swapButtonShift = ref(true);
+  const isShowOpenShift = ref(false);
+  const isShowCloseShift = ref(false);
+  const inputOpenCashAmount = ref();
+  const inputCloseCashAmount = ref();
+  const inputAdjustmentAmount = ref();
+  const inputAdjustmentReason = ref("");
 
   // Lấy thông tin người dùng từ store
   const user = computed(() => userStore.user);
@@ -92,9 +102,21 @@ export default function useFoodManagement() {
       "foodItemId"
     );
 
+    const request = {
+      UserId: user.value.userId,
+    };
+    const response = await getScheduleToDay(request);
+    if (response?.result?.success) {
+      inputOpenCashAmount.value = response?.result?.data?.openingCashAmount;
+    }
+
     loading.value = false;
   }
   init();
+  onMounted(() => {
+    shiftStore.restoreFromStorage();
+    swapButtonShift.value = !shiftStore.isShiftOpened;
+  });
 
   function tonggleSelected(foodCategory) {
     if (listFoodCategorySelected.value.includes(foodCategory)) {
@@ -137,10 +159,7 @@ export default function useFoodManagement() {
     });
   });
   function getCurrentDateTimeForSQL() {
-    const now = new Date();
-    const localOffset = 7 * 60; // Phút (GMT+7)
-    const localTime = new Date(now.getTime() + localOffset * 60 * 1000);
-    return localTime.toISOString(); // Format: YYYY-MM-DDTHH:MM:SS.SSSZ
+    return new Date().toISOString(); // Đã là giờ UTC chuẩn
   }
   const currentOrderItem = ref({
     FoodItemId: "",
@@ -200,9 +219,15 @@ export default function useFoodManagement() {
     status: "Paid",
     discount: 0,
     tax: 0,
+    receivedAmount: 0,
     paymentMethod: "Tiền mặt",
     paymentType: "Tiền",
     items: [],
+  });
+  const returnedAmountCurrentOrder = computed(() => {
+    const received = Number(currentOrder.value.receivedAmount || 0);
+    const total = Number(currentOrder.value.total_amount || 0);
+    return received > total ? received - total : 0;
   });
   function resetOrderItem() {
     // Reset các giá trị cơ bản
@@ -318,6 +343,7 @@ export default function useFoodManagement() {
       status: "Paid", // Trạng thái mặc định
       discount: 0, // Reset giảm giá
       tax: 0, // Reset thuế
+      receivedAmount: 0,
       items: [], // Reset danh sách các món ăn
     };
   };
@@ -510,6 +536,8 @@ export default function useFoodManagement() {
       tax: currentOrder.value.tax,
       paymentMethod: currentOrder.value.paymentMethod,
       phone: searchPhoneNumbers.value ?? "",
+      receivedAmount: currentOrder.value.receivedAmount || 0,
+      returnedAmount: returnedAmountCurrentOrder.value || 0,
     };
 
     try {
@@ -520,7 +548,9 @@ export default function useFoodManagement() {
       }
 
       const { success, data } = response.responseOrder;
-      if (success === 1) {
+      if (success == -1) {
+        showToast("Thông tin đặt không hợp lệ!", "error");
+      } else if (success === 1) {
         const orderId = data.orderId;
         await createOrderItems(orderId, orderTimeCurrent);
         showToast("Đặt món thành công!", "success");
@@ -671,6 +701,7 @@ export default function useFoodManagement() {
       await processOrder();
       otpCode.value = ""; // Reset mã OTP
       isShowOTPPoints.value = false;
+      enteredOtp.value = "";
     } else {
       showToast("OTP không chính xác!", "warn");
     }
@@ -688,6 +719,12 @@ export default function useFoodManagement() {
       await sendOTP();
       setTimeout(() => (isShowOTPPoints.value = true), 2000);
     } else {
+      if (currentOrder.value.paymentMethod === "Tiền mặt") {
+        if (currentOrder.value.receivedAmount == 0) {
+          showToast("Nhập số tiền nhận từ khách!", "warn");
+          return;
+        }
+      }
       await processOrder();
     }
   }
@@ -712,6 +749,100 @@ export default function useFoodManagement() {
   function handleCloseAndReset() {
     resetCurrentOrder();
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
+  }
+
+  // Làm việc với mở két và đóng két
+  function showOpenShift() {
+    swapButtonShift.value = false;
+    isShowOpenShift.value = true;
+  }
+  function showCloseShift() {
+    swapButtonShift.value = true;
+    isShowCloseShift.value = true;
+  }
+  function cancelConfirmOpenShift() {
+    isShowOpenShift.value = false;
+    inputOpenCashAmount.value = null;
+    swapButtonShift.value = true;
+  }
+  function cancelCofirmCloseShift() {
+    isShowCloseShift.value = false;
+    inputCloseCashAmount.value = 0;
+    swapButtonShift.value = false;
+  }
+  async function confirmOpenShift() {
+    const request = {
+      UserId: user.value.userId,
+      OpeningCashAmount: inputOpenCashAmount.value,
+    };
+    const response = await OpenShift(request);
+    console.log("response: ", response);
+    if (response.result) {
+      if (response.result.success) {
+        shiftStore.openShiftState(user.value.userId, inputOpenCashAmount.value);
+        showToast("Mở ca thành công!", "success");
+        isShowOpenShift.value = false;
+        swapButtonShift.value = false;
+      }
+    } else {
+      if (response.response.status == 400) {
+        showToast("Có lỗi trong dữ liệu gửi đi!", "error");
+      } else if ((response.response.status = 404)) {
+        showToast(`${response.response.data}`, "warn");
+      } else {
+        showToast("Lỗi hệ thống!", "error");
+      }
+    }
+  }
+  async function confirmCloseShift() {
+    const request = {
+      UserId: user.value.userId,
+      ClosingCashAmount: inputCloseCashAmount.value,
+      AdjustmentAmount: inputAdjustmentAmount.value,
+      AdjustmentReason: inputAdjustmentReason.value,
+    };
+    const response = await CloseShift(request);
+    console.log("response: ", response);
+    if (
+      response.result.success == 1 ||
+      response.result.success == -1 ||
+      response.result.success == 0
+    ) {
+      if (response.result.success == 0) {
+        showToast("Kết ca thành công!", "success");
+        isShowCloseShift.value = false;
+        swapButtonShift.value = true;
+      } else if (response.result.success == -1) {
+        showToast(
+          `Số tiền trong kết ca ít hơn số hệ thống là: ${formatCurrency(
+            response.result.difference
+          )}`,
+          "warn"
+        );
+        setTimeout(() => showToast("Kết ca thành công!", "success"), 3100);
+        isShowCloseShift.value = false;
+        swapButtonShift.value = true;
+      } else {
+        showToast(
+          `Hình như: ${formatCurrency(
+            response.result.difference
+          )} là tiền tip của bạn đó...`
+        );
+        setTimeout(() => showToast("Kết ca thành công!", "success"), 3100);
+        isShowCloseShift.value = false;
+        swapButtonShift.value = true;
+      }
+      shiftStore.closeShiftState();
+      setTimeout(() => window.location.reload(), 3100);
+    } else {
+      if (response.response.status == 400) {
+        showToast("Có lỗi trong dữ liệu gửi đi!", "error");
+      } else if ((response.response.status = 404)) {
+        showToast(`${response.response.data}`, "warn");
+      } else {
+        showToast("Lỗi hệ thống!", "error");
+      }
+    }
   }
 
   return {
@@ -741,6 +872,7 @@ export default function useFoodManagement() {
     updateOrderItem,
     resultUpdateOrderItem,
     currentOrder,
+    returnedAmountCurrentOrder,
     momoQRCodeUrl,
     listFoodItemIdBestSelling,
     searchPhoneNumbers,
@@ -749,6 +881,13 @@ export default function useFoodManagement() {
     isShowOTPPoints,
     enteredOtp,
     visibleResendOtp,
+    swapButtonShift,
+    isShowOpenShift,
+    isShowCloseShift,
+    inputOpenCashAmount,
+    inputCloseCashAmount,
+    inputAdjustmentAmount,
+    inputAdjustmentReason,
 
     // Methods
     init,
@@ -772,5 +911,11 @@ export default function useFoodManagement() {
     callApiOrderFoodAndAddTable,
     sendOTP,
     verifyOTP,
+    showOpenShift,
+    showCloseShift,
+    cancelConfirmOpenShift,
+    cancelCofirmCloseShift,
+    confirmOpenShift,
+    confirmCloseShift,
   };
 }

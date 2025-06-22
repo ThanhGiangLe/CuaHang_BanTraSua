@@ -1,3 +1,6 @@
 .acv {
-    font-size: 12px;
+  font-size: 12px;
+}
+.v-btn.v-btn--density-default .v-btn__content {
+  margin-top: 2px !important;
 }

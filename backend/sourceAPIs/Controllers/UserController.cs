@@ -33,7 +33,21 @@ namespace testVue.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserMdl>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            try
+            {
+                var users = await _context.Users.ToListAsync();
+                return Ok(new { success = 1, data = users });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = -1,
+                    message = "Lỗi khi lấy danh sách tài khoản.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
         }
 
         [HttpPost("login")]
@@ -150,7 +164,7 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken == "Khách hàng" || roleFromToken == "Nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -170,18 +184,46 @@ namespace testVue.Controllers
                 Email = addUserRequest.Email,
                 Address = addUserRequest.Address,
                 Password = BCrypt.Net.BCrypt.HashPassword(addUserRequest.Password ?? "123"), // Hash mật khẩu
-                Role = addUserRequest.Role,
+                Role = addUserRequest.Role ?? "Khách hàng",
                 Avatar = addUserRequest.Avatar ?? "/public/meo.jpg",
                 CreateDate = currentTime,
                 CreateBy = addUserRequest.CreateBy,
                 UpdateDate = currentTime,
                 UpdateBy = addUserRequest.UpdateBy,
-                Point = 10000,
+                Point = 20000,
                 Status = "Busy"
             };
-
-            // Thêm người dùng vào cơ sở dữ liệu
             _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            if (addUserRequest.Role != "Khách hàng")
+            {
+                int year = DateTime.Now.Year;
+                int month = DateTime.Now.Month;
+                int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
+
+                var defautlSchedule = Enumerable.Range(1, daysInCurrentMonth).
+                    Select((item) => new
+                    {
+                        Day = item,
+                        ShiftCode = "O"
+                    }).ToList();
+                foreach (var schedule in defautlSchedule)
+                {
+                    var scheduleDate = new DateTime(year, month, schedule.Day);
+                    var newSchedule = new ScheduleMdl
+                    {
+                        UserId = user.UserId,
+                        ShiftId = schedule.ShiftCode,
+                        Date = scheduleDate,
+                        CreateBy = "Auto",
+                        CreateDate = currentTime,
+                        UpdateBy = "Auto",
+                        UpdateDate = currentTime,
+                    };
+                    _context.Schedules.Add(newSchedule);
+                }
+            }
 
             try
             {

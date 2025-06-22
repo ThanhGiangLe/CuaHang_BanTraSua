@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sourceAPI.Models;
 using sourceAPI.ModelsRequest;
 using System.Security.Claims;
 using testVue.Datas;
@@ -36,8 +37,9 @@ namespace sourceAPI.Controllers
 
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
-
                 int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
+                var currentTime = DateTime.Now;
+
                 if (schedules == null || schedules.Count == 0)
                 {
                     var defautlSchedule = Enumerable.Range(1, daysInCurrentMonth).
@@ -46,6 +48,21 @@ namespace sourceAPI.Controllers
                         Day = item,
                         ShiftCode = "O"
                     }).ToList();
+                    foreach (var schedule in defautlSchedule) {
+                        var scheduleDate = new DateTime(year, month, schedule.Day);
+                        var newSchedule = new ScheduleMdl
+                        {
+                            UserId = request.UserId,
+                            ShiftId = schedule.ShiftCode,
+                            Date = scheduleDate,
+                            CreateBy = "Auto",
+                            CreateDate = currentTime,
+                            UpdateBy = "Auto",
+                            UpdateDate = currentTime,
+                        };
+                        _context.Schedules.Add(newSchedule);
+                    }
+                    await _context.SaveChangesAsync();
                     return Ok(defautlSchedule);
                 }else
                 {
@@ -112,9 +129,6 @@ namespace sourceAPI.Controllers
                                 CreateBy = request.UpdateBy,
                                 UpdateDate = currentTime,
                                 UpdateBy = request.UpdateBy,
-                                BankAmount = 0,
-                                CashAmount = 0,
-                                ClosingCashAmount = 0,
                             };
                             _context.Schedules.Add(newSchedule);
                         }
@@ -196,6 +210,133 @@ namespace sourceAPI.Controllers
             catch (Exception e)
             {
                 return StatusCode(500, $"Đã xảy ra lỗi khi xử lý yêu cầu: {e.Message}");
+            }
+        }
+        [HttpPost("open-shift")]
+        public async Task<IActionResult> OpenShift([FromBody] OpenShiftAmountRequest request)
+        {
+            if (request == null || request.OpeningCashAmount < 0 || request.UserId < 1)
+            {
+                return BadRequest("Dữ liệu không hợp lệ!");
+            }
+            var currentDay = DateTime.UtcNow.AddHours(7);
+            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
+            if (scheduleOfDay == null)
+            {
+                return NotFound("Hãy đăng ký lịch làm việc trước khi mở ca");
+            }
+            try
+            {
+                var newScheduleShift = new ScheduleShiftMdl
+                {
+                    ScheduleId = scheduleOfDay.ScheduleId,
+                    StartTime = currentDay,
+                    OpeningCashAmount = request.OpeningCashAmount
+                };
+                _context.ScheduleShifts.Add(newScheduleShift);
+                await _context.SaveChangesAsync();
+                return Ok(new
+                {
+                    success = 1,
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message,
+                });
+            }
+        }
+        [HttpPost("close-shift")]
+        public async Task<IActionResult> CloseShift([FromBody] CloseShiftAmountRequest request)
+        {
+            if (request == null || request.ClosingCashAmount < 0 || request.UserId < 1)
+            {
+                return BadRequest("Dữ liệu không hợp lệ!");
+            }
+            var currentDay = DateTime.UtcNow.AddHours(7);
+            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
+            if (scheduleOfDay == null)
+            {
+                return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");
+            }
+            try
+            {
+                var scheduleShift = await _context.ScheduleShifts.OrderByDescending(row => row.StartTime).FirstOrDefaultAsync(row => row.ScheduleId == scheduleOfDay.ScheduleId);
+                if (scheduleShift == null)
+                {
+                    return NotFound("Không tìm thấy phiên mở ca của bạn!");
+                }
+                scheduleShift.ClosingCashAmount = request.ClosingCashAmount;
+                scheduleShift.AdjustmentAmount = request.AdjustmentAmount;
+                scheduleShift.AdjustmentReason = request.AdjustmentReason;
+                scheduleShift.EndTime = currentDay; 
+
+                var actualShift = scheduleShift.OpeningCashAmount + scheduleShift.ReceivedTotalAmount - scheduleShift.ReturnedTotalAmount - scheduleShift.AdjustmentAmount;
+                var difference = request.ClosingCashAmount - actualShift;
+
+                _context.Update(scheduleOfDay);
+                await _context.SaveChangesAsync();
+
+                if (difference == 0)
+                {
+                    return Ok(new
+                    {
+                        success = 0,
+                    });
+                }
+                else if (difference < 0)
+                {
+                    return Ok(new
+                    {
+                        success = -1,
+                        difference,
+                    });
+                }else
+                {
+                    return Ok(new
+                    {
+                        success = 1,
+                        difference,
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message,
+                });
+            }
+        }
+
+        [HttpPost("get-schedule-by-userid-today")]
+        public async Task<IActionResult> GetScheduleByUserIdToday([FromBody] UserIdRequest request)
+        {
+            if(request == null || request.UserId < 1)
+            {
+                return BadRequest("UserId không hợp lệ");
+            }
+            try
+            {
+                var currentDate = DateTime.Now;
+                var scheduleDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day);
+                var schedule = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == request.UserId && row.Date.Date == scheduleDate.Date);
+                if(schedule == null)
+                {
+                    return NotFound();
+                }else
+                {
+                    return Ok(new
+                    {
+                        success = 1,
+                        data = schedule,
+                    });
+                }
+            }
+            catch (Exception ex) {
+                return StatusCode(500, $"{ex.Message}");
             }
         }
     }

@@ -166,6 +166,7 @@ const quantitySoldMax = ref(0);
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
 const currentYear = currentDate.getFullYear(); // Năm hiện tại
+const currentDay = currentDate.getDate();
 const selectedCurrentDay = ref("");
 const selectedDay = ref("");
 const selectedMonth = ref("");
@@ -188,8 +189,18 @@ const generateMonths = (year) => {
   }
   return months;
 };
-const dateList = ref(generateDates(currentMonth, currentYear));
-const monthList = ref(generateMonths(currentYear));
+const isBeforeToday = (dateString) => {
+  const [day, month, year] = dateString.split("-");
+  return day <= currentDay;
+};
+const isBeforeToMonth = (dateString) => {
+  const [month, year] = dateString.split("-");
+  return month <= currentMonth;
+};
+const fullDateList = generateDates(currentMonth, currentYear);
+const dateList = ref(fullDateList.filter((item) => isBeforeToday(item)));
+const fullMonthList = generateMonths(currentYear);
+const monthList = ref(fullMonthList.filter((item) => isBeforeToMonth(item)));
 
 const headersBestSeling = ref([
   { title: "Tên món ăn", key: "foodName", width: "35%" },

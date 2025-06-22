@@ -70,6 +70,7 @@ namespace testVue.Controllers
             {
                 return Ok(new { success = -1 });
             }
+
             var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var fullNameFromToken = User.FindFirst(ClaimTypes.Name)?.Value;
             if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
@@ -83,17 +84,29 @@ namespace testVue.Controllers
 
             var currentDay = DateTime.UtcNow;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
-            if(scheduleOfDay == null)
+
+            if (scheduleOfDay == null)
             {
                 return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");
             }else
             {
                 var customer = await _context.Users.FirstOrDefaultAsync(u => u.Phone == orderRequest.Phone);
-                
+                var scheduleShiftOfDay = await _context.ScheduleShifts.OrderByDescending(x => x.StartTime).FirstOrDefaultAsync(row => row.ScheduleId == scheduleOfDay.ScheduleId);
+
+                if (scheduleShiftOfDay == null)
+                {
+                    return NotFound("Không tìm thấy phiên mở ca của bạn. Hãy mở ca trước khi thao tác");
+                }else
+                {
+                    if(scheduleShiftOfDay?.EndTime != null || scheduleShiftOfDay?.ClosingCashAmount != 0)
+                    {
+                        return NotFound("Hãy mở ca mới trước khi thao tác");
+                    }
+                }
                 if (orderRequest.PaymentMethod == "Tiền mặt")
                 {
-                    scheduleOfDay.CashAmount += orderRequest.TotalResult;
-                    scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
+                    scheduleShiftOfDay.ReceivedTotalAmount += orderRequest.ReceivedAmount;
+                    scheduleShiftOfDay.ReturnedTotalAmount += orderRequest.ReturnedAmount;
                     if (customer != null)
                     {
                         customer.Point += orderRequest.TotalResult * 0.1m;
@@ -101,8 +114,6 @@ namespace testVue.Controllers
                 }
                 else if(orderRequest.PaymentMethod == "Chuyển khoản")
                 {
-                    scheduleOfDay.BankAmount += orderRequest.TotalResult;
-                    scheduleOfDay.ClosingCashAmount += orderRequest.TotalResult;
                     if (customer != null)
                     {
                         customer.Point += orderRequest.TotalResult * 0.1m;
@@ -135,6 +146,8 @@ namespace testVue.Controllers
                     Status = orderRequest.Status,
                     Discount = orderRequest.Discount,
                     Tax = orderRequest.Tax,
+                    ReceivedAmount = orderRequest.ReceivedAmount,
+                    ReturnedAmount = orderRequest.ReturnedAmount,
                     PaymentMethod = orderRequest.PaymentMethod
                 };
                 if(customer != null)
@@ -159,6 +172,8 @@ namespace testVue.Controllers
                             order.Status,
                             order.Discount,
                             order.Tax,
+                            order.ReceivedAmount,
+                            order.ReturnedAmount,
                             order.PaymentMethod
                         }
                     });
@@ -229,7 +244,7 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
 
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
 
             var foodItem = new FoodItemMdl
             {
@@ -245,6 +260,7 @@ namespace testVue.Controllers
                 UpdateDate = currentTime,
                 UpdateBy = request.UpdateBy,
                 IsMain = request.IsMain,
+                Point = request.Point,
             };
 
             try
@@ -268,6 +284,7 @@ namespace testVue.Controllers
                     updateDate = foodItem.UpdateDate,
                     updateBy = foodItem.UpdateBy,
                     isMain = foodItem.IsMain,
+                    point = foodItem.Point,
                 });
             }
             catch (Exception ex)
@@ -326,7 +343,7 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
 
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
             var existingFoodItem = await _context.FoodItems.FindAsync(FoodItemId);
             if (existingFoodItem == null)
             {
@@ -343,6 +360,7 @@ namespace testVue.Controllers
             existingFoodItem.UpdateDate = currentTime;
             existingFoodItem.UpdateBy = updatedFoodItem.UpdateBy ?? "Admin";
             existingFoodItem.IsMain = excludedIds.Contains(updatedFoodItem.IsMain) ? updatedFoodItem.IsMain : existingFoodItem.IsMain;
+            existingFoodItem.Point = updatedFoodItem.Point ?? existingFoodItem?.Point;
 
             try
             {
@@ -363,7 +381,8 @@ namespace testVue.Controllers
                         existingFoodItem.Status,
                         existingFoodItem.UpdateDate,
                         existingFoodItem.UpdateBy,
-                        existingFoodItem.IsMain
+                        existingFoodItem.IsMain,
+                        existingFoodItem.Point
                     }
                 });
             }

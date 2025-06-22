@@ -31,6 +31,12 @@
         class="my-vtab-custommer"
         >Két tiền</v-tab
       >
+      <v-tab
+        prepend-icon="mdi-store-clock-outline"
+        value="scheduleHistory"
+        class="my-vtab-custommer"
+        >Lịch sử lịch làm việc</v-tab
+      >
       <v-tab prepend-icon="mdi-cog" value="settings" class="my-vtab-custommer"
         >Thay đổi mật khẩu</v-tab
       >
@@ -65,6 +71,10 @@
           <MonitorTotalSalesManagement />
         </v-tabs-window-item>
 
+        <v-tabs-window-item value="scheduleHistory">
+          <ScheduleHistoryManagement />
+        </v-tabs-window-item>
+
         <v-tabs-window-item value="settings">
           <MonitorUpdatePasswordManagement />
         </v-tabs-window-item>
@@ -86,6 +96,7 @@ import MonitorFoodManagement from "@/components/monitor/foodManagement/index.vue
 import MonitorReportManagement from "@/components/monitor/reportManagement/index.vue";
 import MonitorEmployeeManagement from "@/components/monitor/employeeManagement/index.vue";
 import MonitorTotalSalesManagement from "@/components/monitor/totalSalesManagement/index.vue";
+import ScheduleHistoryManagement from "@/components/monitor/scheduleHistoryManagement/index.vue";
 import MonitorAreaManagement from "@/components/monitor/areaManagement/index.vue";
 import MonitorUpdatePasswordManagement from "@/components/monitor/updatePassword/index.vue";
 import LogoutUser from "@/components/monitor/logoutUser/index.vue";

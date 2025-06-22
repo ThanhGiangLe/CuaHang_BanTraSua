@@ -156,6 +156,18 @@ export function reportManagementHandler() {
       return err;
     }
   };
+  const GetOrderDetailsByOrderId = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_ORDERDETAILS_BY_ORDERID,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
   return {
     getAllRevenueByMonth,
     gettAllRevenueByDay,
@@ -168,5 +180,6 @@ export function reportManagementHandler() {
     getAllOrderByMonth,
     getAllOrderByDay,
     getAllOrderByFullName,
+    GetOrderDetailsByOrderId,
   };
 }

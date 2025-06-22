@@ -15,8 +15,6 @@ namespace testVue.Models
         public string? CreateBy {  get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? UpdateBy { get; set; }
-        public decimal CashAmount { get; set; }
-        public decimal BankAmount { get; set; }
-        public decimal ClosingCashAmount { get; set; }
+        public decimal OpeningCashAmount { get; set; } = 500000;
     }
 }
