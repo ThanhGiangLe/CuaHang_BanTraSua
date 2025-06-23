@@ -28,12 +28,81 @@
         style="flex: 2"
         :search-input.sync="searchPhoneKeyword"
       />
-      <v-btn
-        class="ms-2 my_btn_custommer"
-        style="background-color: #002051 !important"
-        @click="isShowQRCode = !isShowQRCode"
-        >Mã QR</v-btn
+      <div>
+        <v-btn
+          v-if="swapButtonShift"
+          class="ms-2 my_btn_custommer"
+          style="background-color: #b00000 !important"
+          @click="showOpenShift"
+          >Mở ca</v-btn
+        >
+        <v-btn
+          v-else
+          class="ms-2 my_btn_custommer"
+          style="background-color: #002051 !important"
+          @click="showCloseShift"
+          >Kết ca</v-btn
+        >
+      </div>
+
+      <v-dialog
+        v-model="isShowOpenShift"
+        width="650px"
+        persistent
+        class="open_shift d-flex align-center justify-center"
       >
+        <v-card>
+          <v-card-title class="">Ghi nhận mở ca</v-card-title>
+          <v-card-text
+            class="text-center py-4"
+            style="width: 90%; margin: 0 auto"
+          >
+            <div style="font-size: 16px; font-weight: 500; color: #555">
+              Số tiền hiện có trong két là:
+            </div>
+            <div
+              style="
+                font-size: 28px;
+                font-weight: bold;
+                color: #2e7d32;
+                margin-top: 8px;
+              "
+            >
+              {{ formatCurrency(inputOpenCashAmount) }}
+            </div>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn @click="cancelConfirmOpenShift" color="red">Đóng</v-btn>
+            <v-btn @click="confirmOpenShift" color="primary">Xác nhận</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="isShowCloseShift" width="650px" persistent>
+        <v-card>
+          <v-card-title class="">Ghi nhận kết ca</v-card-title>
+          <v-card-text style="padding: 0px 4px; width: 90%; margin: 0 auto">
+            <v-text-field
+              label="Số tiền trong két"
+              v-model="inputCloseCashAmount"
+            ></v-text-field>
+            <v-text-field
+              label="Số tiền phát sinh"
+              v-model="inputAdjustmentAmount"
+            ></v-text-field>
+            <v-text-field
+              label="Nguyên nhân sử dụng"
+              v-model="inputAdjustmentReason"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn @click="cancelCofirmCloseShift" color="red">Đóng</v-btn>
+            <v-btn @click="confirmCloseShift" color="primary">Xác nhận</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
 
     <div
@@ -99,9 +168,9 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="height: 130px; width: 98%"
+                    style="height: 120px; width: 98%"
                   />
-                  <h4 class="mt-2 hiddent-text-one-line">
+                  <h4 class="mt-2 text-center hiddent-text-two-line">
                     {{ foodItem.foodName }}
                   </h4>
                   <h5>
@@ -109,9 +178,7 @@
                       foodItem.unit
                     }}
                   </h5>
-                  <h6>
-                    {{ formatPoint(foodItem.points) }}/{{ foodItem.unit }}
-                  </h6>
+                  <h6>{{ formatPoint(foodItem.point) }}/{{ foodItem.unit }}</h6>
                   <v-btn
                     class="mt-2 foodManagement_listFoodOrder_menu_foods_item_addFood"
                     size="x-small"
@@ -490,9 +557,8 @@
 
         <!-- Đơn giá danh sách các sản phẩm -->
         <div class="foodManagement_listFoodOrder_bill_payment rounded-lg mt-2">
-          <h4 class="mb-1">Tổng hóa đơn</h4>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between"
+            class="foodManagement_listFoodOrder_bill_payment_total d-flex justify-space-between my-1"
           >
             <span style="font-size: 12px">Tổng tiền</span>
             <span>
@@ -501,10 +567,23 @@
             >
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_tax d-flex justify-space-between"
+            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-1"
           >
-            <span style="font-size: 12px">Thuế(%)</span>
-            <span>{{ currentOrder.tax }}</span>
+            <span style="font-size: 12px">Tiền nhận</span>
+            <input
+              type="number"
+              v-model="currentOrder.receivedAmount"
+              class="discount-input my_input_custom"
+              min="0"
+            />
+          </div>
+          <div
+            class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-1"
+          >
+            <span style="font-size: 12px">Tiền thừa</span>
+            <span class="my_input_custom">{{
+              formatCurrency(returnedAmountCurrentOrder)
+            }}</span>
           </div>
           <div
             class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between"
@@ -513,24 +592,17 @@
             <input
               type="number"
               v-model="currentOrder.discount"
-              class="discount-input"
+              class="discount-input my_input_custom"
               min="0"
-              style="width: 65px"
             />
           </div>
           <div
-            class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mb-1"
+            class="foodManagement_listFoodOrder_bill_payment_paymentMethod d-flex justify-space-between mt-1"
           >
-            <v-radio-group v-model="currentOrder.paymentMethod">
-              <v-radio
-                label="Thanh toán bằng tiền mặt"
-                value="Tiền mặt"
-              ></v-radio>
-              <v-radio
-                label="Thanh toán bằng chuyển khoản"
-                value="Chuyển khoản"
-              ></v-radio>
-              <v-radio label="Thanh toán bằng điểm" value="Điểm"></v-radio>
+            <v-radio-group v-model="currentOrder.paymentMethod" inline>
+              <v-radio label="Tiền mặt" value="Tiền mặt"></v-radio>
+              <v-radio label="Chuyển khoản" value="Chuyển khoản"></v-radio>
+              <v-radio label="Điểm" value="Điểm"></v-radio>
             </v-radio-group>
           </div>
 
@@ -548,7 +620,7 @@
 
         <!-- Thực hiện thao tác -->
         <v-btn
-          class="w-100 mb-2 mt-2 my_btn_custommer"
+          class="w-100 my-2 my_btn_custommer"
           @click="callApiOrderFood()"
           color="orange-darken-2"
           >Đặt món</v-btn
@@ -615,11 +687,10 @@
         <!-- Dialog nếu chọn bàn -->
         <v-dialog
           v-model="showComponentAreaManagement"
-          max-width="1080px"
-          max-height="900px"
+          max-width="1180px"
           persistent
         >
-          <v-card>
+          <v-card style="width: 100%; height: 100%">
             <v-card-title class="headline">Chọn bàn</v-card-title>
 
             <v-card-text
@@ -668,6 +739,7 @@ const {
   resultOrderItem,
   updateOrderItem,
   currentOrder,
+  returnedAmountCurrentOrder,
   momoQRCodeUrl,
   listFoodItemIdBestSelling,
   searchPhoneNumbers,
@@ -676,6 +748,13 @@ const {
   isShowOTPPoints,
   enteredOtp,
   visibleResendOtp,
+  swapButtonShift,
+  isShowOpenShift,
+  isShowCloseShift,
+  inputOpenCashAmount,
+  inputCloseCashAmount,
+  inputAdjustmentAmount,
+  inputAdjustmentReason,
 
   // Methods
   tonggleSelected,
@@ -694,5 +773,11 @@ const {
   callApiOrderFoodAndAddTable,
   sendOTP,
   verifyOTP,
+  showOpenShift,
+  showCloseShift,
+  cancelConfirmOpenShift,
+  cancelCofirmCloseShift,
+  confirmOpenShift,
+  confirmCloseShift,
 } = useFoodManagement();
 </script>

@@ -8,24 +8,6 @@ import { foodManagementHandler } from "/src/composables/foodManagement/foodManag
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 export default function useReportRevenue() {
-  const generateDates = (month, year) => {
-    const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
-    const dates = [];
-    for (let day = 1; day <= daysInMonth; day++) {
-      let formatDay = day.toString().padStart(2, "0");
-      let formatMonth = month.toString().padStart(2, "0");
-      dates.push(`${formatDay}-${formatMonth}-${year}`);
-    }
-    return dates;
-  };
-  const generateMonths = (year) => {
-    const months = [];
-    for (let month = 1; month <= 12; month++) {
-      let formatMonth = month.toString().padStart(2, "0");
-      months.push(`${formatMonth}-${year}`);
-    }
-    return months;
-  };
   const {
     getAllRevenueByMonth,
     gettAllRevenueByDay,
@@ -38,8 +20,8 @@ export default function useReportRevenue() {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
   const currentYear = currentDate.getFullYear(); // Năm hiện tại
-  const dateList = ref(generateDates(currentMonth, currentYear));
-  const monthList = ref(generateMonths(currentYear));
+  const currentDay = currentDate.getDate();
+
   const selectedMonth = ref("");
   const selectedDay = ref("");
   const selectedCurrentDay = ref("");
@@ -59,6 +41,36 @@ export default function useReportRevenue() {
   const selectedDayForCate = ref("");
   const selectedMonthForCate = ref("");
   init();
+  const generateDates = (month, year) => {
+    const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
+    const dates = [];
+    for (let day = 1; day <= daysInMonth; day++) {
+      let formatDay = day.toString().padStart(2, "0");
+      let formatMonth = month.toString().padStart(2, "0");
+      dates.push(`${formatDay}-${formatMonth}-${year}`);
+    }
+    return dates;
+  };
+  const generateMonths = (year) => {
+    const months = [];
+    for (let month = 1; month <= 12; month++) {
+      let formatMonth = month.toString().padStart(2, "0");
+      months.push(`${formatMonth}-${year}`);
+    }
+    return months;
+  };
+  const isBeforeToday = (dateString) => {
+    const [day, month, year] = dateString.split("-");
+    return day <= currentDay;
+  };
+  const isBeforeMonth = (dateString) => {
+    const [month, year] = dateString.split("-");
+    return month <= currentMonth;
+  };
+  const fullDateList = generateDates(currentMonth, currentYear);
+  const dateList = ref(fullDateList.filter((item) => isBeforeToday(item)));
+  const fullMonthList = generateMonths(currentYear);
+  const monthList = ref(fullMonthList.filter((item) => isBeforeMonth(item)));
   const headersEmployee = ref([
     { title: "Tên Nhân Viên", key: "fullName", width: "35%" },
     { title: "Tổng doanh thu", key: "totalRevenue", width: "65%" },

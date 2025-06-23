@@ -5,6 +5,7 @@ import API_ENDPOINTS from "@/api/api.js";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { useUserStore } from "@/stores/user.js";
+import _ from "underscore";
 import { showToast } from "@/styles/handmade";
 import { foodManagementHandler } from "/src/composables/foodManagement/foodManagementHandler.js";
 
@@ -26,17 +27,8 @@ export default function useFoodManagement() {
 
   const listDashSelected = ref([]);
 
-  const categoriesDataDefault = {
-    8: "Best thèm",
-    9: "Món mới",
-    10: "Đậm vị",
-    11: "Trà sữa truyền thống",
-    12: "Trà sữa mix",
-    13: "Thèm nhai đã",
-    14: "Siêu tiết kiệm / Combo hot",
-    15: "Thơm béo ngất ngây",
-    16: "Món thêm",
-
+  const categoriesDataDefault = ref([]);
+  const isMainDefault = {
     1: "Món chính",
     0: "Món thêm",
   };
@@ -50,16 +42,34 @@ export default function useFoodManagement() {
     categoryIdString: "",
     isMain: -1,
     isMainString: "",
+    point: "",
   });
-  function getIdByName(name) {
+  function getIdByNameCategory(categoryName) {
+    const category = categoriesDataDefault.value.find(
+      (item) =>
+        item.categoryName.toLowerCase().trim() ==
+        categoryName.toLowerCase().trim()
+    );
+    return category ? category.categoryId : null;
+  }
+  function getIdByNameIsMain(name) {
     const cleanedName = name.trim();
-    for (const [id, value] of Object.entries(categoriesDataDefault)) {
+    for (const [id, value] of Object.entries(isMainDefault)) {
       if (value === cleanedName) {
         return parseInt(id);
       }
     }
     return null;
   }
+  const getNameByIdCategory = (categoryId) => {
+    const cate = categoriesDataDefault.value.find(
+      (item) => item.categoryId == categoryId
+    );
+    return cate ? cate.categoryName : "Không xác định";
+  };
+  const getNameByIdMain = (isMain) => {
+    return isMainDefault[isMain] || "Không xác định";
+  };
   function formatDate(dateTime) {
     const date = new Date(dateTime);
     const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
@@ -90,13 +100,18 @@ export default function useFoodManagement() {
 
     const responseCate = await getAllCategory();
     foodCategories.value = responseCate.listCategory;
+    categoriesDataDefault.value = foodCategories.value.map((item) => {
+      return {
+        categoryId: item.categoryId,
+        categoryName: item.categoryName,
+      };
+    });
     loading.value = false;
   }
   init();
-  const getCategoryName = (categoryId) => {
-    return categoriesDataDefault[categoryId] || "Không xác định";
-  };
+
   function tonggleSelected(foodCategory) {
+    console.log("foodCategory: ", foodCategory);
     if (listDashSelected.value.includes(foodCategory)) {
       listDashSelected.value = listDashSelected.value.filter(
         (s) => s.categoryId !== foodCategory.categoryId
@@ -164,11 +179,15 @@ export default function useFoodManagement() {
       categoryId: -1,
       isMainString: "",
       isMain: -1,
+      point: "",
     };
   }
   async function saveFood() {
-    foodAdd.value.categoryId = getIdByName(foodAdd.value.categoryIdString);
-    foodAdd.value.isMain = getIdByName(foodAdd.value.isMainString);
+    console.log("foodAdd: ", foodAdd.value);
+    foodAdd.value.categoryId = getIdByNameCategory(
+      foodAdd.value.categoryIdString
+    );
+    foodAdd.value.isMain = getIdByNameIsMain(foodAdd.value.isMainString);
 
     let imageString = null;
     if (foodAdd.value.imageUrl instanceof File) {
@@ -185,9 +204,12 @@ export default function useFoodManagement() {
       createBy: user.value.fullName,
       updateBy: user.value.fullName,
       isMain: foodAdd.value.isMain,
+      point: foodAdd.value.point,
     };
+    console.log("requestData: ", requestData);
 
     const response = await createFood(requestData);
+    console.log("response: ", response);
 
     if (response.responseCreate) {
       if (response.responseCreate.success) {
@@ -200,12 +222,14 @@ export default function useFoodManagement() {
           priceListed: response.responseCreate.priceListed,
           status: response.responseCreate.status,
           unit: response.responseCreate.unit,
-          createDate: formatDate(response.responseCreate.createDate),
+          createDate: response.responseCreate.createDate,
           createBy: response.responseCreate.createBy,
-          updateDate: formatDate(response.responseCreate.updateDate),
+          updateDate: response.responseCreate.updateDate,
           updateBy: response.responseCreate.updateBy,
           isMain: response.responseCreate.isMain,
+          point: response.responseCreate.point,
         };
+        console.log("food: ", food);
 
         foodItems.value.push(food);
         cancelSaveFood();
@@ -266,9 +290,10 @@ export default function useFoodManagement() {
     originalFoodItem.value = { ...foodItem };
     foodItemCurrentUpdate.value = {
       ...foodItem,
-      categoryIdString: getCategoryName(foodItem.categoryId),
-      isMainString: getCategoryName(foodItem.isMain),
+      categoryIdString: getNameByIdCategory(foodItem.categoryId),
+      isMainString: getNameByIdMain(foodItem.isMain),
     };
+    console.log("foodItemCurrentUpdate: ", foodItemCurrentUpdate.value);
     modalUpdateFoodItem.value = true;
   }
   function cancelConfirmUpdateFoodItem() {
@@ -279,10 +304,10 @@ export default function useFoodManagement() {
     modalUpdateFoodItem.value = false;
   }
   async function confirmUpdateFoodItem(foodItemCurrentUpdate) {
-    foodItemCurrentUpdate.categoryId = getIdByName(
+    foodItemCurrentUpdate.categoryId = getIdByNameCategory(
       foodItemCurrentUpdate.categoryIdString
     );
-    foodItemCurrentUpdate.isMain = getIdByName(
+    foodItemCurrentUpdate.isMain = getIdByNameIsMain(
       foodItemCurrentUpdate.isMainString
     );
 
@@ -304,9 +329,12 @@ export default function useFoodManagement() {
       status: foodItemCurrentUpdate.status,
       updateBy: user.value.fullName,
       isMain: foodItemCurrentUpdate.isMain,
+      point: foodItemCurrentUpdate.point,
     };
+    console.log("requestData: ", requestData);
 
     const response = await updateFood(requestData);
+    console.log("response: ", response);
 
     if (response.responseUpdate) {
       if (response.responseUpdate.success) {
@@ -328,7 +356,9 @@ export default function useFoodManagement() {
         showToast("Cập nhật thất bại!", "error");
       }
     } else {
-      if (response.response.status == 403) {
+      if (response.response.status == 400) {
+        showToast("Dữ liễu gửi đi không hợp lệ!", "error");
+      } else if (response.response.status == 403) {
         showToast(`Bạn không có quyền thao tác chức năng này!`, "warn");
         modalUpdateFoodItem.value = false;
       } else if (response.response.status == 404) {
@@ -359,12 +389,14 @@ export default function useFoodManagement() {
     listDashSelected,
     foodAdd,
     currentOrderItem,
+    categoriesDataDefault,
 
     // Methods
     formatDate,
     cancelSaveFood,
     saveFood,
-    getCategoryName,
+    getNameByIdCategory,
+    getNameByIdMain,
     tonggleSelected,
     formatCurrency,
     formatPoint,

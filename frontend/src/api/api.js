@@ -38,11 +38,13 @@ const API_ENDPOINTS = {
   GET_ALL_REVENUE_BY_CATEGORY: `/report/total-revenue-category`, // Không dùng
   GET_ALL_ORDERITEM_BESTSELING: `/report/get-all-orderitem-bestseling`, // Không dùng
   GET_ALL_ORDER: `/report/get-all-order`, // Không dùng
+  GET_ORDERDETAILS_BY_ORDERID: "/report/get-orderdetails-by-orderid",
 
   // Total sales
-  GET_TOTALSALES_ALL_EMPLOYEE: "/totalsales/get-total-sales-all-employee",
+  GET_TOTALSALES_ALL_EMPLOYEE: "/totalsales/get-total-sales",
   GET_TOTALSALES_BY_DAY_OR_USERID:
     "/totalsales/get-total-sales-by-day-or-userid",
+  GET_DETAILS_TOTALSALE_SCHEDULE: "/totalsales/get-detail-total-sale-schedule",
 
   // Employee management
   GET_ALL_EMPLOYEES: `/user`,
@@ -55,6 +57,10 @@ const API_ENDPOINTS = {
   GET_SCHEDULE_BY_USERID: "/schedule/get-schedule-by-userid",
   UPDATE_SCHEDULE_BY_USERID: "/schedule/update-schedule-by-userid",
   SWAP_SCHEDULE_SHIFT: "/schedule/swap-schedule-shift",
+  OPEN_SHIFT: "/schedule/open-shift",
+  CLOSE_SHIFT: "/schedule/close-shift",
+  GET_SCHEDULE_TODAY: "/schedule/get-schedule-by-userid-today",
+  GET_ALL_SCHEDULE_HISTORY: "/schedule/get-all-schedule-history",
 };
 
 export default API_ENDPOINTS;

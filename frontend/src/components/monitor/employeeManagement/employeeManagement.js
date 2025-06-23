@@ -30,6 +30,14 @@ export default function useEmployeeManagement() {
   const scheduleOfUser = ref([]);
   const scheduleOfUserBackup = ref([]);
   const currentDay = ref(null);
+  const selectedRole = ref("");
+  const listRoleDefault = ref([
+    "Chủ cửa hàng",
+    "Quản lý",
+    "Nhân viên",
+    "Khách hàng",
+    "Tất cả",
+  ]);
   const shifs = ref({
     S: "Ca sáng",
     C: "Ca chiều",
@@ -65,27 +73,31 @@ export default function useEmployeeManagement() {
     const response = await getAllEmployee();
     employeeList.value = response;
   }
-
-  onMounted(async () => {
-    await init();
-    const timeNow = new Date();
-    currentDay.value = timeNow.getDate();
-  });
-  // :type="scheduleAllUser[index][currentDay -1].shiftCode != 'O' ? 'ON' : 'OFF'"
+  init();
   const filterEmployeeList = computed(() => {
-    if (!employeeList.value) {
-      return [];
-    }
-    if (search.value.trim() == "") {
+    if (selectedRole.value.toLowerCase() == "tất cả") {
       return employeeList.value;
     }
     return employeeList.value.filter((e) => {
-      return e.fullName?.toUpperCase().includes(search.value.toUpperCase());
+      const isSearchMatch = e.fullName
+        .toLowerCase()
+        .includes(search.value.toLowerCase());
+      const isMatchRole =
+        !selectedRole.value ||
+        selectedRole.value.toLowerCase() == e.role.toLowerCase();
+      return isSearchMatch && isMatchRole;
     });
   });
   const formatDay = (day) =>
     day != null ? day.toString().padStart(2, "0") : "";
-
+  const emailRules = [
+    (v) => !!v || "Email là bắt buộc",
+    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Email không hợp lệ",
+  ];
+  function filterAccountByRole(role) {
+    console.log("role: ", role);
+    selectedRole.value = role;
+  }
   // <== Thêm nhân viên ==>
   function cancelAddEmployee() {
     showDialogAddEmployee.value = false;
@@ -108,7 +120,7 @@ export default function useEmployeeManagement() {
     });
   }
 
-  async function sendMainRegisterAccount(email) {
+  async function sendMailRegisterAccount(email) {
     try {
       const templateParams = {
         email: email,
@@ -154,8 +166,13 @@ export default function useEmployeeManagement() {
         showToast("Số điện thoại hoặc email đã được dùng!", "warn");
       } else if (response.success == 1) {
         showToast("Thêm thành công!", "success");
-        employeeList.value.push(response.data); // Thêm user mới vào danh sách hiển thị
-        sendMainRegisterAccount(response.data.email);
+        sendMailRegisterAccount(response.data.email);
+        console.log("response: ", response);
+        if (
+          !employeeList.value.some((e) => e.userId === response.data.userId)
+        ) {
+          employeeList.value.push(response.data);
+        }
         showDialogAddEmployee.value = false; // Đóng dialog
         employeeInfo.value = {
           FullName: "",
@@ -166,7 +183,6 @@ export default function useEmployeeManagement() {
           Role: "",
           ImageUrl: "",
         };
-        setTimeout(() => window.location.reload(), 3200);
       }
     } else {
       if (response.response.status == 403) {
@@ -386,6 +402,7 @@ export default function useEmployeeManagement() {
       Year: currentYear,
       Month: currentMonth + 1,
       Day: selectedDay.value,
+      UpdateBy: user.value.fullName,
     };
     const response = await swapScheduleShift(request);
     if (response.success) {
@@ -422,6 +439,7 @@ export default function useEmployeeManagement() {
   }
 
   return {
+    user,
     search,
     showDialogAddEmployee,
     employeeList,
@@ -442,6 +460,9 @@ export default function useEmployeeManagement() {
     isShowListEmployeeSwapSchedule,
     employeeSelectedSwapSchedule,
     isConfirmSelectedEmployeeSwapSchedule,
+    emailRules,
+    selectedRole,
+    listRoleDefault,
 
     formatDay,
     cancelAddEmployee,
@@ -459,5 +480,6 @@ export default function useEmployeeManagement() {
     confirmSelectedEmployee,
     swapSchedule,
     cancelSwapSchedule,
+    filterAccountByRole,
   };
 }

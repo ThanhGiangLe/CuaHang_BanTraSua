@@ -1,37 +1,69 @@
 <template>
   <div class="employeeManagement py-2 px-4 d-flex flex-column">
     <div class="employeeManagement_search d-flex align-center">
-      <v-text-field class="me-12" append-inner-icon="mdi-magnify" density="compact"
-        label="Nhập tên nhân viên cần tìm kiếm..." variant="solo" hide-details single-line
+      <v-text-field class="me-6" append-inner-icon="mdi-magnify" density="compact"
+        label="Nhập tên tài khoản hoặc số điện thoại cần tìm kiếm..." variant="solo" hide-details single-line
         v-model="search"></v-text-field>
-      <v-avatar color="info">
-        <v-img src="/public/meo.jpg"></v-img>
+      <v-avatar color="info" style="width: 60px; height: 60px;">
+        <v-img :src="user.avatar"></v-img>
       </v-avatar>
     </div>
-    <div class="employeeManagement_heading mt-4 d-flex justify-space-between">
-      <div class="employeeManagement_heading_countEmp">
-        <h2>Số lượng nhân viên: {{ employeeList.length }}</h2>
+    <div class="employeeManagement_heading mt-4 d-flex justify-space-between align-center">
+      <div class="employeeManagement_heading_countEmp d-flex">
+        <h2 class="me-2">Số lượng tài khoản: {{ employeeList.length }}</h2>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" append-icon="mdi-chevron-down" min-width="150px" style="border: 1px solid #333"
+              size="small" class="ms-2">
+              {{ selectedRole || "Vai trò" }}
+            </v-btn>
+          </template>
+          <v-list max-height="200px" style="overflow-y: auto">
+            <v-list-item v-for="role in listRoleDefault" :key="role" :value="role" style="min-height: 36px !important"
+              @click="filterAccountByRole(role)">
+              <v-list-item-title>{{
+                role
+              }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
       <div class="employeeManagement_heading_filter-addEmp d-flex align-center">
         <v-btn class="bg-orange-accent-4" @click="showDialogAddEmployee = !showDialogAddEmployee">
-          + Thêm nhân viên
+          + Thêm tài khoản
         </v-btn>
         <!-- Form thêm nhân viên -->
-        <v-dialog v-model="showDialogAddEmployee" max-width="600px" max-height="600px" style="overflow-y: auto">
+        <v-dialog v-model="showDialogAddEmployee" max-width="600px" max-height="660px" style="overflow-y: auto">
           <v-card class="pa-2">
-            <v-card-title> Thông tin nhân viên </v-card-title>
-            <v-card-text style="padding: 8px 16px 0 16px">
-              <v-text-field label="Tên nhân viên" v-model="employeeInfo.FullName"></v-text-field>
-              <v-text-field label="Số điện thoại" v-model="employeeInfo.Phone"></v-text-field>
+            <!-- <v-card-title> Thông tin tài khoản </v-card-title> -->
+            <v-card-text style="padding: 8px 16px 0 16px" class="form_register_account">
+              <v-text-field label="Tên tài khoản" v-model="employeeInfo.FullName" :rules="[
+                v => !!v || 'Tên tài khoản buộc nhập',
+                v => v.length >= 3 || 'Ít nhất 3 ký tự'
+              ]"></v-text-field>
+              <v-text-field label="Số điện thoại" v-model="employeeInfo.Phone" :rules="[
+                v => !!v || 'Số điện thoại buộc nhập',
+                v => v.length >= 3 || 'Ít nhất 10 ký tự'
+              ]"></v-text-field>
               <v-text-field label="Mật khẩu" v-model="employeeInfo.Password"></v-text-field>
-              <v-combobox label="Vị trí" :items="['Owner', 'Manager', 'Staff', 'Customer']" v-model="employeeInfo.Role"
-                class="mb-6"></v-combobox>
-              <v-text-field label="Email" v-model="employeeInfo.Email"></v-text-field>
+              <!-- <v-radio-group v-model="employeeInfo.Role" inline>
+                <v-radio label="Chủ cửa hàng" value="Chủ cửa hàng"></v-radio>
+                <v-radio label="Quản lý" value="Quản lý"></v-radio>
+                <v-radio label="Nhân viên" value="Nhân viên"></v-radio>
+                <v-radio label="Khách hàng" value="Khách hàng"></v-radio>
+              </v-radio-group> -->
+              <v-select
+                label="Vị trí"
+                :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
+                v-model="employeeInfo.Role"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              />
+              <v-text-field label="Email" v-model="employeeInfo.Email" :rules="emailRules"></v-text-field>
               <v-text-field label="Địa chỉ" v-model="employeeInfo.Address"></v-text-field>
-              <v-file-input label="Ảnh nhân viên" accept="image/*" v-model="employeeInfo.ImageUrl"
+              <v-file-input label="Ảnh tài khoản" accept="image/*" v-model="employeeInfo.ImageUrl"
                 prepend-icon="mdi-camera" :show-size="true"></v-file-input>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="py-0">
               <v-btn color="red darken-1" text @click="cancelAddEmployee()">Hủy</v-btn>
               <v-btn color="green darken-1" text @click="handleAddEmployee()">Thêm</v-btn>
             </v-card-actions>
@@ -45,7 +77,7 @@
       <v-container>
         <v-row>
           <v-col class="employeeManagement_list_item rounded-lg" cols="12" lg="6" md="6" sm="6" xs="12"
-            v-for="(employee, indexEmp) in filterEmployeeList" :key="employee.userId">
+            v-for="(employee, indexEmp) in filterEmployeeList" :key="JSON.stringify(employee) + index">
             <v-sheet class="pa-4 rounded-lg me-3" style="border: 1px solid #333; margin-left: -12px">
               <div class="employeeManagement_list_item_title d-flex justify-space-between">
                 <div class="employeeManagement_list_item_title_avt d-flex align-center">
@@ -162,8 +194,12 @@
                       Vai trò:
                     </v-col>
                     <v-col cols="9" class="pa-1">
-                      <v-combobox :items="['Owner', 'Manager', 'Staff', 'Customer']"
-                        v-model="employeeCurrentChoose.role" outlined></v-combobox>
+                      <v-select
+                        label="Vị trí"
+                        :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
+                        v-model="employeeCurrentChoose.role"
+                        :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+                      />
                     </v-col>
                   </v-row>
                 </v-col>
@@ -263,7 +299,8 @@
                 <div class="mt-1">
                   <v-btn variant="outlined" color="info" style="min-width: 150px;" class="me-3"
                     @click="cancelUpdateSchedule">Hủy</v-btn>
-                  <v-btn color="info" style="min-width: 150px;" class="me-3" @click="handleUpdateSchedule">Cập nhật</v-btn>
+                  <v-btn color="info" style="min-width: 150px;" class="me-3" @click="handleUpdateSchedule">Cập
+                    nhật</v-btn>
                   <v-btn color="info" style="min-width: 150px;" @click="showListEmployee">
                     Thay đổi với nhân sự khác</v-btn>
                 </div>
@@ -310,6 +347,7 @@
 import useEmployeeManagement from "./employeeManagement.js";
 import _ from "underscore";
 const {
+  user,
   search,
   showDialogAddEmployee,
   employeeList,
@@ -330,6 +368,9 @@ const {
   isShowListEmployeeSwapSchedule,
   employeeSelectedSwapSchedule,
   isConfirmSelectedEmployeeSwapSchedule,
+  emailRules,
+  selectedRole,
+  listRoleDefault,
 
   formatDay,
   cancelAddEmployee,
@@ -347,6 +388,7 @@ const {
   confirmSelectedEmployee,
   swapSchedule,
   cancelSwapSchedule,
+  filterAccountByRole,
 } = useEmployeeManagement();
 
 </script>

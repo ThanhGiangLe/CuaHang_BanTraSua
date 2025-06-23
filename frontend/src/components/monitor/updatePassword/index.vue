@@ -23,14 +23,14 @@
         Confirm Password
       </div>
       <v-text-field
-        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-        :type="visible ? 'text' : 'password'"
+        :append-inner-icon="visibleConfirm ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visibleConfirm ? 'text' : 'password'"
         density="compact"
         placeholder="Enter your new password"
         prepend-inner-icon="mdi-lock-outline"
         variant="outlined"
         v-model="newConfirmPassword"
-        @click:append-inner="visible = !visible"
+        @click:append-inner="visibleConfirm = !visibleConfirm"
       ></v-text-field>
 
       <v-btn
@@ -61,6 +61,7 @@ import { useLogin } from "/src/composables/authen/useLogin.js";
 const { updatePassword } = useLogin();
 
 const visible = ref(false);
+const visibleConfirm = ref(false);
 const router = useRouter();
 const userStore = useUserStore();
 const dialogVisibleInfo = ref(false);
