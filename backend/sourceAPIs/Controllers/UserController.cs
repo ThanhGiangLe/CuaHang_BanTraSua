@@ -14,6 +14,7 @@ using System.Security.Claims;
 using sourceAPI.Models.Token;
 using Microsoft.AspNetCore.Authorization;
 using sourceAPI.ModelsRequest;
+using sourceAPI.Models;
 
 namespace testVue.Controllers
 {
@@ -221,7 +222,17 @@ namespace testVue.Controllers
                         UpdateBy = "Auto",
                         UpdateDate = currentTime,
                     };
+                    var newScheduleHistory = new ScheduleHistoryMdl
+                    {
+                        UserId = user.UserId,
+                        Date = scheduleDate,
+                        OldShiftId = schedule.ShiftCode,
+                        NewShiftId = schedule.ShiftCode,
+                        ChangedBy = "Auto",
+                        ChangedAt = currentTime
+                    };
                     _context.Schedules.Add(newSchedule);
+                    _context.ScheduleHistories.Add(newScheduleHistory);
                 }
             }
 
@@ -250,11 +261,13 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
             var user = await _context.Users.FindAsync(userId);
+            var schedules = _context.Schedules.Where(s => s.UserId == userId);
             if (user == null)
             {
                 return NotFound("Không tồn tại nhân viên cần xóa");
             }
             _context.Users.Remove(user);
+            _context.Schedules.RemoveRange(schedules);
             await _context.SaveChangesAsync();
             return Ok(new
             {

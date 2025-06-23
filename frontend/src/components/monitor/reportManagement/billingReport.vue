@@ -143,14 +143,33 @@
               </v-list>
             </v-menu>
           </div>
-          <v-btn
-            style="border: 1px solid #333; min-width: 60px"
-            size="small"
-            class="ms-5"
-            @click="resetTimeFillterRevenueOrder"
-          >
-            Làm mới
-          </v-btn>
+          <div class="d-flex align-center">
+            <JsonExcel
+              class="btn btn-default"
+              :data="dataTable"
+              :fields="datafieldExcel"
+              worksheet="Lịch sử ca trực"
+              type="xlsx"
+              :name="nameFileExcel"
+            >
+              <v-btn
+                class="text-none"
+                size="small"
+                prepend-icon="mdi-download"
+                color="#8690A0"
+              >
+                Xuất Excel
+              </v-btn>
+            </JsonExcel>
+            <v-btn
+              style="border: 1px solid #333; min-width: 60px"
+              size="small"
+              class="ms-2"
+              @click="resetTimeFillterRevenueOrder"
+            >
+              Làm mới
+            </v-btn>
+          </div>
         </div>
         <div
           class="reportManagement_totalAmount_salesSummary_bestSellingItems d-flex"
@@ -326,6 +345,7 @@ const employeeListFullName = ref([]);
 const selectedBill = ref(null);
 const orderDetails = ref([]);
 const showDialogOrderDetails = ref(false);
+
 const header = ref([
   { title: "Nhân viên", key: "fullName" },
   { title: "Thời gian", key: "orderTime" },
@@ -540,4 +560,29 @@ async function onRowClick(event, item) {
   const response = await GetOrderDetailsByOrderId(request);
   orderDetails.value = response.result;
 }
+const dataTable = computed(() => {
+  return filterAllBilling.value?.map((item) => ({
+    fullName: item.fullName || "-",
+    orderTime: formatDateFormApiToView(item.orderTime),
+    tableName: item.tableName,
+    receivedAmount: formatCurrencyFromApiToView(item.receivedAmount),
+    returnedAmount: formatCurrencyFromApiToView(item.returnedAmount),
+    totalAmount: formatCurrencyFromApiToView(item.totalAmount),
+    discount: item.discount != null ? item.discount + "%" : "-",
+    paymentMethod: item.paymentMethod,
+  }));
+});
+const datafieldExcel = {
+  "Họ tên": "fullName",
+  "Thời gian gọi": "orderTime",
+  Bàn: "tableName",
+  "Tiền nhận": "receivedAmount",
+  "Tiền thừa": "returnedAmount",
+  "Tổng thanh toán": "totalAmount",
+  "Giảm giá": "discount",
+  "Phương thức thanh toán": "paymentMethod",
+};
+const nameFileExcel = computed(() => {
+  return `bao_cao_hoa_don_${currentDay}_${currentMonth}_${currentYear}.xlsx`;
+});
 </script>

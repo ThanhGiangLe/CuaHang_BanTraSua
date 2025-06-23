@@ -60,6 +60,7 @@ const API_ENDPOINTS = {
   OPEN_SHIFT: "/schedule/open-shift",
   CLOSE_SHIFT: "/schedule/close-shift",
   GET_SCHEDULE_TODAY: "/schedule/get-schedule-by-userid-today",
+  GET_ALL_SCHEDULE_HISTORY: "/schedule/get-all-schedule-history",
 };
 
 export default API_ENDPOINTS;

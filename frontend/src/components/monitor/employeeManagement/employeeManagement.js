@@ -402,6 +402,7 @@ export default function useEmployeeManagement() {
       Year: currentYear,
       Month: currentMonth + 1,
       Day: selectedDay.value,
+      UpdateBy: user.value.fullName,
     };
     const response = await swapScheduleShift(request);
     if (response.success) {

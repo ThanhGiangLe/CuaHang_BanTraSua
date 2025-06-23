@@ -35,7 +35,7 @@
         <!-- Form thêm nhân viên -->
         <v-dialog v-model="showDialogAddEmployee" max-width="600px" max-height="660px" style="overflow-y: auto">
           <v-card class="pa-2">
-            <v-card-title> Thông tin tài khoản </v-card-title>
+            <!-- <v-card-title> Thông tin tài khoản </v-card-title> -->
             <v-card-text style="padding: 8px 16px 0 16px" class="form_register_account">
               <v-text-field label="Tên tài khoản" v-model="employeeInfo.FullName" :rules="[
                 v => !!v || 'Tên tài khoản buộc nhập',
@@ -52,14 +52,18 @@
                 <v-radio label="Nhân viên" value="Nhân viên"></v-radio>
                 <v-radio label="Khách hàng" value="Khách hàng"></v-radio>
               </v-radio-group> -->
-              <v-combobox label="Vị trí" :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
-                v-model="employeeInfo.Role" class="mb-6 form_register_account-combobox"></v-combobox>
+              <v-select
+                label="Vị trí"
+                :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
+                v-model="employeeInfo.Role"
+                :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+              />
               <v-text-field label="Email" v-model="employeeInfo.Email" :rules="emailRules"></v-text-field>
               <v-text-field label="Địa chỉ" v-model="employeeInfo.Address"></v-text-field>
               <v-file-input label="Ảnh tài khoản" accept="image/*" v-model="employeeInfo.ImageUrl"
                 prepend-icon="mdi-camera" :show-size="true"></v-file-input>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="py-0">
               <v-btn color="red darken-1" text @click="cancelAddEmployee()">Hủy</v-btn>
               <v-btn color="green darken-1" text @click="handleAddEmployee()">Thêm</v-btn>
             </v-card-actions>
@@ -190,8 +194,12 @@
                       Vai trò:
                     </v-col>
                     <v-col cols="9" class="pa-1">
-                      <v-combobox :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
-                        v-model="employeeCurrentChoose.role" outlined></v-combobox>
+                      <v-select
+                        label="Vị trí"
+                        :items="['Chủ cửa hàng', 'Quản lý', 'Nhân viên', 'Khách hàng']"
+                        v-model="employeeCurrentChoose.role"
+                        :rules="[(v) => !!v || 'Trường này là bắt buộc']"
+                      />
                     </v-col>
                   </v-row>
                 </v-col>

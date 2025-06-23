@@ -19,5 +19,6 @@ namespace testVue.Datas
         public DbSet<UserMdl> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ScheduleShiftMdl> ScheduleShifts { get; set; }
+        public DbSet<ScheduleHistoryMdl> ScheduleHistories { get; set; }
     }
 }

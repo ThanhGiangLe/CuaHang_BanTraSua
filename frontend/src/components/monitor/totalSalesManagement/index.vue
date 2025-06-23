@@ -98,22 +98,21 @@
           </div>
           <div class="d-flex">
             <JsonExcel
-              v-if="dataTable.length"
               class="btn btn-default"
               :data="dataTable"
               :fields="datafieldExcel"
-              worksheet="My Worksheet"
+              worksheet="Lịch sử ca trực"
               type="xlsx"
               :name="nameFileExcel"
             >
-              <VBtn
+              <v-btn
                 class="text-none"
                 size="small"
-                prependIcon="mdi-crop"
+                prepend-icon="mdi-download"
                 color="#8690A0"
               >
                 Xuất Excel
-              </VBtn>
+              </v-btn>
             </JsonExcel>
             <v-btn
               style="border: 1px solid #333; min-width: 60px"
@@ -323,7 +322,6 @@ import "vue3-toastify/dist/index.css";
 import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
 import { totalSalesManagementHandler } from "/src/composables/totalSalesManagement/totalSalesManagementHandler.js";
 import { showToast } from "@/styles/handmade";
-import JsonExcel from "vue-json-excel3";
 const { getTotalSales, getDetailTotalSaleSchedule } =
   totalSalesManagementHandler();
 const { getAllEmployee } = employeeManagementHandler();
@@ -337,7 +335,6 @@ const selectedShift = ref("");
 const scheduleSelected = ref(null);
 const detailSchedule = ref([]);
 const showDetailSchedule = ref(false);
-const nameFileExcel = ref("");
 
 const header = ref([
   { title: "Họ tên", key: "fullName" },
@@ -386,9 +383,7 @@ const currentDate = new Date();
 const currentMonth = currentDate.getMonth(); // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
 const currentYear = currentDate.getFullYear(); // Năm hiện tại
 const currentDay = currentDate.getDate();
-nameFileExcel.value = `Bao_Cao_Ket_Tien_Ngay_${currentDay}-${(currentMonth + 1)
-  .toString()
-  .padStart(2, "0")}-${currentYear}.xlsx`;
+
 const isBeforeToday = (dateString) => {
   const [day, month, year] = dateString.split("-"); // 19-06-2025
   return day <= currentDay;
@@ -402,6 +397,7 @@ async function init() {
   console.log("totalSales: ", totalSales.value);
   totalSales.value = JSON.parse(JSON.stringify(response));
   totalSalesFilter.value = JSON.parse(JSON.stringify(response));
+  console.log("totalSalesFilter: ", totalSalesFilter.value);
 
   const responseEmp = await getAllEmployee();
   listEmployee.value = responseEmp.map((emp) => {
@@ -498,49 +494,39 @@ async function onRowClick(event, item) {
     }
   }
 }
-
-// const dataTable = computed(() =>
-//   totalSalesFilter.value.map((item) => ({
-//     Họ_tên: item.fullName || "-",
-//     Ngày_làm: formatDateFormApiToView(item.date),
-//     Ca_làm: shifts.value[item.shiftId],
-//     Tổng_mở_ca: formatCurencyFromApiToView(item.totalOpeningCashAmount),
-//     Tổng_nhận: formatCurencyFromApiToView(item.receivedTotalAmount),
-//     Tổng_thối: formatCurencyFromApiToView(item.returnedTotalAmount),
-//     Phát_sinh: formatCurencyFromApiToView(item.adjustmentAmount || 0),
-//     Lý_do_phát_sinh: item.adjustmentReason || "-",
-//     Tổng_kết_ca: formatCurencyFromApiToView(item.totalClosingCashAmount || 0),
-//     Thực_tế: formatCurencyFromApiToView(item.actualCash || 0),
-//     Chênh_lệch: formatCurencyFromApiToView(item.difference || 0),
-//   }))
-// );
-const dataTable = [
-  {
-    ho_ten: "Nguyễn Văn A",
-    ngay_lam: "19-06-2025",
-    ca_lam: "Ca sáng",
-    tong_mo_ca: "500000 VND",
-    tong_nhan: "1000000 VND",
-    tong_thoi: "50000 VND",
-    phat_sinh: "0 VND",
-    ly_do_phat_sinh: "-",
-    tong_ket_ca: "1450000 VND",
-    thuc_te: "1450000 VND",
-    chenh_lech: "0 VND",
-  },
-];
-
+const dataTable = computed(() => {
+  return totalSalesFilter.value?.map((item) => ({
+    fullName: item.fullName || "-",
+    date: formatDateFormApiToView(item.date),
+    shiftId: shifts.value[item.shiftId],
+    totalOpeningCashAmount: formatCurencyFromApiToView(
+      item.totalOpeningCashAmount
+    ),
+    receivedTotalAmount: formatCurencyFromApiToView(item.receivedTotalAmount),
+    returnedTotalAmount: formatCurencyFromApiToView(item.returnedTotalAmount),
+    totalAdjustmentAmount: formatCurencyFromApiToView(
+      item.totalAdjustmentAmount || 0
+    ),
+    totalClosingCashAmount: formatCurencyFromApiToView(
+      item.totalClosingCashAmount || 0
+    ),
+    difference: formatCurencyFromApiToView(item.difference || 0),
+  }));
+});
 const datafieldExcel = {
-  ho_ten: "Họ tên",
-  ngay_lam: "Ngày làm",
-  ca_lam: "Ca làm",
-  tong_mo_ca: "Tổng mở ca",
-  tong_nhan: "Tổng nhận",
-  tong_thoi: "Tổng thối",
-  phat_sinh: "Phát sinh",
-  ly_do_phat_sinh: "Lý do phát sinh",
-  tong_ket_ca: "Tổng kết ca",
-  thuc_te: "Tiền thực tế",
-  chenh_lech: "Chênh lệch",
+  "Họ tên": "fullName",
+  "Ngày làm": "date",
+  "Ca làm": "shiftId",
+  "Tổng mở ca": "totalOpeningCashAmount",
+  "Tổng nhận": "receivedTotalAmount",
+  "Tổng thối": "returnedTotalAmount",
+  "Phát sinh": "totalAdjustmentAmount",
+  "Tổng kết ca": "totalClosingCashAmount",
+  "Chênh lệch": "difference",
 };
+const nameFileExcel = computed(() => {
+  return `bao_cao_ca_truc_${currentDay}_${
+    currentMonth + 1
+  }_${currentYear}.xlsx`;
+});
 </script>
