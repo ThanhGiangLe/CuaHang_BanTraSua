@@ -52,7 +52,7 @@ namespace sourceAPI.Controllers
                 return BadRequest(new { message = "Refresh token không tồn tại" });
             }
             var existingToken = await _context.RefreshTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.Token == refreshToken);
-            if (existingToken == null || existingToken.IsUsed || existingToken.IsRevoked || existingToken.ExpiresAt < DateTime.UtcNow)
+            if (existingToken == null || existingToken.IsUsed || existingToken.IsRevoked || existingToken.ExpiresAt < DateTime.Now)
             {
                 return BadRequest(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
             }
@@ -69,7 +69,7 @@ namespace sourceAPI.Controllers
                     new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Role, user.Role ?? "Staff"),
                 }),
-                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
+                Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),
                 Issuer = _jwtSetting.Issuer,
                 Audience = _jwtSetting.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -83,7 +83,7 @@ namespace sourceAPI.Controllers
             {
                 Token = Guid.NewGuid().ToString(),
                 UserId = user.UserId,
-                ExpiresAt = DateTime.UtcNow.AddHours(_jwtSetting.RefreshTokenExpireDays)
+                ExpiresAt = DateTime.Now.AddHours(_jwtSetting.RefreshTokenExpireDays)
             };
             _context.RefreshTokens.Add(newRefreshToken);
 

@@ -19,7 +19,7 @@ namespace sourceAPI.Controllers
         {
             try
             {
-                var currentDay = DateTime.UtcNow.Day;
+                var currentDay = DateTime.Now.Day;
                 var query = _context.Users.Where(u => u.Role != "Customer");
 
                 if (request.UserId > 0)
@@ -76,7 +76,7 @@ namespace sourceAPI.Controllers
         {
             try
             {
-                var currentDay = DateTime.UtcNow.Date;
+                var currentDay = DateTime.Now.Date;
 
                 var query = from u in _context.Users
                             where u.Role != "Customer" && (request.UserId == 0 || u.UserId == request.UserId)

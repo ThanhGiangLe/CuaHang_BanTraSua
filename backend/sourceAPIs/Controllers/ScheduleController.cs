@@ -30,15 +30,15 @@ namespace sourceAPI.Controllers
 
             try
             {
-                var schedules = await _context.Schedules
-                    .AsNoTracking()
-                    .Where(row => row.UserId == request.UserId)
-                    .ToListAsync();
-
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
                 int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
                 var currentTime = DateTime.Now;
+
+                var schedules = await _context.Schedules
+                    .AsNoTracking()
+                    .Where(row => row.UserId == request.UserId && row.Date.Month == month)
+                    .ToListAsync();
 
                 if (schedules == null || schedules.Count == 0)
                 {
@@ -275,7 +275,7 @@ namespace sourceAPI.Controllers
             {
                 return BadRequest("Dữ liệu không hợp lệ!");
             }
-            var currentDay = DateTime.UtcNow.AddHours(7);
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
             if (scheduleOfDay == null)
             {
@@ -311,7 +311,7 @@ namespace sourceAPI.Controllers
             {
                 return BadRequest("Dữ liệu không hợp lệ!");
             }
-            var currentDay = DateTime.UtcNow.AddHours(7);
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
             if (scheduleOfDay == null)
             {

@@ -102,7 +102,7 @@
                     <v-list-item v-for="(item, index) in [
                       { title: 'Xem lịch làm việc' },
                       { title: 'Thay đổi thông tin' },
-                      { title: 'Xóa nhân viên' },
+                      { title: 'Xóa tài khoản' },
                     ]" :key="index" :value="index" class="rounded-lg"
                       @click="handleExtensionOfAccount(index, employee, indexEmp)">
                       <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -301,7 +301,7 @@
                     @click="cancelUpdateSchedule">Hủy</v-btn>
                   <v-btn color="info" style="min-width: 150px;" class="me-3" @click="handleUpdateSchedule">Cập
                     nhật</v-btn>
-                  <v-btn color="info" style="min-width: 150px;" @click="showListEmployee">
+                  <v-btn color="info" style="min-width: 150px;" @click="showListEmployee" v-if="user.role == 'Chủ cửa hàng' || user.role=='Quản lý'">
                     Thay đổi với nhân sự khác</v-btn>
                 </div>
                 <div class="mt-3" v-if="isShowListEmployeeSwapSchedule">

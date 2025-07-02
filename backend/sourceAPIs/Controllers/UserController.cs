@@ -73,7 +73,7 @@ namespace testVue.Controllers
                     new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Role, user.Role ?? "Staff")
                 }),
-                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
+                Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),
                 Issuer = _jwtSetting.Issuer,
                 Audience = _jwtSetting.Audience,
                 SigningCredentials = new SigningCredentials(
@@ -89,7 +89,7 @@ namespace testVue.Controllers
             {
                 Token = Guid.NewGuid().ToString(),
                 UserId = user.UserId,
-                ExpiresAt = DateTime.UtcNow.AddDays(_jwtSetting.RefreshTokenExpireDays)
+                ExpiresAt = DateTime.Now.AddDays(_jwtSetting.RefreshTokenExpireDays)
             };
 
             _context.RefreshTokens.Add(refreshToken);
@@ -177,7 +177,7 @@ namespace testVue.Controllers
                 return Ok(new { success = 0 });
             }
 
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
             var user = new UserMdl
             {
                 FullName = addUserRequest.FullName,
@@ -290,7 +290,7 @@ namespace testVue.Controllers
             {
                 return Forbid("Bearer");
             }
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
             var user = await _context.Users.FindAsync(request.UserId);
             if (user == null)
             {

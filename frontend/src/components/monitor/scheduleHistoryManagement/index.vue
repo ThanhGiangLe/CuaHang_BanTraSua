@@ -6,7 +6,7 @@
       <v-card-title class="pa-0 mb-2 d-flex justify-center">
         <div class="d-flex align-center">
           <v-icon class="ma-1" size="large">mdi-file-document</v-icon>
-          <span style="font-size: 26px">Báo cáo tổng hóa đơn</span>
+          <span style="font-size: 26px">Lịch sử thay đổi ca làm</span>
         </div>
       </v-card-title>
       <v-card-text
@@ -258,7 +258,7 @@ const employeeList = ref([]);
 const employeeListFullName = ref([]);
 const header = ref([
   { title: "Nhân viên", key: "fullName" },
-  { title: "Thời gian", key: "date" },
+  { title: "Ngày làm việc", key: "date" },
   { title: "Ca ban đầu", key: "oldShiftId" },
   { title: "Ca chuyển đổi", key: "newShiftId" },
   { title: "Người thực hiện", key: "changedBy" },

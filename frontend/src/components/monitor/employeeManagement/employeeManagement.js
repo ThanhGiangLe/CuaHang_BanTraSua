@@ -71,7 +71,16 @@ export default function useEmployeeManagement() {
 
   async function init() {
     const response = await getAllEmployee();
-    employeeList.value = response;
+    if (
+      user.value.role.toLowerCase().trim() == "chủ cửa hàng" ||
+      user.value.role.toLowerCase().trim() == "quản lý"
+    ) {
+      employeeList.value = response;
+    } else {
+      employeeList.value = response.filter(
+        (item) => item.userId == user.value.userId
+      );
+    }
   }
   init();
   const filterEmployeeList = computed(() => {
@@ -196,7 +205,12 @@ export default function useEmployeeManagement() {
 
   // <== Chọn các thao tác khác ==>
   async function handleExtensionOfAccount(index, employee, indexEmp) {
+    console.log("Employee: ", employee);
     if (index === 0) {
+      if (employee.role.toLowerCase().trim() == "khách hàng") {
+        showToast("Tính năng này không áp dụng cho tài khoản khách hàng");
+        return;
+      }
       displayMonitorSchedule.value = true;
       employeeIdCurrentChoose.value = employee.userId;
       employeeNameCurrentChoose.value = employee.fullName;

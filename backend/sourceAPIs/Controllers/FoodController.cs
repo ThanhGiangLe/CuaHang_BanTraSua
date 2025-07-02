@@ -82,7 +82,7 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
 
-            var currentDay = DateTime.UtcNow;
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
 
             if (scheduleOfDay == null)
@@ -139,7 +139,7 @@ namespace testVue.Controllers
                 var order = new OrderMdl
                 {
                     UserId = userIdTryParse,
-                    OrderTime = orderRequest.OrderTime,
+                    OrderTime = currentDay,
                     TableId = orderRequest.TableId,
                     TotalAmount = orderRequest.TotalAmount,
                     TotalResult = orderRequest.TotalResult,
@@ -303,11 +303,16 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
             var foodItem = await _context.FoodItems.FindAsync(FoodItemId);
-
             if (foodItem == null)
             {
                 return NotFound(new { success = -1, message = "Food item not found." });
             }
+
+            var listOrderDetails = await _context.OrderDetails.Where(item => item.FoodItemId == FoodItemId).ToListAsync();
+
+            _context.OrderDetails.RemoveRange(listOrderDetails);
+            await _context.SaveChangesAsync();
+
 
             _context.FoodItems.Remove(foodItem);
 

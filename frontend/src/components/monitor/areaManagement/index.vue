@@ -10,7 +10,7 @@
           :key="table.tableId"
           size="large"
           class="areaManagement_item_tables_table d-flex flex-column ma-2 pa-2 rounded cursor-pointer justify-space-between"
-          style="width: 250px; min-height: 100px"
+          style="width: 250px; min-height: 110px"
           :type="
             checkFoodOrderByTableId(table.tableId).items.length != 0
               ? 'ban'
@@ -18,15 +18,28 @@
           "
           @click="handleConfirmDialog(table)"
         >
-          <div class="d-flex justify-space-between">
+          <div class="d-flex justify-space-between align-center">
             <h4>{{ table.tableName }}</h4>
             <span>{{
               checkFoodOrderByTableId(table.tableId).items.length != 0
                 ? formatDate(checkFoodOrderByTableId(table.tableId).order_time)
-                : "dd:MM:yyyy hh:mm:ss"
+                : "--:--"
             }}</span>
           </div>
-          <div class="mt-5">
+          <div
+            v-if="checkFoodOrderByTableId(table.tableId).items.length != 0"
+            class="d-flex align-center duration-time align-self-center"
+          >
+            <v-icon size="small" class="me-1"
+              >mdi-clock-time-four-outline</v-icon
+            >
+            <span>{{
+              calculateDuration(
+                checkFoodOrderByTableId(table.tableId).order_time
+              )
+            }}</span>
+          </div>
+          <div class="">
             {{
               checkFoodOrderByTableId(table.tableId).items.length != 0
                 ? "Đã gọi " +
@@ -77,7 +90,7 @@
         <v-container class="pt-4 pa-2">
           <v-row
             dense
-            style="min-height: 420px; max-height: 420px; overflow-y: auto"
+            style="min-height: 400px; max-height: 400px; overflow-y: auto"
           >
             <v-col
               v-for="foodItem in listFoodOrderOfTableId"
@@ -320,5 +333,6 @@ const {
   ConfirmPayment,
   verifyOTP,
   sendOTP,
+  calculateDuration,
 } = useAreaManagement();
 </script>

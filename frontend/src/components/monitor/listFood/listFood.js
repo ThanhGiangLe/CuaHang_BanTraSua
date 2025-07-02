@@ -135,6 +135,7 @@ export default function useFoodManagement() {
     }
 
     const filtered = items.filter((foodItem) => {
+      const isMainFood = foodItem.isMain == 1;
       const isCategoryMatch =
         listFoodCategorySelected.value.length === 0 ||
         listFoodCategorySelected.value.some(
@@ -145,7 +146,7 @@ export default function useFoodManagement() {
         .toLowerCase()
         .includes(search.value.toLowerCase());
 
-      return isCategoryMatch && isSearchMatch;
+      return isCategoryMatch && isSearchMatch && isMainFood;
     });
 
     return filtered.sort((a, b) => {
@@ -225,7 +226,7 @@ export default function useFoodManagement() {
     items: [],
   });
   const returnedAmountCurrentOrder = computed(() => {
-    const received = Number(currentOrder.value.receivedAmount || 0);
+    const received = Number(currentOrder.value.receivedAmount * 1000 || 0);
     const total = Number(currentOrder.value.total_amount || 0);
     return received > total ? received - total : 0;
   });
@@ -536,7 +537,7 @@ export default function useFoodManagement() {
       tax: currentOrder.value.tax,
       paymentMethod: currentOrder.value.paymentMethod,
       phone: searchPhoneNumbers.value ?? "",
-      receivedAmount: currentOrder.value.receivedAmount || 0,
+      receivedAmount: currentOrder.value.receivedAmount * 1000 || 0,
       returnedAmount: returnedAmountCurrentOrder.value || 0,
     };
 
@@ -762,7 +763,6 @@ export default function useFoodManagement() {
   }
   function cancelConfirmOpenShift() {
     isShowOpenShift.value = false;
-    inputOpenCashAmount.value = null;
     swapButtonShift.value = true;
   }
   function cancelCofirmCloseShift() {

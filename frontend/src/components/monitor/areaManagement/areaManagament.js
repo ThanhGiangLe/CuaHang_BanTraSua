@@ -385,6 +385,32 @@ export default function useAreaManagement() {
       "TraSuaSunSun"
     )}`;
   });
+
+  const timeNow = ref(new Date());
+
+  onMounted(() => {
+    const interval = setInterval(() => {
+      timeNow.value = new Date();
+    }, 60000); // mỗi 1 phút
+
+    onUnmounted(() => {
+      clearInterval(interval);
+    });
+  });
+
+  function calculateDuration(orderTime) {
+    const orderDate = new Date(orderTime);
+    const diffMs = timeNow.value - orderDate;
+    const diffMinutes = Math.floor(diffMs / 60000);
+
+    if (diffMinutes < 60) {
+      return `${diffMinutes} phút`;
+    } else {
+      const hour = Math.floor(diffMinutes / 60);
+      const minute = diffMinutes % 60;
+      return `${hour} giờ ${minute} phút`;
+    }
+  }
   return {
     tables,
     confirmDialog,
@@ -414,5 +440,6 @@ export default function useAreaManagement() {
     ConfirmPayment,
     verifyOTP,
     sendOTP,
+    calculateDuration,
   };
 }

@@ -2,21 +2,22 @@
   <v-card style="height: 100vh; max-width: 1280px; margin: 0 auto">
     <v-tabs v-model="tab" class="my-tabs">
       <v-tab prepend-icon="mdi-menu" value="listFood" class="my-vtab-custommer"
-        >Menu</v-tab
+        >Đặt món</v-tab
       >
       <v-tab prepend-icon="mdi-food" value="food" class="my-vtab-custommer"
-        >Món ăn</v-tab
+        >Quản lý món</v-tab
       >
       <v-tab
         prepend-icon="mdi-map-outline"
         value="map"
         class="my-vtab-custommer"
-        >Bàn</v-tab
+        >Quản lý bàn</v-tab
       >
       <v-tab
         prepend-icon="mdi-file-chart-outline"
         value="report"
         class="my-vtab-custommer"
+        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
         >Báo cáo</v-tab
       >
       <v-tab
@@ -29,16 +30,18 @@
         prepend-icon="mdi-currency-usd"
         value="currency"
         class="my-vtab-custommer"
+        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
         >Két tiền</v-tab
       >
       <v-tab
         prepend-icon="mdi-store-clock-outline"
         value="scheduleHistory"
         class="my-vtab-custommer"
-        >Lịch sử lịch làm việc</v-tab
+        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
+        >Lịch sử ca làm</v-tab
       >
       <v-tab prepend-icon="mdi-cog" value="settings" class="my-vtab-custommer"
-        >Thay đổi mật khẩu</v-tab
+        >Đổi mật khẩu</v-tab
       >
       <v-tab prepend-icon="mdi-logout" value="exit" class="my-vtab-custommer"
         >Đăng xuất</v-tab
