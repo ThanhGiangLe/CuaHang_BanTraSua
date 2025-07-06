@@ -250,7 +250,7 @@ import { ref } from "vue";
 import { scheduleManagementHandler } from "/src/composables/scheduleManagement/scheduleManagementHandler.js";
 import { employeeManagementHandler } from "/src/composables/employeeManagement/employeeManagementHandler.js";
 const { GetAllScheduleHistory } = scheduleManagementHandler();
-const { getAllEmployee } = employeeManagementHandler();
+const { getAllEmployee, getAllSchedule } = employeeManagementHandler();
 const allScheduleHistory = ref([]);
 const filterAllScheduleHistory = ref([]);
 const loading = shallowRef(true);
@@ -317,21 +317,64 @@ const isBeforeToMonth = (dateString) => {
 };
 
 const fullDateList = generateDates(currentMonth, currentYear);
-const dateList = ref(fullDateList.filter((item) => isBeforeToday(item)));
+const dateList = fullDateList; //ref(fullDateList.filter((item) => isBeforeToday(item)));
 const fullMonthList = generateMonths(currentYear);
-const monthList = ref(fullMonthList.filter((item) => isBeforeToMonth(item)));
+const monthList = fullMonthList; //ref(fullMonthList.filter((item) => isBeforeToMonth(item)));
 
 async function init() {
   const response = await GetAllScheduleHistory();
-  console.log("response: ", response);
-  allScheduleHistory.value = JSON.parse(JSON.stringify(response.result.data));
-  filterAllScheduleHistory.value = JSON.parse(
-    JSON.stringify(response.result.data)
-  );
+  const resSchedules = await getAllSchedule();
+  const schedules = resSchedules.data;
+  console.log("schedules: ", schedules);
+
+  const sortedHistories = response.result.data.sort((a, b) => {
+    if (a.userId == b.userId) {
+      return new Date(a.changedAt) - new Date(b.changedAt);
+    }
+    return String(a.userId).localeCompare(String(b.userId));
+  });
+  console.log("sortedHistories: ", sortedHistories);
+
+  const results = [];
+  for (let i = 0; i < sortedHistories.length; i++) {
+    const currentScheduleHis = sortedHistories[i];
+    let newShift = currentScheduleHis.oldShiftId;
+    if (currentScheduleHis.changedBy != "Auto") {
+      if (
+        i + 1 < sortedHistories.length &&
+        sortedHistories[i + 1].userId == currentScheduleHis.userId &&
+        new Date(sortedHistories[i + 1].date).toDateString() ==
+          new Date(currentScheduleHis.date).toDateString()
+      ) {
+        newShift = sortedHistories[i + 1].oldShiftId;
+      } else {
+        const currentSchedule = schedules.find(
+          (item) =>
+            item.userId == currentScheduleHis.userId &&
+            new Date(item.date).toDateString() ==
+              new Date(currentScheduleHis.date).toDateString()
+        );
+        newShift = currentSchedule ? currentSchedule.shiftId : "";
+      }
+    }
+    results.push({
+      fullName: currentScheduleHis.fullName,
+      date: currentScheduleHis.date,
+      oldShiftId: currentScheduleHis.oldShiftId,
+      newShiftId: newShift,
+      changedBy: currentScheduleHis.changedBy,
+      changedAt: currentScheduleHis.changedAt,
+    });
+  }
+  console.log("result: ", results);
+  allScheduleHistory.value = JSON.parse(JSON.stringify(results));
+  filterAllScheduleHistory.value = JSON.parse(JSON.stringify(results));
 
   const responseEmp = await getAllEmployee();
   employeeList.value = responseEmp;
-  employeeListFullName.value = employeeList.value.map((emp) => emp.fullName);
+  employeeListFullName.value = employeeList.value
+    .filter((emp) => emp.role != "Khách hàng")
+    .map((emp) => emp.fullName);
   loading.value = false;
 }
 init();

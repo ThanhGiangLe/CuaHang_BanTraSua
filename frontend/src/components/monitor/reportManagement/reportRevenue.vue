@@ -282,17 +282,23 @@
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-if="selectedMonth != ''"
-                        >so với {{ previousMonth }}</span
+                        >so với {{ previousMonth }} ({{
+                          formatCurencyFromApiToView(totalRevenueYesterday)
+                        }})</span
                       >
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-else-if="selectedDay != ''"
-                        >so với {{ previousDay }}</span
+                        >so với {{ previousDay }} ({{
+                          formatCurencyFromApiToView(totalRevenueYesterday)
+                        }})</span
                       >
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-else-if="selectedCurrentDay != ''"
-                        >so với {{ previousCurrentDay }}</span
+                        >so với {{ previousCurrentDay }} ({{
+                          formatCurencyFromApiToView(totalRevenueYesterday)
+                        }})</span
                       >
                     </div>
                   </div>
@@ -325,7 +331,7 @@
                       selectedCurrentDay != ''
                     "
                   >
-                    <span>Đơn hàng</span>
+                    <span>Số lượng đơn</span>
                     <h2>{{ totalOrders }}</h2>
                     <div>
                       <v-icon
@@ -345,23 +351,32 @@
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-if="selectedMonth != ''"
-                        >so với {{ previousMonth }}</span
+                        >so với {{ previousMonth }} ({{
+                          totalOrdersYesterday
+                        }}
+                        đơn)</span
                       >
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-else-if="selectedDay != ''"
-                        >so với {{ previousDay }}</span
+                        >so với {{ previousDay }} ({{
+                          totalOrdersYesterday
+                        }}
+                        đơn)</span
                       >
                       <span
                         style="font-size: 12px; margin-left: 6px"
                         v-else-if="selectedCurrentDay != ''"
-                        >so với {{ previousCurrentDay }}</span
+                        >so với {{ previousCurrentDay }} ({{
+                          totalOrdersYesterday
+                        }}
+                        đơn)</span
                       >
                     </div>
                   </div>
                   <!-- Nếu không có lựa chọn nào (Hiển thị mặc định) -->
                   <div v-else>
-                    <span>Đơn hàng</span>
+                    <span>Số lượng đơn</span>
                     <h2>9999</h2>
                     <div>
                       <v-icon color="green">mdi-trending-up</v-icon>

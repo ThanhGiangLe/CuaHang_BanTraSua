@@ -20,6 +20,26 @@ namespace sourceAPI.Controllers
             _context = context;
         }
 
+        [HttpGet("get-all-schedule")]
+        public async Task<ActionResult<IEnumerable<ScheduleMdl>>> GetAllSchedule()
+        {
+            try
+            {
+                var schedules = await _context.Schedules.ToListAsync();
+                return Ok(new { success = 1, data = schedules });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = -1,
+                    message = "Lỗi khi lấy danh sách danh mục.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
+        }
+
         [HttpPost("get-schedule-by-userid")]
         public async Task<IActionResult> GetScheduleByUserId([FromBody] UserIdRequest request)
         {
@@ -65,7 +85,6 @@ namespace sourceAPI.Controllers
                             UserId = request.UserId,
                             Date = scheduleDate,
                             OldShiftId = schedule.ShiftCode,
-                            NewShiftId = schedule.ShiftCode,
                             ChangedBy = "Auto",
                             ChangedAt = currentTime
                         };
@@ -132,7 +151,6 @@ namespace sourceAPI.Controllers
                                     UserId = request.UserId,
                                     Date = scheduleDate,
                                     OldShiftId = oldShift,
-                                    NewShiftId = schedule.ShiftCode,
                                     ChangedBy = request.UpdateBy,
                                     ChangedAt = currentTime
                                 };
@@ -157,7 +175,6 @@ namespace sourceAPI.Controllers
                                 UserId = request.UserId,
                                 Date = scheduleDate,
                                 OldShiftId = schedule.ShiftCode,
-                                NewShiftId = schedule.ShiftCode,
                                 ChangedBy = "Auto",
                                 ChangedAt = currentTime
                             };
@@ -232,7 +249,6 @@ namespace sourceAPI.Controllers
                     UserId = fromUser.UserId,
                     Date = scheduleDate,
                     OldShiftId = oldShiftFrom,
-                    NewShiftId = oldShiftTo,
                     ChangedBy = request.UpdateBy,
                     ChangedAt = currentTime
                 };
@@ -241,7 +257,6 @@ namespace sourceAPI.Controllers
                     UserId = toUser.UserId,
                     Date = scheduleDate,
                     OldShiftId = oldShiftTo,
-                    NewShiftId = oldShiftFrom,
                     ChangedBy = request.UpdateBy,
                     ChangedAt = currentTime
                 };
@@ -412,9 +427,9 @@ namespace sourceAPI.Controllers
                                                         FullName = resultJoin.u.FullName,
                                                         Date = resultJoin.sh.Date,
                                                         OldShiftId = resultJoin.sh.OldShiftId,
-                                                        NewShiftId = resultJoin.sh.NewShiftId,
                                                         ChangedBy = resultJoin.sh.ChangedBy,
-                                                        ChangedAt = resultJoin.sh.ChangedAt
+                                                        ChangedAt = resultJoin.sh.ChangedAt,
+                                                        UserId = resultJoin.sh.UserId
                                                     }).ToListAsync();
                 return Ok(new { success = 1, data = ScheduleHistories });
             }

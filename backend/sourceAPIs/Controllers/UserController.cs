@@ -227,7 +227,6 @@ namespace testVue.Controllers
                         UserId = user.UserId,
                         Date = scheduleDate,
                         OldShiftId = schedule.ShiftCode,
-                        NewShiftId = schedule.ShiftCode,
                         ChangedBy = "Auto",
                         ChangedAt = currentTime
                     };

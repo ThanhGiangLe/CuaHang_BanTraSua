@@ -335,7 +335,7 @@
             <v-dialog v-model="modalUpdateFoodItem" max-width="800px">
               <v-card>
                 <v-card class="pa-2">
-                  <v-card-title> Thông tin món ăn </v-card-title>
+                  <v-card-title> Thông tin món </v-card-title>
                   <v-card-text>
                     <v-text-field
                       label="Tên món"

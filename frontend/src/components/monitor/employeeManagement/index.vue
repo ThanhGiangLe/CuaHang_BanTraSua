@@ -135,7 +135,7 @@
       <v-dialog persistent max-width="500" v-model="displayMonitorDeleteUser">
         <v-card class="pa-2">
           <v-card-title class="pb-0 mt-1">
-            Bạn có chắc chắn muốn xóa nhân viên này?
+            Bạn có chắc chắn muốn xóa tài khoản này?
           </v-card-title>
           <v-card-actions class="mt-4">
             <v-spacer></v-spacer>

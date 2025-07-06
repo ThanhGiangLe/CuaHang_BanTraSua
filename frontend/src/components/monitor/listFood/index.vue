@@ -624,13 +624,13 @@
           class="w-100 my-2 my_btn_custommer"
           @click="callApiOrderFood()"
           color="orange-darken-2"
-          >Đặt món</v-btn
+          >Thanh toán</v-btn
         >
         <v-btn
           class="w-100 mb-2 my_btn_custommer"
           color="blue-darken-4"
           @click="callApiOrderFoodAndAddTable"
-          >Đặt món và chọn bàn</v-btn
+          >Chọn bàn</v-btn
         >
         <v-btn
           class="w-100 mb-2 my_btn_custommer"
