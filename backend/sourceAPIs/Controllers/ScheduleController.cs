@@ -92,7 +92,7 @@ namespace sourceAPI.Controllers
                         _context.ScheduleHistories.Add(newScheduleHistory);
                     }
                     await _context.SaveChangesAsync();
-                    return Ok(defautlSchedule);
+                    return Ok(  );
                 }else
                 {
                     var result = schedules
@@ -231,8 +231,8 @@ namespace sourceAPI.Controllers
             var scheduleToUser = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == toUser.UserId &&
                 row.Date.Date == scheduleDate.Date);
 
-            var oldShiftFrom = scheduleFromUser?.ShiftId;
-            var oldShiftTo = scheduleToUser?.ShiftId;
+            var oldShiftFrom = scheduleFromUser?.ShiftId ?? "O";
+            var oldShiftTo = scheduleToUser?.ShiftId ?? "O";
 
             if (scheduleFromUser == null || scheduleToUser == null)
             {

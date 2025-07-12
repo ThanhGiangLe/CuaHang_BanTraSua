@@ -67,7 +67,7 @@ namespace sourceAPI.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Role, user.Role ?? "Staff"),
+                    new Claim(ClaimTypes.Role, user.Role ?? "Nhân viên"),
                 }),
                 Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),
                 Issuer = _jwtSetting.Issuer,

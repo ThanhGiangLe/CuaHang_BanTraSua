@@ -71,7 +71,7 @@ namespace testVue.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Role, user.Role ?? "Staff")
+                    new Claim(ClaimTypes.Role, user.Role ?? "Nhân viên")
                 }),
                 Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),
                 Issuer = _jwtSetting.Issuer,
@@ -126,13 +126,13 @@ namespace testVue.Controllers
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.NewPassword))
             {
-                return BadRequest("Invalid input.");
+                return BadRequest("Dữ liệu yêu cầu không hợp lệ.");
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound("Không tìm thấy thông tin tài khoản.");
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
@@ -148,7 +148,7 @@ namespace testVue.Controllers
             catch (Exception ex)
             {
                 // Xử lý lỗi khi lưu vào cơ sở dữ liệu
-                return StatusCode(500, "An error occurred while updating the password.");
+                return StatusCode(500, "Có lỗi trong quá trình xử lý.");
             }
         }
 
@@ -165,7 +165,7 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Khách hàng" || roleFromToken == "Nhân viên")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -197,7 +197,7 @@ namespace testVue.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            if (addUserRequest.Role != "Khách hàng")
+            if (addUserRequest.Role?.ToLower() != "khách hàng")
             {
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
@@ -246,7 +246,7 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding the user.");
+                return StatusCode(500, $"Có lỗi trong quá trình thêm tài khoản.{ex}");
             }
         }
 
@@ -255,7 +255,7 @@ namespace testVue.Controllers
         public async Task<IActionResult> DeleteUser(int userId)
         {
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -285,7 +285,7 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "nhân viên" || roleFromToken?.ToLower() == "khách hàng")
             {
                 return Forbid("Bearer");
             }

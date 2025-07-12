@@ -12,7 +12,7 @@ namespace testVue.Models
         public int? TableId { get; set; }
         public decimal TotalAmount { get; set; } = default;
         public decimal TotalResult { get; set; } = default;
-        public string Status { get; set; } = string.Empty; // e.g., "Paid", "Unpaid"
+        public string Status { get; set; } = string.Empty; 
         public decimal Discount { get; set; } = default;
         public decimal Tax { get; set; } = default;
         public decimal ReceivedAmount { get; set; } = default;
