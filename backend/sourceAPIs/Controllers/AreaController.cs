@@ -19,7 +19,14 @@ namespace testVue.Controllers
         [HttpGet("get-all-table")]
         public async Task<ActionResult<IEnumerable<TableMdl>>> GetAllTable()
         {
-            return await _context.Tables.Where(table => table.TableId != 1).ToListAsync();
+            try
+            {
+                var tables = await _context.Tables.Where(table => table.TableId != 1).ToListAsync();
+                return tables;
+            }
+            catch (Exception ex) {
+                return new List<TableMdl>();
+            }
         }
     }
 }

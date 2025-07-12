@@ -54,6 +54,7 @@ const API_ENDPOINTS = {
   GET_EMAIL_BY_PHONE: "/user/get-email-by-phone",
 
   // Schedule
+  GET_ALL_SCHEDULE: "/schedule/get-all-schedule",
   GET_SCHEDULE_BY_USERID: "/schedule/get-schedule-by-userid",
   UPDATE_SCHEDULE_BY_USERID: "/schedule/update-schedule-by-userid",
   SWAP_SCHEDULE_SHIFT: "/schedule/swap-schedule-shift",

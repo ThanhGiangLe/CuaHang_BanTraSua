@@ -71,9 +71,9 @@ namespace testVue.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Role, user.Role ?? "Staff")
+                    new Claim(ClaimTypes.Role, user.Role ?? "Nhân viên")
                 }),
-                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpireHours),
+                Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),
                 Issuer = _jwtSetting.Issuer,
                 Audience = _jwtSetting.Audience,
                 SigningCredentials = new SigningCredentials(
@@ -89,7 +89,7 @@ namespace testVue.Controllers
             {
                 Token = Guid.NewGuid().ToString(),
                 UserId = user.UserId,
-                ExpiresAt = DateTime.UtcNow.AddDays(_jwtSetting.RefreshTokenExpireDays)
+                ExpiresAt = DateTime.Now.AddDays(_jwtSetting.RefreshTokenExpireDays)
             };
 
             _context.RefreshTokens.Add(refreshToken);
@@ -126,13 +126,13 @@ namespace testVue.Controllers
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.NewPassword))
             {
-                return BadRequest("Invalid input.");
+                return BadRequest("Dữ liệu yêu cầu không hợp lệ.");
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound("Không tìm thấy thông tin tài khoản.");
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
@@ -148,7 +148,7 @@ namespace testVue.Controllers
             catch (Exception ex)
             {
                 // Xử lý lỗi khi lưu vào cơ sở dữ liệu
-                return StatusCode(500, "An error occurred while updating the password.");
+                return StatusCode(500, "Có lỗi trong quá trình xử lý.");
             }
         }
 
@@ -165,7 +165,7 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Khách hàng" || roleFromToken == "Nhân viên")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -177,7 +177,7 @@ namespace testVue.Controllers
                 return Ok(new { success = 0 });
             }
 
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
             var user = new UserMdl
             {
                 FullName = addUserRequest.FullName,
@@ -197,7 +197,7 @@ namespace testVue.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            if (addUserRequest.Role != "Khách hàng")
+            if (addUserRequest.Role?.ToLower() != "khách hàng")
             {
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
@@ -227,7 +227,6 @@ namespace testVue.Controllers
                         UserId = user.UserId,
                         Date = scheduleDate,
                         OldShiftId = schedule.ShiftCode,
-                        NewShiftId = schedule.ShiftCode,
                         ChangedBy = "Auto",
                         ChangedAt = currentTime
                     };
@@ -247,7 +246,7 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding the user.");
+                return StatusCode(500, $"Có lỗi trong quá trình thêm tài khoản.{ex}");
             }
         }
 
@@ -256,7 +255,7 @@ namespace testVue.Controllers
         public async Task<IActionResult> DeleteUser(int userId)
         {
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -286,11 +285,11 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "nhân viên" || roleFromToken?.ToLower() == "khách hàng")
             {
                 return Forbid("Bearer");
             }
-            var currentTime = DateTime.UtcNow.AddHours(7);
+            var currentTime = DateTime.Now;
             var user = await _context.Users.FindAsync(request.UserId);
             if (user == null)
             {

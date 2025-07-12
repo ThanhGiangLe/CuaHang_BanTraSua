@@ -43,6 +43,19 @@ export function employeeManagementHandler() {
       return err;
     }
   };
+  const getAllSchedule = async () => {
+    try {
+      const response = await axiosClient.get(
+        `${API_ENDPOINTS.GET_ALL_SCHEDULE}`
+      );
+      console.log("GET_ALL_SCHEDULE: ", response);
+
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
   const getScheduleByUserId = async (request) => {
     try {
       const response = await axiosClient.post(
@@ -120,6 +133,7 @@ export function employeeManagementHandler() {
     addEmployee,
     deleteEmployee,
     updateEmployee,
+    getAllSchedule,
     getScheduleByUserId,
     updateScheduleByUserId,
     swapScheduleShift,

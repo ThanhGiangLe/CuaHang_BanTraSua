@@ -168,7 +168,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="height: 120px; width: 98%"
+                    style="height: 140px; width: 98%"
                   />
                   <h4 class="mt-2 text-center hiddent-text-two-line">
                     {{ foodItem.foodName }}
@@ -562,14 +562,15 @@
           >
             <span style="font-size: 12px">Tổng tiền</span>
             <span>
-              {{ formatCurrency(currentOrder.total_amount) }} /
+              {{ formatCurrency(currentOrder.total_amount) }} |
               {{ formatPoint(currentOrder.total_amount) }}</span
             >
           </div>
           <div
             class="foodManagement_listFoodOrder_bill_payment_discount d-flex justify-space-between mb-1"
           >
-            <span style="font-size: 12px">Tiền nhận</span>
+            <span style="font-size: 12px">Tiền nhận (nghìn VNĐ)</span>
+
             <input
               type="number"
               v-model="currentOrder.receivedAmount"
@@ -612,7 +613,7 @@
           >
             <h4 style="font-size: 14px">Tổng thanh toán</h4>
             <span
-              >{{ formatCurrency(resultTotalAmount) }} /
+              >{{ formatCurrency(resultTotalAmount) }} |
               {{ formatPoint(resultTotalAmount) }}</span
             >
           </div>
@@ -623,13 +624,13 @@
           class="w-100 my-2 my_btn_custommer"
           @click="callApiOrderFood()"
           color="orange-darken-2"
-          >Đặt món</v-btn
+          >Thanh toán</v-btn
         >
         <v-btn
           class="w-100 mb-2 my_btn_custommer"
           color="blue-darken-4"
           @click="callApiOrderFoodAndAddTable"
-          >Đặt món và chọn bàn</v-btn
+          >Chọn bàn</v-btn
         >
         <v-btn
           class="w-100 mb-2 my_btn_custommer"

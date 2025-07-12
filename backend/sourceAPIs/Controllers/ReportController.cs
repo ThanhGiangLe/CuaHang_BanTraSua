@@ -464,7 +464,7 @@ namespace testVue.Controllers
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (!DateTime.TryParseExact(timeRequest.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
             {
-                return BadRequest("Invalid date format. Please use 'dd-MM-yyyy'.");
+                return BadRequest("Vui lòng format thời gian theo kiểu: 'dd-MM-yyyy'");
             }
 
             // Lọc dữ liệu theo ngày
@@ -496,7 +496,7 @@ namespace testVue.Controllers
             // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (!DateTime.TryParseExact(timeRequest.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
             {
-                return BadRequest("Invalid date format. Please use 'MM-yyyy'.");
+                return BadRequest("Vui lòng format thời gian theo kiểu: 'MM-yyyy'.");
             }
 
             // Lọc dữ liệu theo ngày
@@ -525,10 +525,9 @@ namespace testVue.Controllers
         [HttpPost("get-all-order-fullname")] // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByFullName([FromBody] TimeRequestDTO timeRequest)
         {
-            // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
             if (timeRequest == null)
             {
-                return BadRequest("Invalid FullName");
+                return BadRequest("Dữ liệu không hợp lệ.");
             }
 
             // Lọc dữ liệu theo ngày

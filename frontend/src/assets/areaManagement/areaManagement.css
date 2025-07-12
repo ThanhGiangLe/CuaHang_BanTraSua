@@ -11,27 +11,68 @@
 .areaManagement_item
   .areaManagement_item_tables
   .areaManagement_item_tables_table[type="lam"] {
-  background-color: #303f9f !important;
+  background-color: linear-gradient(135deg, #303f9f, #3949ab);
+  color: #fff;
 }
 
 .areaManagement_item
   .areaManagement_item_tables
   .areaManagement_item_tables_table[type="dattruoc"] {
-  background-color: rgb(53, 161, 58) !important;
+  background-color: linear-gradient(135deg, #43a047, #66bb6a);
+  color: #fff;
 }
 
 .areaManagement_item
   .areaManagement_item_tables
   .areaManagement_item_tables_table[type="ban"] {
-  background-color: rgb(207, 187, 10) !important;
+  background: linear-gradient(135deg, #fbc02d, #fdd835);
+  color: #333;
 }
 
 .areaManagement_item
   .areaManagement_item_tables
   .areaManagement_item_tables_table[type="trong"] {
-  background-color: rgb(85, 90, 92) !important;
+  background-color: linear-gradient(135deg, #757575, #9e9e9e);
+  color: #fff;
+}
+
+.duration-time {
+  /* color: #ccc; hoặc rgba(var(--v-theme-primary), 0.7) */
+  font-size: 0.9rem;
 }
 
 .areaManagement_infoTable .v-data-table-footer {
   display: none;
+}
+
+.areaManagement_item_tables_table {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.areaManagement_item_tables_table:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.areaManagement_item_tables_table h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.areaManagement_item_tables_table span {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.areaManagement_item_tables_table .status-icon {
+  font-size: 1.5rem;
+  margin-right: 6px;
+}
+
+.areaManagement_item_tables_table .table-info {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 8px;
 }

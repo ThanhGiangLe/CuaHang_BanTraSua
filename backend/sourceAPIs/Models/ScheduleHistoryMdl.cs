@@ -9,7 +9,6 @@ namespace sourceAPI.Models
         public int UserId { get; set; }
         public DateTime Date { get; set; }
         public string OldShiftId { get; set; }
-        public string NewShiftId { get; set; }
         public string ChangedBy { get; set; }
         public DateTime ChangedAt { get; set; }
     }

@@ -3,21 +3,6 @@
     class="reportManagement_bestsellingItem d-flex flex-wrap flex-column pa-2 rounded"
   >
     <v-card style="height: 100%">
-      <v-card-title class="pa-0 mb-2 d-flex justify-center">
-        <div class="d-flex align-center">
-          <v-icon class="ma-1" size="large">mdi-chart-line</v-icon>
-          <span style="font-size: 26px">Báo cáo mặt hàng bán chạy</span>
-        </div>
-        <!-- <JsonExcel class="btn btn-default" 
-                  :data="dataTable" 
-                  :fields="datafieldExcel" 
-                  worksheet="My Worksheet" type="xlsx"
-                  :name="nameFileExcel">
-                  <VBtn class="text-none" size="small" prependIcon="mdi-crop" color="#8690A0">
-                  Xuất Excel
-                  </VBtn>
-              </JsonExcel> -->
-      </v-card-title>
       <v-card-text
         class="pa-3 rounded"
         :style="{ backgroundColor: 'var(--bg-color-item)' }"
@@ -98,56 +83,8 @@
             Làm mới
           </v-btn>
         </div>
-        <div
-          class="reportManagement_totalAmount_salesSummary_bestSellingItems d-flex"
-          style="height: 450px; max-height: 450px; overflow-y: auto"
-        >
-          <v-data-table
-            :headers="headersBestSeling"
-            :loading="loading"
-            :items="allItemBestSeling"
-            height="calc(33vh - 2rem)"
-            density="compact"
-            fixed-footer
-            fixed-header
-          >
-            <template v-slot:item.foodName="{ item }">
-              <span
-                style="font-weight: 500; color: rgba(var(--v-theme-primary), 1)"
-              >
-                {{ item.foodName ? item.foodName : "-" }}
-              </span>
-            </template>
-            <template v-slot:item.quantitySold="{ item }">
-              <div class="d-user-contract-inventory-chart-progress-bar">
-                <div
-                  class="d-user-contract-inventory-chart-progress-bar-container"
-                >
-                  <div
-                    class="d-user-contract-inventory-chart-progress-bar-indicator"
-                    :style="{
-                      width: (item.quantitySold / quantitySoldMax) * 100 + '%',
-                    }"
-                  ></div>
-                </div>
-                <div class="d-user-contract-inventory-chart-progress-bar-text">
-                  {{ item.quantitySold ? item.quantitySold : 0 }}
-                </div>
-              </div>
-            </template>
-            <template v-slot:loading>
-              <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
-            </template>
-            <template v-slot:no-data>
-              <div
-                class="d-event-info-item d-emp-activity-item-content d-emp-activity-no-data pa-6"
-                style="background: none"
-              >
-                <!-- <VIcon icon="mdi-robot-dead-outline"></VIcon> -->
-                <span>Hệ thống không tìm thấy thông tin</span>
-              </div>
-            </template>
-          </v-data-table>
+        <div style="max-width: 1080px">
+          <canvas ref="chartRef"></canvas>
         </div>
       </v-card-text>
     </v-card>
@@ -155,14 +92,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { reportManagementHandler } from "/src/composables/reportManagement/reportManagementHandler.js";
+import { ref, onMounted } from "vue";
+import { Chart, registerables } from "chart.js";
 
 const { getAllBestSellingByMonth, getAllBestSellingByDay } =
   reportManagementHandler();
 const allItemBestSeling = ref([]);
 const loading = shallowRef(true);
-const quantitySoldMax = ref(0);
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại (cộng thêm 1 vì getMonth() trả về giá trị từ 0 đến 11)
 const currentYear = currentDate.getFullYear(); // Năm hiện tại
@@ -170,6 +107,11 @@ const currentDay = currentDate.getDate();
 const selectedCurrentDay = ref("");
 const selectedDay = ref("");
 const selectedMonth = ref("");
+
+Chart.register(...registerables);
+
+const chartRef = ref(null);
+let chartInstance = null;
 
 const generateDates = (month, year) => {
   const daysInMonth = new Date(year, month, 0).getDate(); // Lấy số ngày trong tháng
@@ -202,10 +144,50 @@ const dateList = ref(fullDateList.filter((item) => isBeforeToday(item)));
 const fullMonthList = generateMonths(currentYear);
 const monthList = ref(fullMonthList.filter((item) => isBeforeToMonth(item)));
 
-const headersBestSeling = ref([
-  { title: "Tên món ăn", key: "foodName", width: "35%" },
-  { title: "Số lượng bán ra", key: "quantitySold", width: "65%" },
-]);
+function renderChart(dataItems) {
+  if (chartInstance) chartInstance.destroy();
+
+  const labels = dataItems.map((item) => item.foodName);
+  const data = dataItems.map((item) => item.quantitySold);
+
+  chartInstance = new Chart(chartRef.value, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Số lượng bán ra",
+          data,
+          backgroundColor: "rgba(54, 162, 235, 0.7)",
+          borderRadius: 6,
+        },
+      ],
+    },
+    options: {
+      indexAxis: "y", // Horizontal
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Top 10 món bán chạy",
+          font: { size: 18 },
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => `${context.parsed.x} ly`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: { stepSize: 10 },
+        },
+      },
+    },
+  });
+}
 
 async function init() {
   const monthFormat = currentMonth.toString().padStart(2, "0"); // Đảm bảo tháng có 2 chữ số
@@ -214,16 +196,11 @@ async function init() {
   );
   allItemBestSeling.value = response;
 
-  console.log("allItemBestSeling: ", allItemBestSeling.value);
+  allItemBestSeling.value = [...response]
+    .sort((a, b) => b.quantitySold - a.quantitySold)
+    .slice(0, 10);
 
-  const quantitySoldMaxDataTable = allItemBestSeling.value
-    ? allItemBestSeling.value.reduce((max, current) => {
-        return current.quantitySold > max.quantitySold ? current : max;
-      }, allItemBestSeling.value[0])
-    : null;
-  quantitySoldMax.value = quantitySoldMaxDataTable
-    ? quantitySoldMaxDataTable.quantitySold
-    : 0;
+  renderChart(allItemBestSeling.value);
 
   loading.value = false;
 }
@@ -245,15 +222,11 @@ async function selectCurrentDayAndCallAPI() {
 
   const response = await getAllBestSellingByDay(selectedCurrentDay.value);
   allItemBestSeling.value = response;
+  allItemBestSeling.value = [...response]
+    .sort((a, b) => b.quantitySold - a.quantitySold)
+    .slice(0, 10);
 
-  const quantitySoldMaxDataTable = allItemBestSeling.value
-    ? allItemBestSeling.value.reduce((max, current) => {
-        return current.quantitySold > max.quantitySold ? current : max;
-      }, allItemBestSeling.value[0])
-    : null;
-  quantitySoldMax.value = quantitySoldMaxDataTable
-    ? quantitySoldMaxDataTable.quantitySold
-    : 0;
+  renderChart(allItemBestSeling.value);
 }
 async function selectDayAndCallAPI(day) {
   selectedMonth.value = "";
@@ -264,15 +237,10 @@ async function selectDayAndCallAPI(day) {
   selectedDay.value = `${dayf}-${monthf}-${yearf}`;
   const responseTotal1 = await getAllBestSellingByDay(selectedDay.value);
   allItemBestSeling.value = responseTotal1;
-
-  const quantitySoldMaxDataTable = allItemBestSeling.value
-    ? allItemBestSeling.value.reduce((max, current) => {
-        return current.quantitySold > max.quantitySold ? current : max;
-      }, allItemBestSeling.value[0])
-    : null;
-  quantitySoldMax.value = quantitySoldMaxDataTable
-    ? quantitySoldMaxDataTable.quantitySold
-    : 0;
+  allItemBestSeling.value = [...responseTotal1]
+    .sort((a, b) => b.quantitySold - a.quantitySold)
+    .slice(0, 10);
+  renderChart(allItemBestSeling.value);
 }
 async function selectMonthAndCallAPI(month) {
   selectedDay.value = "";
@@ -283,15 +251,10 @@ async function selectMonthAndCallAPI(month) {
 
   const response = await getAllBestSellingByMonth(selectedMonth.value);
   allItemBestSeling.value = response;
-
-  const quantitySoldMaxDataTable = allItemBestSeling.value
-    ? allItemBestSeling.value.reduce((max, current) => {
-        return current.quantitySold > max.quantitySold ? current : max;
-      }, allItemBestSeling.value[0])
-    : null;
-  quantitySoldMax.value = quantitySoldMaxDataTable
-    ? quantitySoldMaxDataTable.quantitySold
-    : 0;
+  allItemBestSeling.value = [...response]
+    .sort((a, b) => b.quantitySold - a.quantitySold)
+    .slice(0, 10);
+  renderChart(allItemBestSeling.value);
 }
 
 const resetTimeFillterRevenueOrder = () => {

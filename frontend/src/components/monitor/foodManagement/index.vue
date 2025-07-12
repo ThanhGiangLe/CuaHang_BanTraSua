@@ -135,7 +135,7 @@
                     :src="foodItem.imageUrl"
                     alt="Food Item"
                     class="foodManagement_listFoodOrder_menu_foods_item_img rounded-lg"
-                    style="width: 75%; height: 160px; margin: 0 auto"
+                    style="width: 75%; height: 180px; margin: 0 auto"
                   />
                   <!-- Thông tin món ăn -->
                   <div class="d-flex flex-column mt-3" style="gap: 8px">
@@ -335,7 +335,7 @@
             <v-dialog v-model="modalUpdateFoodItem" max-width="800px">
               <v-card>
                 <v-card class="pa-2">
-                  <v-card-title> Thông tin món ăn </v-card-title>
+                  <v-card-title> Thông tin món </v-card-title>
                   <v-card-text>
                     <v-text-field
                       label="Tên món"

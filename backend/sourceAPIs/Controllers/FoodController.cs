@@ -82,7 +82,7 @@ namespace testVue.Controllers
                 return Forbid("Bearer");
             }
 
-            var currentDay = DateTime.UtcNow;
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
 
             if (scheduleOfDay == null)
@@ -103,7 +103,7 @@ namespace testVue.Controllers
                         return NotFound("Hãy mở ca mới trước khi thao tác");
                     }
                 }
-                if (orderRequest.PaymentMethod == "Tiền mặt")
+                if (orderRequest.PaymentMethod.Trim().ToLower() == "tiền mặt")
                 {
                     scheduleShiftOfDay.ReceivedTotalAmount += orderRequest.ReceivedAmount;
                     scheduleShiftOfDay.ReturnedTotalAmount += orderRequest.ReturnedAmount;
@@ -112,7 +112,7 @@ namespace testVue.Controllers
                         customer.Point += orderRequest.TotalResult * 0.1m;
                     }
                 }
-                else if(orderRequest.PaymentMethod == "Chuyển khoản")
+                else if(orderRequest.PaymentMethod.Trim().ToLower() == "chuyển khoản")
                 {
                     if (customer != null)
                     {
@@ -139,7 +139,7 @@ namespace testVue.Controllers
                 var order = new OrderMdl
                 {
                     UserId = userIdTryParse,
-                    OrderTime = orderRequest.OrderTime,
+                    OrderTime = currentDay,
                     TableId = orderRequest.TableId,
                     TotalAmount = orderRequest.TotalAmount,
                     TotalResult = orderRequest.TotalResult,
@@ -236,10 +236,10 @@ namespace testVue.Controllers
         {
             if (request == null)
             {
-                return BadRequest("Invalid food item data.");
+                return BadRequest("Dữ liệu yêu cầu truyền đi không hợp lệ.");
             }
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
@@ -289,7 +289,7 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, $"Có lỗi trong quá trình xử lý: {ex.Message}");
             }
         }
 
@@ -298,16 +298,21 @@ namespace testVue.Controllers
         public async Task<IActionResult> DeleteFoodItem(int FoodItemId)
         {
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {
                 return Forbid("Bearer");
             }
             var foodItem = await _context.FoodItems.FindAsync(FoodItemId);
-
             if (foodItem == null)
             {
-                return NotFound(new { success = -1, message = "Food item not found." });
+                return NotFound(new { success = -1, message = "Không tìm thấy món cần xóa" });
             }
+
+            var listOrderDetails = await _context.OrderDetails.Where(item => item.FoodItemId == FoodItemId).ToListAsync();
+
+            _context.OrderDetails.RemoveRange(listOrderDetails);
+            await _context.SaveChangesAsync();
+
 
             _context.FoodItems.Remove(foodItem);
 
@@ -315,7 +320,7 @@ namespace testVue.Controllers
             {
                 await _context.SaveChangesAsync();
 
-                return Ok(new { success = 1, message = "Food item deleted successfully." });
+                return Ok(new { success = 1, message = "Xóa món thành công." });
             }
             catch (Exception ex)
             {
@@ -338,7 +343,7 @@ namespace testVue.Controllers
             }
 
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken == "Customer" || roleFromToken == "Staff")
+            if (roleFromToken?.ToLower() == "nhân viên" || roleFromToken?.ToLower() == "khách hàng")
             {
                 return Forbid("Bearer");
             }
@@ -358,7 +363,7 @@ namespace testVue.Controllers
             existingFoodItem.CategoryId = updatedFoodItem.CategoryId ?? existingFoodItem.CategoryId;
             existingFoodItem.Status = updatedFoodItem.Status ?? existingFoodItem.Status;
             existingFoodItem.UpdateDate = currentTime;
-            existingFoodItem.UpdateBy = updatedFoodItem.UpdateBy ?? "Admin";
+            existingFoodItem.UpdateBy = updatedFoodItem.UpdateBy ?? "Quản lý";
             existingFoodItem.IsMain = excludedIds.Contains(updatedFoodItem.IsMain) ? updatedFoodItem.IsMain : existingFoodItem.IsMain;
             existingFoodItem.Point = updatedFoodItem.Point ?? existingFoodItem?.Point;
 

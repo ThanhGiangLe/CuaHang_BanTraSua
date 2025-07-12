@@ -20,6 +20,26 @@ namespace sourceAPI.Controllers
             _context = context;
         }
 
+        [HttpGet("get-all-schedule")]
+        public async Task<ActionResult<IEnumerable<ScheduleMdl>>> GetAllSchedule()
+        {
+            try
+            {
+                var schedules = await _context.Schedules.ToListAsync();
+                return Ok(new { success = 1, data = schedules });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = -1,
+                    message = "Lỗi khi lấy danh sách danh mục.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
+        }
+
         [HttpPost("get-schedule-by-userid")]
         public async Task<IActionResult> GetScheduleByUserId([FromBody] UserIdRequest request)
         {
@@ -30,15 +50,15 @@ namespace sourceAPI.Controllers
 
             try
             {
-                var schedules = await _context.Schedules
-                    .AsNoTracking()
-                    .Where(row => row.UserId == request.UserId)
-                    .ToListAsync();
-
                 int year = DateTime.Now.Year;
                 int month = DateTime.Now.Month;
                 int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
                 var currentTime = DateTime.Now;
+
+                var schedules = await _context.Schedules
+                    .AsNoTracking()
+                    .Where(row => row.UserId == request.UserId && row.Date.Month == month)
+                    .ToListAsync();
 
                 if (schedules == null || schedules.Count == 0)
                 {
@@ -65,7 +85,6 @@ namespace sourceAPI.Controllers
                             UserId = request.UserId,
                             Date = scheduleDate,
                             OldShiftId = schedule.ShiftCode,
-                            NewShiftId = schedule.ShiftCode,
                             ChangedBy = "Auto",
                             ChangedAt = currentTime
                         };
@@ -73,7 +92,7 @@ namespace sourceAPI.Controllers
                         _context.ScheduleHistories.Add(newScheduleHistory);
                     }
                     await _context.SaveChangesAsync();
-                    return Ok(defautlSchedule);
+                    return Ok(  );
                 }else
                 {
                     var result = schedules
@@ -132,7 +151,6 @@ namespace sourceAPI.Controllers
                                     UserId = request.UserId,
                                     Date = scheduleDate,
                                     OldShiftId = oldShift,
-                                    NewShiftId = schedule.ShiftCode,
                                     ChangedBy = request.UpdateBy,
                                     ChangedAt = currentTime
                                 };
@@ -157,7 +175,6 @@ namespace sourceAPI.Controllers
                                 UserId = request.UserId,
                                 Date = scheduleDate,
                                 OldShiftId = schedule.ShiftCode,
-                                NewShiftId = schedule.ShiftCode,
                                 ChangedBy = "Auto",
                                 ChangedAt = currentTime
                             };
@@ -214,8 +231,8 @@ namespace sourceAPI.Controllers
             var scheduleToUser = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == toUser.UserId &&
                 row.Date.Date == scheduleDate.Date);
 
-            var oldShiftFrom = scheduleFromUser?.ShiftId;
-            var oldShiftTo = scheduleToUser?.ShiftId;
+            var oldShiftFrom = scheduleFromUser?.ShiftId ?? "O";
+            var oldShiftTo = scheduleToUser?.ShiftId ?? "O";
 
             if (scheduleFromUser == null || scheduleToUser == null)
             {
@@ -232,7 +249,6 @@ namespace sourceAPI.Controllers
                     UserId = fromUser.UserId,
                     Date = scheduleDate,
                     OldShiftId = oldShiftFrom,
-                    NewShiftId = oldShiftTo,
                     ChangedBy = request.UpdateBy,
                     ChangedAt = currentTime
                 };
@@ -241,7 +257,6 @@ namespace sourceAPI.Controllers
                     UserId = toUser.UserId,
                     Date = scheduleDate,
                     OldShiftId = oldShiftTo,
-                    NewShiftId = oldShiftFrom,
                     ChangedBy = request.UpdateBy,
                     ChangedAt = currentTime
                 };
@@ -275,7 +290,7 @@ namespace sourceAPI.Controllers
             {
                 return BadRequest("Dữ liệu không hợp lệ!");
             }
-            var currentDay = DateTime.UtcNow.AddHours(7);
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
             if (scheduleOfDay == null)
             {
@@ -311,7 +326,7 @@ namespace sourceAPI.Controllers
             {
                 return BadRequest("Dữ liệu không hợp lệ!");
             }
-            var currentDay = DateTime.UtcNow.AddHours(7);
+            var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
             if (scheduleOfDay == null)
             {
@@ -412,9 +427,9 @@ namespace sourceAPI.Controllers
                                                         FullName = resultJoin.u.FullName,
                                                         Date = resultJoin.sh.Date,
                                                         OldShiftId = resultJoin.sh.OldShiftId,
-                                                        NewShiftId = resultJoin.sh.NewShiftId,
                                                         ChangedBy = resultJoin.sh.ChangedBy,
-                                                        ChangedAt = resultJoin.sh.ChangedAt
+                                                        ChangedAt = resultJoin.sh.ChangedAt,
+                                                        UserId = resultJoin.sh.UserId
                                                     }).ToListAsync();
                 return Ok(new { success = 1, data = ScheduleHistories });
             }
