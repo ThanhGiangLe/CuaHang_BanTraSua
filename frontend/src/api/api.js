@@ -40,6 +40,10 @@ const API_ENDPOINTS = {
   GET_ALL_ORDER: `/report/get-all-order`, // Không dùng
   GET_ORDERDETAILS_BY_ORDERID: "/report/get-orderdetails-by-orderid",
 
+  GET_REVENUE_ORDER_BY_DAY: "/report/get-revenue-order-quantity-by-day",
+  GET_REVENUE_ORDER_BY_WEEK: "/report/get-revenue-order-quantity-by-week",
+  GET_REVENUE_ORDER_BY_MONTH: "/report/get-revenue-order-quantity-by-month",
+
   // Total sales
   GET_TOTALSALES_ALL_EMPLOYEE: "/totalsales/get-total-sales",
   GET_TOTALSALES_BY_DAY_OR_USERID:

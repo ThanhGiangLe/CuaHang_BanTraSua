@@ -1,4 +1,4 @@
-import { computed, ref, defineEmits } from "vue";
+import { computed, ref, defineEmits, watch } from "vue";
 import axios from "axios";
 import API_ENDPOINTS from "@/api/api.js";
 import { useUserStore } from "@/stores/user.js";
@@ -159,7 +159,14 @@ export default function useAreaManagement() {
       }
     }
   });
-
+  watch(
+    () => paymentInfo.value.discount,
+    (newDiscount) => {
+      const discountPercent = parseFloat(newDiscount) || 0;
+      const totalAmount = parseFloat(paymentInfo.value.totalAmount) || 0;
+      paymentInfo.value.totalResult = totalAmount * (1 - discountPercent / 100);
+    }
+  );
   async function viewTableAndSetCurrentOrders() {
     showListFoodOrderOfTableId.value = !showListFoodOrderOfTableId.value;
 
@@ -361,6 +368,16 @@ export default function useAreaManagement() {
       await sendOTP();
       setTimeout(() => (isShowOTPPoints.value = true), 2000);
     } else {
+      if (paymentInfo.value.paymentMethod === "Tiền mặt") {
+        console.log("Có vào");
+        if (
+          paymentInfo.value.receivedAmount == 0 ||
+          paymentInfo.value.receivedAmount == null
+        ) {
+          showToast("Nhập số tiền nhận từ khách!", "warn");
+          return;
+        }
+      }
       await processOrder();
     }
   }

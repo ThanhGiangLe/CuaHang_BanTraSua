@@ -7,7 +7,9 @@
       rounded="lg"
       @keydown.enter="verifyLoginAccount"
     >
-      <div class="text-subtitle-1 text-medium-emphasis">Số điện thoại</div>
+      <div class="text-subtitle-1 text-medium-emphasis">
+        Số điện thoại hoặc email
+      </div>
       <v-text-field
         density="compact"
         placeholder="Nhập tại đây..."
@@ -103,6 +105,8 @@ const quantityLogin = ref(0);
 const isValid = computed(() => phone.value && password.value);
 
 async function verifyLoginAccount() {
+  isOverlay.value = true;
+
   if (!isValid.value) {
     showToast("Vui lòng nhập đầy đủ thông tin!", "warn");
     return;
@@ -118,17 +122,14 @@ async function verifyLoginAccount() {
     sessionStorage.setItem("token", token);
     userStore.setUser(data);
 
-    isOverlay.value = true;
     errorMessage.value = "";
     quantityLogin.value = 0;
-    setTimeout(() => {
-      router.push("/monitor");
-    }, 1000);
+    router.push("/monitor");
   } else {
     quantityLogin.value++;
     if (quantityLogin.value >= 3) {
       errorMessage.value =
-        "Bạn đã nhập sai 3 lần. Hãy liên hệ Quản lý hoặc Chủ cửa hàng để thay đổi mật khẩu.";
+        "Tài khoản bị khóa, liên hệ quản lý để mở khóa. Tài khoản có thể bị khóa trong 1 giờ.";
       showButtonLogin.value = false;
     } else {
       errorMessage.value = "";
@@ -139,5 +140,6 @@ async function verifyLoginAccount() {
       showToast("Lỗi hệ thông. Vui lòng thử lại!", "error");
     }
   }
+  isOverlay.value = false;
 }
 </script>

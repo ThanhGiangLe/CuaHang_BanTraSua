@@ -74,7 +74,7 @@ app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Bắt buộc phải có
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -5,10 +5,10 @@ namespace testVue.Models
     public class ShiftMdl
     {
         [Key]
-        public string? ShiftId { get; set; }
-        public string? ShiftName { get; set; }
+        public string? ShiftId { get; set; } = string.Empty;
+        public string? ShiftName { get; set; } = string.Empty;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string? Description { get; set; }
+        public string? Description { get; set; } = string.Empty;
     }
 }

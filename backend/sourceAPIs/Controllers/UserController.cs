@@ -54,7 +54,7 @@ namespace testVue.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == loginRequest.Phone);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == loginRequest.Phone || u.Email == loginRequest.Phone);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
             {
@@ -156,18 +156,18 @@ namespace testVue.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromBody] AddUserRequestDTO addUserRequest)
         {
+            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleFromToken?.ToLower() == "khách hàng")
+            {
+                return Forbid("Bearer");
+            }
+
             if (string.IsNullOrEmpty(addUserRequest.FullName) ||
                 string.IsNullOrEmpty(addUserRequest.Phone) ||
                 string.IsNullOrEmpty(addUserRequest.Email) ||
                 string.IsNullOrEmpty(addUserRequest.Role))
             {
                 return Ok(new { success = -1 });
-            }
-
-            var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
-            {
-                return Forbid("Bearer");
             }
 
             // Kiểm tra xem người dùng đã tồn tại hay chưa

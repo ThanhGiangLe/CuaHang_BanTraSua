@@ -20,7 +20,7 @@ namespace sourceAPI.Controllers
             try
             {
                 var currentDay = DateTime.Now.Day;
-                var query = _context.Users.Where(u => u.Role != "Customer");
+                var query = _context.Users.Where(u => u.Role != "Khách hàng");
 
                 if (request.UserId > 0)
                 {
@@ -71,57 +71,7 @@ namespace sourceAPI.Controllers
             }
         }
 
-        [HttpPost("get-total-sales-on-day")]
-        public async Task<IActionResult> GetTotalSales([FromBody] GetTotalSalesRequest request)
-        {
-            try
-            {
-                var currentDay = DateTime.Now.Date;
-
-                var query = from u in _context.Users
-                            where u.Role != "Customer" && (request.UserId == 0 || u.UserId == request.UserId)
-                            join s in _context.Schedules on u.UserId equals s.UserId
-                            join ss in _context.ScheduleShifts on s.ScheduleId equals ss.ScheduleId
-                            where request.Day == default(DateTime) || s.Date.Date == request.Day.Date && s.ShiftId != "O"
-                            select new
-                            {
-                                s.ScheduleId,
-                                u.UserId,
-                                u.FullName,
-                                s.Date,
-                                s.ShiftId,
-                                ss.OpeningCashAmount,
-                                ss.ReceivedTotalAmount,
-                                ss.ReturnedTotalAmount,
-                                ss.AdjustmentAmount,
-                                ss.ClosingCashAmount
-                            };
-
-                var result = await query
-                    .GroupBy(x => new { x.UserId, x.FullName, x.Date.Date })
-                    .Select(group => new
-                    {
-                        group.Key.FullName,
-                        Date = group.Key.Date,
-                        ShiftIds = string.Join(", ", group.Select(x => x.ShiftId).Distinct()),
-                        TotalOpening = group.Sum(x => x.OpeningCashAmount),
-                        TotalReceived = group.Sum(x => x.ReceivedTotalAmount),
-                        TotalReturned = group.Sum(x => x.ReturnedTotalAmount),
-                        TotalAdjustment = group.Sum(x => x.AdjustmentAmount),
-                        TotalClosing = group.Sum(x => x.ClosingCashAmount),
-                        Actual = group.Sum(x => x.OpeningCashAmount + x.ReceivedTotalAmount - x.ReturnedTotalAmount - x.AdjustmentAmount),
-                        Difference = group.Sum(x => x.OpeningCashAmount + x.ReceivedTotalAmount - x.ReturnedTotalAmount - x.AdjustmentAmount - x.ClosingCashAmount)
-                    })
-                    .OrderByDescending(x => x.Date)
-                    .ToListAsync();
-
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = e.Message });
-            }
-        }
+        
         [HttpPost("get-detail-total-sale-schedule")]
         public async Task<IActionResult> GetDetailTotalSaleSchedule([FromBody] ScheduleIdRequest request)
         {

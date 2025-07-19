@@ -87,7 +87,7 @@
         </v-card-title>
         <v-divider></v-divider>
 
-        <v-container class="pt-4 pa-2">
+        <v-container class="pt-4 pa-2" style="max-width: 100%">
           <v-row
             dense
             style="min-height: 400px; max-height: 400px; overflow-y: auto"
@@ -97,10 +97,10 @@
               :key="foodItem.FoodItemId"
               cols="12"
               md="6"
-              class="mb-4"
+              class="mb-1"
             >
               <v-card
-                class="d-flex flex-wrap align-center rounded-lg elevation-2"
+                class="d-flex flex-wrap align-center rounded-lg elevation-2 me-1"
               >
                 <v-img
                   :src="foodItem.Image"
@@ -153,7 +153,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row dense class="d-flex justify-space-between align-end mt-2">
+          <v-row dense class="d-flex justify-space-between align-end mt-3">
             <div class="w-1/3">
               <div
                 class="foodManagement_listFoodOrder_bill_payment_discount d-flex align-center justify-space-between mb-1"
@@ -234,13 +234,25 @@
         <v-divider class="my-2"></v-divider>
 
         <v-card-actions class="d-flex justify-space-between">
-          <v-btn class="" color="primary" @click="isShowQRCode = !isShowQRCode"
+          <v-btn
+            class=""
+            color="teal-darken-2"
+            variant="elevated"
+            @click="isShowQRCode = !isShowQRCode"
             >Mã thanh toán</v-btn
           >
           <div>
-            <v-btn color="primary" @click="ConfirmPayment">Thanh toán</v-btn>
-            <v-btn color="red" @click="closeShowListFoodOrderOfTableId"
+            <v-btn
+              color="red"
+              @click="closeShowListFoodOrderOfTableId"
+              class="me-2"
               >Đóng</v-btn
+            >
+            <v-btn
+              variant="elevated"
+              color="orange-darken-2"
+              @click="ConfirmPayment"
+              >Thanh toán</v-btn
             >
           </div>
         </v-card-actions>

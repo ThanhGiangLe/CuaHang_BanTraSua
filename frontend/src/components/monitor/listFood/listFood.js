@@ -25,11 +25,15 @@ export default function useFoodManagement() {
     employeeManagementHandler();
   const orderStore = userOrderStore();
   const shiftStore = useShiftStore();
-  const showDialogUpdate = ref(false);
-  const isStaff = ref(true);
-  const currentDish = ref({});
-  const foodCategories = ref([]);
+
+  // Lấy dữ liệu
   const foodItems = ref([]);
+  const foodCategories = ref([]);
+  const listItemBestSelling = ref([]);
+  const listFoodItemIdBestSelling = ref([]);
+
+  const showDialogUpdate = ref(false);
+  const currentDish = ref({});
   const search = ref("");
   const showDialogSelectedAdditionalFood = ref(false);
   const currentFoodItem = ref({});
@@ -37,11 +41,9 @@ export default function useFoodManagement() {
   const showComponentAreaManagement = ref(false);
   const loading = shallowRef(true);
   const isShowQRCode = ref(false);
-  const listItemBestSelling = ref([]);
-  const listFoodItemIdBestSelling = ref([]);
   const currentItemIsUpdate = ref(-1);
 
-  // Chấm công
+  // Các thông tin về mở/kết ca
   const swapButtonShift = ref(true);
   const isShowOpenShift = ref(false);
   const isShowCloseShift = ref(false);
@@ -58,9 +60,9 @@ export default function useFoodManagement() {
   const currentOrderClone = ref({});
 
   // Số điện thoại để cộng điểm
-  const searchPhoneNumbers = ref(null); // Dùng để chọn object
-  const allPhoneNumbers = ref([]); // Dữ liệu gốc
-  const filteredPhoneNumbers = ref([]); // Dữ liệu đã lọc
+  const searchPhoneNumbers = ref(null);
+  const allPhoneNumbers = ref([]);
+  const filteredPhoneNumbers = ref([]);
   const searchPhoneKeyword = ref("");
 
   // Xác thực sử dụng điểm
@@ -74,8 +76,11 @@ export default function useFoodManagement() {
   emailjs.init(publicKey);
   const otpSendTime = ref(null); // Lưu thời gian lúc gửi OTP
   const otpTimeout = 1 * 60 * 1000; // Thời gian 1 phút
+
   // Hàm chạy đầu tiên
   async function init() {
+    loading.value = true;
+
     const responseFood = await getAllFood();
     foodItems.value = responseFood.listFood.data;
 
@@ -85,7 +90,7 @@ export default function useFoodManagement() {
     const responseEmp = await getAllEmployee();
     allPhoneNumbers.value = responseEmp.map((item) => ({
       ...item,
-      display: `${item.fullName == "" ? "/*name*/" : item.fullName} - ${
+      display: `${item.fullName == "" ? "/*Khách hàng*/" : item.fullName} - ${
         item.phone
       } - ${formatPoint(item.point)}`,
     }));
@@ -127,6 +132,13 @@ export default function useFoodManagement() {
       listFoodCategorySelected.value.push(foodCategory);
     }
   }
+  function removeVietnameseTones(str) {
+    return str
+      .normalize("NFD") // tách dấu khỏi chữ
+      .replace(/[\u0300-\u036f]/g, "") // xóa các dấu
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D");
+  }
   const filteredFoodItems = computed(() => {
     const items = foodItems.value;
     if (!Array.isArray(foodItems.value)) {
@@ -142,9 +154,9 @@ export default function useFoodManagement() {
           (selected) => selected.categoryId === foodItem.categoryId
         );
 
-      const isSearchMatch = foodItem.foodName
-        .toLowerCase()
-        .includes(search.value.toLowerCase());
+      const isSearchMatch = removeVietnameseTones(
+        foodItem.foodName.toLowerCase()
+      ).includes(removeVietnameseTones(search.value.toLowerCase()));
 
       return isCategoryMatch && isSearchMatch && isMainFood;
     });
@@ -752,7 +764,7 @@ export default function useFoodManagement() {
     showComponentAreaManagement.value = !showComponentAreaManagement.value;
   }
 
-  // Làm việc với mở két và đóng két
+  // <== MỞ/KẾT CA ==>
   function showOpenShift() {
     swapButtonShift.value = false;
     isShowOpenShift.value = true;
@@ -776,7 +788,6 @@ export default function useFoodManagement() {
       OpeningCashAmount: inputOpenCashAmount.value,
     };
     const response = await OpenShift(request);
-    console.log("response: ", response);
     if (response.result) {
       if (response.result.success) {
         shiftStore.openShiftState(user.value.userId, inputOpenCashAmount.value);
@@ -795,14 +806,17 @@ export default function useFoodManagement() {
     }
   }
   async function confirmCloseShift() {
+    if (!inputCloseCashAmount.value) {
+      showToast("Vui lòng nhập số tiền kết ca!", "warn");
+      return;
+    }
     const request = {
       UserId: user.value.userId,
-      ClosingCashAmount: inputCloseCashAmount.value,
+      ClosingCashAmount: inputCloseCashAmount.value * 1000,
       AdjustmentAmount: inputAdjustmentAmount.value,
       AdjustmentReason: inputAdjustmentReason.value,
     };
     const response = await CloseShift(request);
-    console.log("response: ", response);
     if (
       response.result.success == 1 ||
       response.result.success == -1 ||
@@ -814,7 +828,7 @@ export default function useFoodManagement() {
         swapButtonShift.value = true;
       } else if (response.result.success == -1) {
         showToast(
-          `Số tiền trong kết ca ít hơn số hệ thống là: ${formatCurrency(
+          `Số tiền kết ca ít hơn hệ thống ghi nhận là: ${formatCurrency(
             response.result.difference
           )}`,
           "warn"
@@ -848,7 +862,6 @@ export default function useFoodManagement() {
   return {
     // State variables
     showDialogUpdate,
-    isStaff,
     currentDish,
     foodCategories,
     foodItems,

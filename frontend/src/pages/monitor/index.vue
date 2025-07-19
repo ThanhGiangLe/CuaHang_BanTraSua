@@ -2,9 +2,13 @@
   <v-card style="height: 100vh; max-width: 1280px; margin: 0 auto">
     <v-tabs v-model="tab" class="my-tabs">
       <v-tab prepend-icon="mdi-menu" value="listFood" class="my-vtab-custommer"
-        >Đặt món</v-tab
+        >Quản lý đặt món</v-tab
       >
-      <v-tab prepend-icon="mdi-food" value="food" class="my-vtab-custommer"
+      <v-tab
+        prepend-icon="mdi-food"
+        value="food"
+        class="my-vtab-custommer"
+        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
         >Quản lý món</v-tab
       >
       <v-tab
@@ -17,28 +21,29 @@
         prepend-icon="mdi-file-chart-outline"
         value="report"
         class="my-vtab-custommer"
-        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
-        >Báo cáo</v-tab
+        v-if="user.role == 'Chủ cửa hàng'"
+        >Quản lý báo cáo</v-tab
       >
       <v-tab
         prepend-icon="mdi-account-group"
         value="users"
         class="my-vtab-custommer"
-        >Tài khoản</v-tab
+        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
+        >Quản lý tài khoản</v-tab
       >
       <v-tab
         prepend-icon="mdi-currency-usd"
         value="currency"
         class="my-vtab-custommer"
         v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
-        >Két tiền</v-tab
+        >Quản lý két tiền</v-tab
       >
       <v-tab
         prepend-icon="mdi-store-clock-outline"
         value="scheduleHistory"
         class="my-vtab-custommer"
         v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
-        >Lịch sử ca làm</v-tab
+        >Quản lý lịch sử ca làm</v-tab
       >
       <v-tab prepend-icon="mdi-cog" value="settings" class="my-vtab-custommer"
         >Đổi mật khẩu</v-tab
@@ -109,4 +114,19 @@ const tab = ref("listFood");
 
 const user = computed(() => userStore.user);
 console.log("user", user.value);
+
+const isShiftClosed = ref(false);
+onMounted(() => {
+  const handleBeforeUnload = (e) => {
+    if (!isShiftClosed.value) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  };
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  });
+});
 </script>

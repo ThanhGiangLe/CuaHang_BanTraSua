@@ -6,7 +6,7 @@ namespace testVue.Models
     {
         [Key]
         public int TableId { get; set; } = default;
-        public string TableName { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public string? TableName { get; set; } = string.Empty;
+        public string? Status { get; set; } = string.Empty;
     }
 }

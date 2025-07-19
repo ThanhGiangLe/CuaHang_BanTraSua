@@ -168,6 +168,42 @@ export function reportManagementHandler() {
       return err;
     }
   };
+  const GetRevenueOrderByDay = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_REVENUE_ORDER_BY_DAY,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
+  const GetRevenueOrderByWeek = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_REVENUE_ORDER_BY_WEEK,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
+  const GetRevenueOrderByMonth = async (request) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_REVENUE_ORDER_BY_MONTH,
+        request
+      );
+      const result = response.data;
+      return { result };
+    } catch (err) {
+      return err;
+    }
+  };
   return {
     getAllRevenueByMonth,
     gettAllRevenueByDay,
@@ -181,5 +217,8 @@ export function reportManagementHandler() {
     getAllOrderByDay,
     getAllOrderByFullName,
     GetOrderDetailsByOrderId,
+    GetRevenueOrderByDay,
+    GetRevenueOrderByWeek,
+    GetRevenueOrderByMonth,
   };
 }

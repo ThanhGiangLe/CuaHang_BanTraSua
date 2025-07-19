@@ -182,7 +182,7 @@ export default function useEmployeeManagement() {
         ) {
           employeeList.value.push(response.data);
         }
-        showDialogAddEmployee.value = false; // Đóng dialog
+        showDialogAddEmployee.value = false;
         employeeInfo.value = {
           FullName: "",
           Phone: "",

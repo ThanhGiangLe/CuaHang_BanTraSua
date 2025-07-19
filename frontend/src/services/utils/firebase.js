@@ -15,7 +15,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); // ✅ getAuth sau khi app đã init
 
-export {
-  app, // ❗ mới thêm, cần export cả app
-  auth,
-};
+export { app, auth };

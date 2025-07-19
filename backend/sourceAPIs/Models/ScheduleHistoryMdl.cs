@@ -8,8 +8,8 @@ namespace sourceAPI.Models
         public int ScheduleHistoryId { get; set; }
         public int UserId { get; set; }
         public DateTime Date { get; set; }
-        public string OldShiftId { get; set; }
-        public string ChangedBy { get; set; }
+        public string? OldShiftId { get; set; } = string.Empty;
+        public string? ChangedBy { get; set; } = string.Empty;
         public DateTime ChangedAt { get; set; }
     }
 }

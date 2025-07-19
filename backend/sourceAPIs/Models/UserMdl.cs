@@ -15,9 +15,9 @@ namespace testVue.Models
         public string? Avatar { get; set; } = string.Empty;
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
-        public string CreateBy { get; set; } = string.Empty;
-        public string UpdateBy { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public string? CreateBy { get; set; } = string.Empty;
+        public string? UpdateBy { get; set; } = string.Empty;
+        public string? Status { get; set; } = string.Empty;
         public decimal Point {  get; set; }
     }
 }

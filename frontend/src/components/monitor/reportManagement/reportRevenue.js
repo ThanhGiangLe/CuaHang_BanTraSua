@@ -305,6 +305,8 @@ export default function useReportRevenue() {
     };
   }
   async function init() {
+    loading.value = true;
+
     callApi_GET_ALL_REVENUE_BY_EMPLOYEE_AND_TIME_MONTH();
 
     callApi_GET_ALL_FOOD_CATEGORIES();
@@ -450,7 +452,7 @@ export default function useReportRevenue() {
   };
 
   const formatCurencyFromApiToView = (time) => {
-    return `${time.toLocaleString("vi-VN")} VND`;
+    return `${time.toLocaleString("vi-VN")} VNĐ`;
   };
 
   return {

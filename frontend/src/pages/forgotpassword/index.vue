@@ -159,7 +159,6 @@ async function sendOTP() {
     email: email.value,
   };
   const response = await checkEmail(request);
-  console.log("response: ", response);
   try {
     if (response.exists) {
       otpSendTime.value = new Date().getTime(); // dùng để xác định thời gian gửi mã OTP đến người dùng

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sourceAPI.ModelsRequest;
-using System.Linq;
 using testVue.Datas;
 using testVue.Models;
 using testVue.ModelsRequest;
@@ -48,18 +46,15 @@ namespace testVue.Controllers
         {
             try
             {
-                // Kiểm tra nếu `request` hoặc `Date` không được cung cấp hoặc không hợp lệ
                 if (request == null || string.IsNullOrWhiteSpace(request.Date) ||
                     !DateTime.TryParseExact(request.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDate))
                 {
                     return BadRequest(new { error = "Định dạng ngày không hợp lệ. Vui lòng sử dụng định dạng dd-MM-yyyy." });
                 }
 
-                // Lấy thời gian bắt đầu và kết thúc của ngày được truyền vào
                 DateTime startOfDay = selectedDate.Date; // 00:00:00 của ngày được chọn
                 DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); // 23:59:59 của ngày được chọn
 
-                // Lọc dữ liệu đơn hàng theo ngày và tính tổng doanh thu theo từng nhân viên
                 var result = await _context.Orders
                     .Where(order => order.OrderTime >= startOfDay && order.OrderTime <= endOfDay)
                     .Join(
@@ -90,7 +85,6 @@ namespace testVue.Controllers
         {
             try
             {
-                // Kiểm tra nếu `request` hoặc `Date` không được cung cấp hoặc không hợp lệ
                 if (request == null || string.IsNullOrWhiteSpace(request.Date) ||
                     !DateTime.TryParseExact(request.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedMonth))
                 {
@@ -159,8 +153,8 @@ namespace testVue.Controllers
                     return BadRequest(new { error = "Định dạng ngày không hợp lệ. Vui lòng sử dụng định dạng dd-MM-yyyy." });
                 }
 
-                DateTime startOfDay = selectedDate.Date; // 00:00:00 của ngày được chọn
-                DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); // 23:59:59 của ngày được chọn
+                DateTime startOfDay = selectedDate.Date;
+                DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1);
 
                 var revenueByCategory = await _context.OrderDetails
                     .Where(orderItem => orderItem.OrderTime >= startOfDay && orderItem.OrderTime <= endOfDay) // Lọc theo thời gian
@@ -344,24 +338,24 @@ namespace testVue.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(request.Date) ||
+                if (request == null || string.IsNullOrWhiteSpace(request.Date) ||
                     !DateTime.TryParseExact(request.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDate))
                 {
                     return BadRequest(new { error = "Định dạng ngày không hợp lệ. Vui lòng sử dụng định dạng dd-MM-yyyy." });
                 }
 
-                DateTime startOfDay = selectedDate.Date; // 00:00:00 của ngày được chọn
-                DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); // 23:59:59 của ngày được chọn
+                DateTime startOfDay = selectedDate.Date; 
+                DateTime endOfDay = selectedDate.Date.AddDays(1).AddTicks(-1); 
 
                 var bestSellingItems = await _context.OrderDetails
-                    .Where(orderItem => orderItem.OrderTime >= startOfDay && orderItem.OrderTime <= endOfDay) // Lọc theo thời gian
-                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
+                    .Where(orderItem => orderItem.OrderTime >= startOfDay && orderItem.OrderTime <= endOfDay)
+                    .GroupBy(orderItem => new { orderItem.FoodItemId })
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        QuantitySold = g.Sum(item => item.Quantity), // Đếm số lượng bán ra
+                        QuantitySold = g.Sum(item => item.Quantity),
                     })
-                    .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
+                    .OrderByDescending(x => x.QuantitySold)
                     .Join(_context.FoodItems,
                         o => o.FoodItemId,
                         f => f.FoodItemId,
@@ -375,7 +369,6 @@ namespace testVue.Controllers
                     .Where(x => x.IsMain == 1)
                     .ToListAsync();
 
-                // Trả kết quả về client
                 return Ok(bestSellingItems);
             }
             catch (Exception ex)
@@ -390,26 +383,24 @@ namespace testVue.Controllers
         {
             try
             {
-                // Kiểm tra nếu `dateString` không hợp lệ
-                if (string.IsNullOrWhiteSpace(request.Date) ||
+                if (request == null || string.IsNullOrWhiteSpace(request.Date) ||
                     !DateTime.TryParseExact(request.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDate))
                 {
                     return BadRequest(new { error = "Định dạng ngày không hợp lệ. Vui lòng sử dụng định dạng MM-yyyy." });
                 }
 
-                DateTime selectedMonth = DateTime.ParseExact(request.Date, "MM-yyyy", null);
-                DateTime startOfMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1); // Ngày đầu tiên của tháng
-                DateTime endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1); // Ngày cuối cùng của tháng
+                DateTime startOfMonth = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+                DateTime endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1);
 
                 var bestSellingItems = await _context.OrderDetails
-                    .Where(orderItem => orderItem.OrderTime >= startOfMonth && orderItem.OrderTime <= endOfMonth) // Lọc theo thời gian
-                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
+                    .Where(orderItem => orderItem.OrderTime >= startOfMonth && orderItem.OrderTime <= endOfMonth)
+                    .GroupBy(orderItem => new { orderItem.FoodItemId })
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        QuantitySold = g.Sum(item => item.Quantity) // Đếm số lượng bán ra
+                        QuantitySold = g.Sum(item => item.Quantity)
                     })
-                    .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
+                    .OrderByDescending(x => x.QuantitySold)
                     .Join(_context.FoodItems,
                         o => o.FoodItemId,
                         f => f.FoodItemId,
@@ -423,7 +414,6 @@ namespace testVue.Controllers
                     .Where(x => x.IsMain == 1)
                     .ToListAsync();
 
-                // Trả kết quả về client
                 return Ok(bestSellingItems);
             }
             catch (Exception ex)
@@ -461,28 +451,26 @@ namespace testVue.Controllers
         [HttpPost("get-all-order-currentday")] // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDate([FromBody] TimeRequestDTO timeRequest)
         {
-            // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
-            if (!DateTime.TryParseExact(timeRequest.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
+            if (timeRequest == null || string.IsNullOrWhiteSpace(timeRequest.Date) || !DateTime.TryParseExact(timeRequest.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
             {
                 return BadRequest("Vui lòng format thời gian theo kiểu: 'dd-MM-yyyy'");
             }
 
-            // Lọc dữ liệu theo ngày
             var query = from order in _context.Orders
                         join user in _context.Users on order.UserId equals user.UserId
                         join table in _context.Tables on order.TableId equals table.TableId
-                        where order.OrderTime.Date == parsedDate.Date // So sánh ngày-tháng-năm
+                        where order.OrderTime.Date == parsedDate.Date
                         select new OrderDetailShowViewReportDTO
                         {
                             OrderId = order.OrderId,
-                            FullName = user.FullName,
+                            FullName = user.FullName ?? "Không xác định",
                             OrderTime = order.OrderTime,
-                            TableName = table.TableName,
+                            TableName = table.TableName ?? "Không xác định",
                             TotalAmount = (decimal)order.TotalAmount,
                             ReturnedAmount = (decimal)order.ReturnedAmount,
                             ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            PaymentMethod = order.PaymentMethod,
+                            PaymentMethod = order.PaymentMethod ?? "Không xác định",
                         };
 
             var result = await query.OrderByDescending(x => x.OrderTime).ToListAsync();
@@ -493,8 +481,7 @@ namespace testVue.Controllers
         [HttpPost("get-all-order-currentmonth")]  // Có dùng
         public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByDateMonth([FromBody] TimeRequestDTO timeRequest)
         {
-            // Chuyển đổi chuỗi ngày "dd-MM-yyyy" thành kiểu DateTime
-            if (!DateTime.TryParseExact(timeRequest.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
+            if (timeRequest == null || string.IsNullOrWhiteSpace(timeRequest.Date) || !DateTime.TryParseExact(timeRequest.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out var parsedDate))
             {
                 return BadRequest("Vui lòng format thời gian theo kiểu: 'MM-yyyy'.");
             }
@@ -507,14 +494,14 @@ namespace testVue.Controllers
                         select new OrderDetailShowViewReportDTO
                         {
                             OrderId = order.OrderId,
-                            FullName = user.FullName,
+                            FullName = user.FullName ?? "Không xác định",
                             OrderTime = order.OrderTime,
-                            TableName = table.TableName,
+                            TableName = table.TableName ?? "Không xác định",
                             TotalAmount = (decimal)order.TotalAmount,
                             ReturnedAmount = (decimal)order.ReturnedAmount,
                             ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            PaymentMethod = order.PaymentMethod,
+                            PaymentMethod = order.PaymentMethod ?? "Không xác định",
                         };
 
             var result = await query.OrderByDescending(x => x.OrderTime).ToListAsync();
@@ -530,22 +517,21 @@ namespace testVue.Controllers
                 return BadRequest("Dữ liệu không hợp lệ.");
             }
 
-            // Lọc dữ liệu theo ngày
             var query = from order in _context.Orders
                         join user in _context.Users on order.UserId equals user.UserId
                         join table in _context.Tables on order.TableId equals table.TableId
-                        where (string.IsNullOrEmpty(timeRequest.Date) || user.FullName.Contains(timeRequest.Date))
+                        where (string.IsNullOrEmpty(user.FullName) || user.FullName.Contains(timeRequest.Date))
                         select new OrderDetailShowViewReportDTO
                         {
                             OrderId = order.OrderId,
-                            FullName = user.FullName,
+                            FullName = user.FullName ?? "Không xác định",
                             OrderTime = order.OrderTime,
-                            TableName = table.TableName,
+                            TableName = table.TableName ?? "Không xác định",
                             TotalAmount = (decimal)order.TotalAmount,
                             ReturnedAmount = (decimal)order.ReturnedAmount,
                             ReceivedAmount = (decimal)order.ReceivedAmount,
                             Discount = (decimal)order.Discount,
-                            PaymentMethod = order.PaymentMethod,
+                            PaymentMethod = order.PaymentMethod ?? "Không xác định",
                         };
 
             var result = await query.OrderByDescending(x => x.OrderTime).ToListAsync();
@@ -556,9 +542,12 @@ namespace testVue.Controllers
         [HttpPost("get-orderdetails-by-orderid")]
         public async Task<IActionResult> GetOrderDetailsByOrderId([FromBody] OrderIdRequest request)
         {
+            if(request == null || request.OrderId < 1)
+            {
+                return BadRequest("Mã hóa đơn không hợp lệ!");
+            }
             var query = from orderDetail in _context.OrderDetails
-                        join foodItem in _context.FoodItems
-                            on orderDetail.FoodItemId equals foodItem.FoodItemId
+                        join foodItem in _context.FoodItems on orderDetail.FoodItemId equals foodItem.FoodItemId
                         where orderDetail.OrderId == request.OrderId
                         select new
                         {
@@ -571,6 +560,132 @@ namespace testVue.Controllers
 
             var result = await query.ToListAsync();
             return Ok(result);
+        }
+        
+        // Dùng cho line chart
+        [HttpPost("get-revenue-order-quantity-by-day")]
+        public async Task<IActionResult> GetRevenueAndOrderQuantityByDay(TimeRequestDTO request)
+        {
+            if(request == null || string.IsNullOrWhiteSpace(request.Date) || !DateTime.TryParseExact(request.Date, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDate))
+            {
+                return BadRequest("Ngày không hợp lệ.");
+            }
+            try
+            {
+                var results = new List<object>();
+                for (int i = 0; i <= 24; i++)
+                {
+                    DateTime start = selectedDate.AddHours(i);
+                    DateTime end = start.AddHours(1).AddSeconds(-1);
+
+                    var orders = await _context.Orders.Where(o => o.OrderTime >= start && o.OrderTime <= end).ToListAsync();
+
+                    results.Add(new
+                    {
+                        TimeRange = $"{i:D2}:00",
+                        TotalAmount = orders.Sum(x => x.TotalResult),
+                        TotalOrder = orders.Count()
+                    });
+                }
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = ex.Message });
+            }
+        }
+        // Dùng cho line chart
+        [HttpPost("get-revenue-order-quantity-by-week")]
+        public async Task<IActionResult> GetRevenueAndOrderQuantityByWeek(TimeRequestDTO request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Date))
+            {
+                return BadRequest("Ngày không hợp lệ.");
+            }
+            
+            try
+            {
+                var startIndex = 0;
+                var endIndex = 0;
+                var currentDate = DateTime.Now;
+                var currentMonth = currentDate.Month;
+                var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+
+                if (request.Date == "1")
+                {
+                    startIndex = 1;
+                    endIndex = 7;
+                }
+                else if (request.Date == "2")
+                {
+                    startIndex = 8;
+                    endIndex = 14;
+                }
+                else if (request.Date == "3")
+                {
+                    startIndex = 15;
+                    endIndex = 21;
+                }
+                else if (request.Date == "4")
+                {
+                    startIndex = 22;
+                    endIndex = daysInMonth;
+                }
+                var results = new List<object>();
+                for (int i = startIndex; i <= endIndex; i++) { 
+                    var dateQuery = new DateTime(currentDate.Year, currentDate.Month, i);
+                    DateTime start = dateQuery.Date;
+                    DateTime end = start.AddDays(1).AddTicks(-1);
+
+                    var orders = await _context.Orders.Where(o => o.OrderTime >= start && o.OrderTime <= end).ToListAsync();
+
+                    results.Add(new
+                    {
+                        TimeRange = $"{i:D2}-{dateQuery.Month:D2}-{dateQuery.Year}",
+                        TotalAmount = orders.Sum(x => x.TotalResult),
+                        TotalOrder = orders.Count()
+                    });
+                }
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = ex.Message });
+            }
+        }
+        [HttpPost("get-revenue-order-quantity-by-month")]
+        public async Task<IActionResult> GetRevenueAndOrderQuantityByMonth(TimeRequestDTO request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Date) || !DateTime.TryParseExact(request.Date, "MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDate))
+            {
+                return BadRequest("Ngày không hợp lệ.");
+            }
+            try
+            {
+                var daysInMonth = DateTime.DaysInMonth(selectedDate.Year, selectedDate.Month);
+
+                var results = new List<object>();
+                for (int i = 1; i <= daysInMonth; i++)
+                {
+                    var dateQuery = new DateTime(selectedDate.Year, selectedDate.Month, i);
+                    DateTime start = dateQuery.Date;
+                    DateTime end = start.AddDays(1).AddTicks(-1);
+
+                    var orders = await _context.Orders.Where(o => o.OrderTime >= start && o.OrderTime <= end).ToListAsync();
+
+                    results.Add(new
+                    {
+                        TimeRange = $"{i:D2}",
+                        TotalAmount = orders.Sum(x => x.TotalResult),
+                        TotalOrder = orders.Count()
+                    });
+                }
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = ex.Message });
+            }
         }
     }
 }
