@@ -25,6 +25,7 @@ namespace testVue.Controllers
                 return tables;
             }
             catch (Exception ex) {
+                Console.WriteLine(ex);
                 return new List<TableMdl>();
             }
         }

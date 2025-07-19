@@ -56,7 +56,7 @@ namespace sourceAPI.Controllers
             {
                 return BadRequest(new { message = "Refresh token không hợp lệ hoặc đã hết hạn" });
             }
-            var user = existingToken.User;
+            var user = existingToken.User ?? new();
 
             // Tạo access token mới
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -66,7 +66,7 @@ namespace sourceAPI.Controllers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Name, user.FullName ?? ""),
                     new Claim(ClaimTypes.Role, user.Role ?? "Nhân viên"),
                 }),
                 Expires = DateTime.Now.AddHours(_jwtSetting.ExpireHours),

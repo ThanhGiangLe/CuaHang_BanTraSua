@@ -62,8 +62,8 @@ namespace sourceAPI.Controllers
 
                 if (schedules == null || schedules.Count == 0)
                 {
-                    var defautlSchedule = Enumerable.Range(1, daysInCurrentMonth).
-                    Select((item) => new
+                    var defautlSchedule = Enumerable.Range(1, daysInCurrentMonth)
+                    .Select((item) => new
                     {
                         Day = item,
                         ShiftCode = "O"
@@ -92,7 +92,7 @@ namespace sourceAPI.Controllers
                         _context.ScheduleHistories.Add(newScheduleHistory);
                     }
                     await _context.SaveChangesAsync();
-                    return Ok(  );
+                    return Ok(defautlSchedule);
                 }else
                 {
                     var result = schedules
@@ -101,16 +101,18 @@ namespace sourceAPI.Controllers
                         Day = index + 1,
                         ShiftCode = item.ShiftId
                     }).ToList();
-                    if (result.Count < daysInCurrentMonth)
+                    var daysInSchedule = result.Count;
+                    if (daysInSchedule < daysInCurrentMonth)
                     {
-                        int days = daysInCurrentMonth - result.Count;
+                        int days = daysInCurrentMonth - daysInSchedule;
                         for(int i = 1; i <= days; i++)
                         {
-                            result.Add(new
+                            var add = new
                             {
-                                Day = result.Count + i,
+                                Day = daysInSchedule + i,
                                 ShiftCode = "O"
-                            });
+                            };
+                            result.Add(add);
                         }
                     }
                     return Ok(result);
@@ -131,9 +133,10 @@ namespace sourceAPI.Controllers
             try
             {
                 var currentTime = DateTime.Now;
-                foreach(var schedule in request.Schedules)
+                var daysInMonth = DateTime.DaysInMonth(request.Year, request.Month);
+                foreach (var schedule in request.Schedules)
                 {
-                    if (schedule.Day > 0 && schedule.Day <= DateTime.DaysInMonth(request.Year, request.Month))
+                    if (schedule.Day > 0 && schedule.Day <= daysInMonth)
                     {
                         var scheduleDate = new DateTime(request.Year, request.Month, schedule.Day);
                         var existingSchedule = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == request.UserId && row.Date.Date == scheduleDate.Date);
@@ -292,9 +295,9 @@ namespace sourceAPI.Controllers
             }
             var currentDay = DateTime.Now;
             var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
-            if (scheduleOfDay == null)
+            if (scheduleOfDay == null || scheduleOfDay.ShiftId == "O")
             {
-                return NotFound("Hãy đăng ký lịch làm việc trước khi mở ca");
+                return NotFound("Hãy đăng ký lịch làm việc khác ngày nghỉ trước khi mở ca!");
             }
             try
             {
@@ -327,7 +330,7 @@ namespace sourceAPI.Controllers
                 return BadRequest("Dữ liệu không hợp lệ!");
             }
             var currentDay = DateTime.Now;
-            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
+            var scheduleOfDay = await _context.Schedules.FirstOrDefaultAsync(row => row.UserId == request.UserId && row.Date.Date == currentDay.Date);
             if (scheduleOfDay == null)
             {
                 return NotFound("Hãy đăng ký lịch làm việc trước khi thao tác");

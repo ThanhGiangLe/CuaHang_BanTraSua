@@ -103,33 +103,36 @@ namespace testVue.Controllers
                         return NotFound("Hãy mở ca mới trước khi thao tác");
                     }
                 }
-                if (orderRequest.PaymentMethod.Trim().ToLower() == "tiền mặt")
+                var total = orderRequest.TotalResult;
+                if (orderRequest.PaymentMethod?.Trim()?.ToLower() == "tiền mặt")
                 {
                     scheduleShiftOfDay.ReceivedTotalAmount += orderRequest.ReceivedAmount;
                     scheduleShiftOfDay.ReturnedTotalAmount += orderRequest.ReturnedAmount;
                     if (customer != null)
                     {
-                        customer.Point += orderRequest.TotalResult * 0.1m;
+                        customer.Point += total * 0.1m;
                     }
                 }
-                else if(orderRequest.PaymentMethod.Trim().ToLower() == "chuyển khoản")
+                else if(orderRequest.PaymentMethod?.Trim()?.ToLower() == "chuyển khoản")
                 {
                     if (customer != null)
                     {
-                        customer.Point += orderRequest.TotalResult * 0.1m;
+                        customer.Point += total * 0.1m;
                     }
                 }
                 else
                 {
                     if(customer != null)
                     {
-                        if (customer.Point < orderRequest.TotalResult)
+                        if (customer.Point < total)
                         {
                             return Ok(new { success = -20 });
                         }
                         else
                         {
-                            customer.Point -= orderRequest.TotalResult;
+                            
+                            customer.Point -= total;
+                            customer.Point += total * 0.1m;
                         }
                     }else
                     {
@@ -164,7 +167,7 @@ namespace testVue.Controllers
                         success = 1,
                         data = new
                         {
-                            order.OrderId, // Trả về OrderId tự tăng
+                            order.OrderId,
                             order.UserId,
                             order.OrderTime,
                             order.TableId,
@@ -180,7 +183,6 @@ namespace testVue.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // Xử lý lỗi khi lưu vào cơ sở dữ liệu
                     return StatusCode(500, new
                     {
                         success = -1,
@@ -220,7 +222,6 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi khi lưu vào cơ sở dữ liệu
                 return StatusCode(500, new
                 {
                     success = -1,
@@ -312,7 +313,6 @@ namespace testVue.Controllers
 
             _context.OrderDetails.RemoveRange(listOrderDetails);
             await _context.SaveChangesAsync();
-
 
             _context.FoodItems.Remove(foodItem);
 
@@ -408,13 +408,13 @@ namespace testVue.Controllers
             try
             {
                 var bestSellingItems = await _context.OrderDetails
-                    .GroupBy(orderItem => new { orderItem.FoodItemId }) // Nhóm theo FoodItemId và FoodName
+                    .GroupBy(orderItem => new { orderItem.FoodItemId })
                     .Select(g => new
                     {
                         FoodItemId = g.Key.FoodItemId,
-                        QuantitySold = g.Sum(item => item.Quantity) // Đếm số lượng bán ra
+                        QuantitySold = g.Sum(item => item.Quantity)
                     })
-                    .OrderByDescending(x => x.QuantitySold) // Sắp xếp giảm dần theo số lượng bán ra
+                    .OrderByDescending(x => x.QuantitySold)
                     .Join(_context.FoodItems,
                         o => o.FoodItemId,
                         f => f.FoodItemId,
@@ -428,12 +428,10 @@ namespace testVue.Controllers
                     .Take(request.Top > 0 ? request.Top : 5)
                     .ToListAsync();
 
-                // Trả kết quả về client
                 return Ok(bestSellingItems);
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
                 return StatusCode(500, new { error = "Có lỗi xảy ra khi lấy dữ liệu", message = ex.Message });
             }
         }

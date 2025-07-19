@@ -1,7 +1,7 @@
 <template>
   <div class="foodManagement d-flex flex-column">
-    <!-- Chức năng tìm kiếm -->
     <div class="foodManagement_search d-flex align-center">
+      <!-- Thanh search -->
       <v-text-field
         class="user_debt_equipment-search"
         append-inner-icon="mdi-magnify"
@@ -13,6 +13,7 @@
         v-model="search"
         style="flex: 3"
       ></v-text-field>
+      <!-- Tài khoản tương tác -->
       <v-combobox
         class="foodManagement_search-phone ms-2"
         placeholder="Tên hoặc số điện thoại..."
@@ -28,6 +29,7 @@
         style="flex: 2"
         :search-input.sync="searchPhoneKeyword"
       />
+      <!-- Mở/Kết ca -->
       <div>
         <v-btn
           v-if="swapButtonShift"
@@ -45,6 +47,7 @@
         >
       </div>
 
+      <!-- Dialog mở ca -->
       <v-dialog
         v-model="isShowOpenShift"
         width="650px"
@@ -64,7 +67,7 @@
               style="
                 font-size: 28px;
                 font-weight: bold;
-                color: #2e7d32;
+                color: #01579b;
                 margin-top: 8px;
               "
             >
@@ -74,17 +77,17 @@
 
           <v-card-actions>
             <v-btn @click="cancelConfirmOpenShift" color="red">Đóng</v-btn>
-            <v-btn @click="confirmOpenShift" color="primary">Xác nhận</v-btn>
+            <v-btn @click="confirmOpenShift" color="green">Xác nhận</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-
+      <!-- Dialog kết ca -->
       <v-dialog v-model="isShowCloseShift" width="650px" persistent>
         <v-card>
           <v-card-title class="">Ghi nhận kết ca</v-card-title>
           <v-card-text style="padding: 0px 4px; width: 90%; margin: 0 auto">
             <v-text-field
-              label="Số tiền trong két"
+              label="Số tiền trong két (nghìn VND)"
               v-model="inputCloseCashAmount"
             ></v-text-field>
             <v-text-field
@@ -109,13 +112,13 @@
       class="foodManagement_listFoodOrder flex-1-0 mt-2 d-flex justify-space-between"
       style="margin-bottom: 52px"
     >
-      <!-- Hiển thị MENU để thao tác -->
+      <!-- Hiển thị danh sách món và các chức năng thao tác -->
       <div
         class="foodManagement_listFoodOrder_menu rounded w-66"
         :style="{ backgroundColor: 'var(--bg-color-item)' }"
         v-if="!loading && foodCategories && filteredFoodItems"
       >
-        <!-- Categories -->
+        <!-- Danh mục -->
         <div
           class="foodManagement_listFoodOrder_menu_dishes d-flex justify-center flex-wrap mt-1"
         >
@@ -146,7 +149,7 @@
 
         <v-divider class="mt-1"></v-divider>
 
-        <!-- Food Items -->
+        <!-- Các món uống -->
         <div class="foodManagement_listFoodOrder_menu_foods">
           <v-container class="pa-2 mt-1">
             <!-- Hiển thị danh sách các món hiện có -->
@@ -181,9 +184,9 @@
                   <h6>{{ formatPoint(foodItem.point) }}/{{ foodItem.unit }}</h6>
                   <v-btn
                     class="mt-2 foodManagement_listFoodOrder_menu_foods_item_addFood"
-                    size="x-small"
-                    style="height: 26px; font-size: 12px; min-width: 130px"
-                    color="orange-darken-2"
+                    size="small"
+                    style="height: 28px; font-size: 12px; min-width: 130px"
+                    color="blue-darken-2"
                     variant="tonal"
                     @click="openDialogShowDetail(foodItem)"
                   >
@@ -195,7 +198,7 @@
                     "
                     class="foodManagement_listFoodOrder_menu_foods_item-bestseller"
                   >
-                    Best selling
+                    Best seller
                   </div>
                 </div>
               </v-col>
@@ -314,7 +317,7 @@
           <v-col cols="12">
             <div class="d-flex flex-wrap">
               <v-skeleton-loader
-                v-for="n in 6"
+                v-for="n in 8"
                 :key="n"
                 type="chip"
                 class="ma-1"
@@ -620,24 +623,34 @@
         </div>
 
         <!-- Thực hiện thao tác -->
-        <v-btn
-          class="w-100 my-2 my_btn_custommer"
-          @click="callApiOrderFood()"
-          color="orange-darken-2"
-          >Thanh toán</v-btn
-        >
-        <v-btn
-          class="w-100 mb-2 my_btn_custommer"
-          color="blue-darken-4"
-          @click="callApiOrderFoodAndAddTable"
-          >Chọn bàn</v-btn
-        >
-        <v-btn
-          class="w-100 mb-2 my_btn_custommer"
-          style="background-color: #002051 !important"
-          @click="isShowQRCode = !isShowQRCode"
-          >Mã QR</v-btn
-        >
+        <div class="d-flex justify-space-between align-center mt-2">
+          <v-btn
+            class="my_btn_custommer me-1"
+            @click="callApiOrderFood()"
+            color="orange-darken-2"
+            >Thanh toán</v-btn
+          >
+          <v-btn
+            class="my_btn_custommer ms-1"
+            color="teal-darken-2"
+            @click="isShowQRCode = !isShowQRCode"
+            >Mã QR</v-btn
+          >
+        </div>
+        <div class="d-flex justify-space-between align-center mt-2 mb-1">
+          <v-btn
+            class="my_btn_custommer w-100"
+            color="blue-darken-4"
+            @click="callApiOrderFoodAndAddTable"
+            >Chọn bàn</v-btn
+          >
+          <!-- <v-btn
+            class="mb-1 my_btn_custommer ms-1"
+            style="background-color: #002051 !important"
+            @click="isShowQRCode = !isShowQRCode"
+            >Hóa đơn</v-btn
+          > -->
+        </div>
 
         <!-- Mã QR -->
         <v-dialog
@@ -657,6 +670,25 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <!-- Hóa đơn -->
+        <!-- <v-dialog
+          v-model="isShowQRCode"
+          width="650px"
+          height="600px"
+          persistent
+        >
+          <v-card>
+            <v-card-title class="">Tên tài khoản: LE THANH GIANG </v-card-title>
+            <v-card-text style="padding: 0px 4px; width: 60%; margin: 0 auto">
+              <v-img cover :src="momoQRCodeUrl"></v-img>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn @click="isShowQRCode = false" color="red">Đóng</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog> -->
 
         <!-- Xác thực thanh toán otp -->
         <v-dialog v-model="isShowOTPPoints" width="650px" persistent>

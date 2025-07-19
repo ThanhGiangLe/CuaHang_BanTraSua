@@ -48,7 +48,6 @@ export function employeeManagementHandler() {
       const response = await axiosClient.get(
         `${API_ENDPOINTS.GET_ALL_SCHEDULE}`
       );
-      console.log("GET_ALL_SCHEDULE: ", response);
 
       const result = response.data;
       return result;

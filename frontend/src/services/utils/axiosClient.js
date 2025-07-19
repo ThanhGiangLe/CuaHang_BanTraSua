@@ -1,7 +1,6 @@
 import axios from "axios";
 const env = import.meta.env.VITE_API_BASE_URL;
 
-// Khởi tạo một instance axios dùng chung
 const axiosClient = axios.create({
   baseURL: env,
   headers: {
@@ -40,7 +39,6 @@ axiosClient.interceptors.response.use(
           { withCredentials: true }
         );
         console.log("res: ", res);
-        // Làm thêm đăng nhập phần này
         const newAccessToken = res.data.token;
 
         sessionStorage.setItem("token", newAccessToken);

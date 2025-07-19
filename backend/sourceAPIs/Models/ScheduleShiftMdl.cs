@@ -15,7 +15,7 @@ namespace sourceAPI.Models
         public decimal ReceivedTotalAmount { get; set; }
         public decimal ReturnedTotalAmount { get; set; }
         public decimal AdjustmentAmount { get; set; }
-        public string? AdjustmentReason { get; set; }
+        public string? AdjustmentReason { get; set; } = string.Empty;
         public decimal ClosingCashAmount { get; set; }
     }
 }

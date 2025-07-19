@@ -14,14 +14,14 @@ namespace testVue.Models
         public decimal PriceListed { get; set; } = default;
         public decimal? PriceCustom { get; set; } = default;
         public decimal? Point { get; set; } = default;
-        public string ImageUrl { get; set; } = string.Empty;
-        public string Unit { get; set; } = "Ly";
+        public string? ImageUrl { get; set; } = string.Empty;
+        public string? Unit { get; set; } = "Ly";
         public int CategoryId { get; set; } = default;
-        public string Status { get; set; } = "Available";
+        public string? Status { get; set; } = "Available";
         public DateTime? CreateDate { get; set; }
-        public string CreateBy { get; set; } = string.Empty;
+        public string? CreateBy { get; set; } = string.Empty;
         public DateTime? UpdateDate { get; set; }
-        public string UpdateBy { get; set; } = string.Empty;
+        public string? UpdateBy { get; set; } = string.Empty;
         public int IsMain { get; set; } = default;
     }
 }

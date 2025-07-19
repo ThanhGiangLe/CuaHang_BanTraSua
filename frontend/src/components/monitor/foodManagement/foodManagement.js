@@ -111,7 +111,6 @@ export default function useFoodManagement() {
   init();
 
   function tonggleSelected(foodCategory) {
-    console.log("foodCategory: ", foodCategory);
     if (listDashSelected.value.includes(foodCategory)) {
       listDashSelected.value = listDashSelected.value.filter(
         (s) => s.categoryId !== foodCategory.categoryId
@@ -119,6 +118,13 @@ export default function useFoodManagement() {
     } else {
       listDashSelected.value.push(foodCategory);
     }
+  }
+  function removeVietnameseTones(str) {
+    return str
+      .normalize("NFD") // tách dấu khỏi chữ
+      .replace(/[\u0300-\u036f]/g, "") // xóa các dấu
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D");
   }
   const filteredFoodItems = computed(() => {
     // Kiểm tra foodItems.value là mảng
@@ -134,9 +140,9 @@ export default function useFoodManagement() {
           (selected) => selected.categoryId === foodItem.categoryId
         );
 
-      const isSearchMatch = foodItem.foodName
-        .toLowerCase()
-        .includes(search.value.toLowerCase());
+      const isSearchMatch = removeVietnameseTones(
+        foodItem.foodName.toLowerCase()
+      ).includes(removeVietnameseTones(search.value.toLowerCase()));
 
       return isCategoryMatch && isSearchMatch;
     });
@@ -183,7 +189,6 @@ export default function useFoodManagement() {
     };
   }
   async function saveFood() {
-    console.log("foodAdd: ", foodAdd.value);
     foodAdd.value.categoryId = getIdByNameCategory(
       foodAdd.value.categoryIdString
     );
@@ -206,10 +211,8 @@ export default function useFoodManagement() {
       isMain: foodAdd.value.isMain,
       point: foodAdd.value.point,
     };
-    console.log("requestData: ", requestData);
 
     const response = await createFood(requestData);
-    console.log("response: ", response);
 
     if (response.responseCreate) {
       if (response.responseCreate.success) {
@@ -229,7 +232,6 @@ export default function useFoodManagement() {
           isMain: response.responseCreate.isMain,
           point: response.responseCreate.point,
         };
-        console.log("food: ", food);
 
         foodItems.value.push(food);
         cancelSaveFood();
@@ -293,7 +295,7 @@ export default function useFoodManagement() {
       categoryIdString: getNameByIdCategory(foodItem.categoryId),
       isMainString: getNameByIdMain(foodItem.isMain),
     };
-    console.log("foodItemCurrentUpdate: ", foodItemCurrentUpdate.value);
+    console.log("foodItemCurrentUpdate:", foodItemCurrentUpdate.value);
     modalUpdateFoodItem.value = true;
   }
   function cancelConfirmUpdateFoodItem() {
@@ -331,10 +333,8 @@ export default function useFoodManagement() {
       isMain: foodItemCurrentUpdate.isMain,
       point: foodItemCurrentUpdate.point,
     };
-    console.log("requestData: ", requestData);
 
     const response = await updateFood(requestData);
-    console.log("response: ", response);
 
     if (response.responseUpdate) {
       if (response.responseUpdate.success) {

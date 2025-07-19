@@ -4,7 +4,7 @@
     class="mt-1 d-flex flex-column"
     style="width: 100%; height: 100vh"
   >
-    <div class="d-flex justify-center flex-wrap">
+    <div class="d-flex justify-center align-center flex-wrap">
       <v-btn
         @click="valueVisiable = 1"
         variant="elevated"
@@ -12,7 +12,7 @@
         class="mx-3 mb-1"
       >
         <v-icon class="ma-1">mdi-file-chart-outline</v-icon>
-        Xem báo cáo doanh thu
+        Doanh thu
       </v-btn>
       <v-btn
         @click="valueVisiable = 2"
@@ -21,7 +21,7 @@
         class="mx-3 mb-1"
       >
         <v-icon class="ma-1">mdi-chart-line</v-icon>
-        Xem báo cáo các món bán chạy
+        Món bán chạy
       </v-btn>
       <v-btn
         @click="valueVisiable = 3"
@@ -30,7 +30,16 @@
         class="mx-3 mb-1"
       >
         <v-icon class="ma-1">mdi-file-document</v-icon>
-        Xem báo cáo tổng hóa đơn
+        Tổng hóa đơn
+      </v-btn>
+      <v-btn
+        @click="valueVisiable = 4"
+        variant="elevated"
+        color="indigo-darken-4"
+        class="mx-3 mb-1"
+      >
+        <v-icon class="ma-1">mdi-chart-line</v-icon>
+        Biến động doanh thu
       </v-btn>
     </div>
 
@@ -38,6 +47,7 @@
       <ReportRevenue v-if="valueVisiable == 1" />
       <BestSellingItemsReport v-if="valueVisiable == 2" />
       <BillingReport v-if="valueVisiable == 3" />
+      <LineChartTotalRevenue v-if="valueVisiable == 4" />
     </div>
   </div>
 </template>
@@ -47,5 +57,6 @@ import { ref } from "vue";
 import ReportRevenue from "./reportRevenue.vue";
 import BestSellingItemsReport from "./bestSellingItemsReport.vue";
 import BillingReport from "./billingReport.vue";
+import LineChartTotalRevenue from "./lineChartTotalRevenue.vue";
 const valueVisiable = ref(1);
 </script>

@@ -12,7 +12,7 @@
         v-model="search"
       ></v-text-field>
       <v-btn
-        color="blue-lighten-1"
+        color="light-blue-darken-4"
         class="ms-5"
         @click="showDialogAdd = !showDialogAdd"
         >Thêm món mới</v-btn
@@ -46,11 +46,12 @@
                 v-model="foodAdd.point"
                 :rules="[(v) => !!v || 'Trường này là bắt buộc']"
               ></v-text-field>
-              <v-text-field
+              <v-select
                 label="Đơn vị tính"
+                :items="['Ly', 'Phần', 'Cái', 'Bánh']"
                 v-model="foodAdd.unit"
                 :rules="[(v) => !!v || 'Trường này là bắt buộc']"
-              ></v-text-field>
+              />
             </div>
             <div class="d-flex justify-space-between ga-3">
               <v-select
@@ -147,9 +148,7 @@
                     </div> -->
 
                     <div class="d-flex align-center">
-                      <div style="min-width: 130px; color: #666">
-                        Tên món ăn:
-                      </div>
+                      <div style="min-width: 130px; color: #666">Tên món:</div>
                       <div
                         style="height: 16.56px; line-height: 16.56px"
                         class="hiddent-text-one-line"
@@ -213,7 +212,9 @@
                     </div>
 
                     <div class="d-flex align-center">
-                      <div style="min-width: 130px; color: #666">Món:</div>
+                      <div style="min-width: 130px; color: #666">
+                        Phân loại:
+                      </div>
                       <div>
                         {{ getNameByIdMain(foodItem.isMain) }}
                       </div>
@@ -254,8 +255,8 @@
                     <v-btn
                       class="foodManagement_listFoodOrder_menu_foods_item_addFood me-2"
                       size="x-small"
-                      style="height: 28px; min-width: 100px"
-                      color="blue-darken-4"
+                      style="height: 32px; min-width: 120px"
+                      color="green-darken-2"
                       @click="openDialogShowUpdateFoodItemSelected(foodItem)"
                     >
                       Thay đổi
@@ -264,7 +265,7 @@
                     <v-btn
                       class="foodManagement_listFoodOrder_menu_foods_item_addFood ms-2"
                       size="x-small"
-                      style="height: 28px; min-width: 80px"
+                      style="height: 32px; min-width: 120px"
                       color="red-darken-4"
                       @click="openDialogShowDeleteFoodItemSelected(foodItem)"
                     >
@@ -343,23 +344,25 @@
                     ></v-text-field>
                     <div class="d-flex justify-space-between ga-3">
                       <v-text-field
-                        label="Giá mặc định"
+                        label="Giá niêm yết"
                         v-model="foodItemCurrentUpdate.priceListed"
                       ></v-text-field>
                       <v-text-field
-                        label="Giá bán"
+                        label="Giá bán ra"
                         v-model="foodItemCurrentUpdate.priceCustom"
                       ></v-text-field>
                     </div>
+
                     <div class="d-flex justify-space-between ga-3">
                       <v-text-field
                         label="Điểm quy đổi"
                         v-model="foodItemCurrentUpdate.point"
                       ></v-text-field>
-                      <v-text-field
-                        label="Đơn vị"
+                      <v-select
+                        label="Đơn vị tính"
+                        :items="['Ly', 'Phần', 'Cái', 'Bánh']"
                         v-model="foodItemCurrentUpdate.unit"
-                      ></v-text-field>
+                      />
                     </div>
                     <div class="d-flex justify-space-between ga-3">
                       <v-select
@@ -371,6 +374,13 @@
                         label="Phân loại"
                         :items="['Món chính', 'Món thêm']"
                         v-model="foodItemCurrentUpdate.isMainString"
+                      />
+                    </div>
+                    <div class="d-flex justify-space-between ga-3">
+                      <v-select
+                        label="Tình trạng món"
+                        :items="['Đang kinh doanh', 'Ngừng kinh doanh']"
+                        v-model="foodItemCurrentUpdate.status"
                       />
                     </div>
                     <v-file-input
@@ -409,7 +419,7 @@
           <v-col cols="12">
             <div class="d-flex flex-wrap">
               <v-skeleton-loader
-                v-for="n in 6"
+                v-for="n in 8"
                 :key="n"
                 type="chip"
                 class="ma-1"
@@ -426,7 +436,7 @@
 
           <!-- Skeleton cho food items -->
           <v-col
-            v-for="n in 9"
+            v-for="n in 8"
             :key="n"
             cols="12"
             lg="4"
