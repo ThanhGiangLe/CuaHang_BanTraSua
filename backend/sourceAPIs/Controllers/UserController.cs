@@ -165,7 +165,9 @@ namespace testVue.Controllers
             if (string.IsNullOrEmpty(addUserRequest.FullName) ||
                 string.IsNullOrEmpty(addUserRequest.Phone) ||
                 string.IsNullOrEmpty(addUserRequest.Email) ||
-                string.IsNullOrEmpty(addUserRequest.Role))
+                string.IsNullOrEmpty(addUserRequest.Role) ||
+                !addUserRequest.Phone.All(char.IsDigit) ||
+                !addUserRequest.Phone.StartsWith("0"))
             {
                 return Ok(new { success = -1 });
             }
@@ -195,7 +197,7 @@ namespace testVue.Controllers
                 Status = "Busy"
             };
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             if (addUserRequest.Role?.ToLower() != "khách hàng")
             {

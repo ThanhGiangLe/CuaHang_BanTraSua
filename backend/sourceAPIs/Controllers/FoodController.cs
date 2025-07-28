@@ -10,7 +10,6 @@ using testVue.ModelsRequest;
 
 namespace testVue.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
@@ -62,7 +61,6 @@ namespace testVue.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("add-order")]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDTO orderRequest)
         {
@@ -71,19 +69,8 @@ namespace testVue.Controllers
                 return Ok(new { success = -1 });
             }
 
-            var userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var fullNameFromToken = User.FindFirst(ClaimTypes.Name)?.Value;
-            if (userIdFromToken == null || userIdFromToken != orderRequest.UserId.ToString())
-            {
-                return Forbid("Bearer");
-            }
-            if (!int.TryParse(userIdFromToken, out var userIdTryParse))
-            {
-                return Forbid("Bearer");
-            }
-
             var currentDay = DateTime.Now;
-            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == userIdTryParse && row.Date.Date == currentDay.Date);
+            var scheduleOfDay = _context.Schedules.FirstOrDefault(row => row.UserId == orderRequest.UserId && row.Date.Date == currentDay.Date);
 
             if (scheduleOfDay == null)
             {
@@ -141,7 +128,7 @@ namespace testVue.Controllers
                 }
                 var order = new OrderMdl
                 {
-                    UserId = userIdTryParse,
+                    UserId = orderRequest.UserId,
                     OrderTime = currentDay,
                     TableId = orderRequest.TableId,
                     TotalAmount = orderRequest.TotalAmount,

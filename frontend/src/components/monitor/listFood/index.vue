@@ -384,9 +384,11 @@
                     <h5 class="hiddent-text-one-line">
                       {{ item.FoodName }}
                     </h5>
-                    <span style="font-size: 11px; line-height: 12px"
-                      >+{{ item.Quantity }} {{ item.Unit }}</span
-                    >
+                    <div style="font-size: 11px; line-height: 12px">
+                      <span> {{ formatCurrency(item.Price) }}</span>
+                      <span> x{{ item.Quantity }} {{ item.Unit }}</span>
+                    </div>
+
                     <div
                       v-if="item.ListAdditionalFood.length > 0"
                       class="hiddent-text-one-line"
