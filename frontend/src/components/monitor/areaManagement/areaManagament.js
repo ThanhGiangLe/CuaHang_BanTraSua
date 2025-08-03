@@ -49,7 +49,7 @@ export default function useAreaManagement() {
     receivedAmount: null,
   });
   const returnedAmountCurrentOrder = computed(() => {
-    const received = Number(paymentInfo.value.receivedAmount || 0);
+    const received = Number(paymentInfo.value.receivedAmount * 1000 || 0);
     const total = Number(paymentInfo.value.totalResult || 0);
     return received > total ? received - total : 0;
   });
@@ -202,7 +202,7 @@ export default function useAreaManagement() {
       tax: paymentInfo.value.tax,
       paymentMethod: paymentInfo.value.paymentMethod,
       phone: searchPhoneNumbers.value ?? "",
-      receivedAmount: paymentInfo.value.receivedAmount || 0,
+      receivedAmount: paymentInfo.value.receivedAmount * 1000 || 0,
       returnedAmount: returnedAmountCurrentOrder.value || 0,
     };
 

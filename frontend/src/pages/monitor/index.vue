@@ -115,18 +115,18 @@ const tab = ref("listFood");
 const user = computed(() => userStore.user);
 console.log("user", user.value);
 
-const isShiftClosed = ref(false);
-onMounted(() => {
-  const handleBeforeUnload = (e) => {
-    if (!isShiftClosed.value) {
-      e.preventDefault();
-      e.returnValue = "";
-    }
-  };
-  window.addEventListener("beforeunload", handleBeforeUnload);
+// const isShiftClosed = ref(false);
+// onMounted(() => {
+//   const handleBeforeUnload = (e) => {
+//     if (!isShiftClosed.value) {
+//       e.preventDefault();
+//       e.returnValue = "";
+//     }
+//   };
+//   window.addEventListener("beforeunload", handleBeforeUnload);
 
-  onBeforeUnmount(() => {
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-  });
-});
+//   onBeforeUnmount(() => {
+//     window.removeEventListener("beforeunload", handleBeforeUnload);
+//   });
+// });
 </script>

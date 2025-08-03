@@ -43,17 +43,17 @@ namespace sourceAPI.Controllers
         [HttpPost("get-schedule-by-userid")]
         public async Task<IActionResult> GetScheduleByUserId([FromBody] UserIdRequest request)
         {
-            if (request.UserId <= 0)
+            if (request == null || request.UserId <= 0)
             {
                 return BadRequest("Dữ liệu truyền không hợp lệ");
             }
 
             try
             {
-                int year = DateTime.Now.Year;
-                int month = DateTime.Now.Month;
-                int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
                 var currentTime = DateTime.Now;
+                int year = currentTime.Year;
+                int month = currentTime.Month;
+                int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
 
                 var schedules = await _context.Schedules
                     .AsNoTracking()
@@ -201,7 +201,6 @@ namespace sourceAPI.Controllers
                 return StatusCode(500, $"Đã xảy ra lỗi khi xử lý yêu cầu: {e.Message}");
             }
         }
-
 
         [Authorize]
         [HttpPost("swap-schedule-shift")]

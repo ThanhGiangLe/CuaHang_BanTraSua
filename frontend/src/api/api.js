@@ -34,6 +34,7 @@ const API_ENDPOINTS = {
   GET_ALL_ORDER_CURRENT_MONTH: `/report/get-all-order-currentmonth`,
   GET_ALL_ORDER_CURRENT_DAY: `/report/get-all-order-currentday`,
   GET_ALL_ORDER_FULL_NAME: `/report/get-all-order-fullname`,
+  GET_ALL_ORDER_PAYMENT_METHOD: `/report/get-all-order-payment-method`,
   GET_ALL_REVENUE_BY_EMPLOYEE: `/report/total-revenue-employee`, // Không dùng
   GET_ALL_REVENUE_BY_CATEGORY: `/report/total-revenue-category`, // Không dùng
   GET_ALL_ORDERITEM_BESTSELING: `/report/get-all-orderitem-bestseling`, // Không dùng

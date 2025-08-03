@@ -3,24 +3,200 @@
   "WorkspaceRootPath": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\timerequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\timerequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\swapscheduleshiftrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\swapscheduleshiftrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\scheduleinforequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\scheduleinforequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\totalsalescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\totalsalescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\gettotalsalesrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\gettotalsalesrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\adduserrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\adduserrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\updatepasswordrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\updatepasswordrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\usermdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\usermdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\datas\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\handls\\userhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\handls\\userhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\handls\\userconnectionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\handls\\userconnectionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\tablemdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\tablemdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\shiftmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\shiftmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\scheduleshiftmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\scheduleshiftmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\schedulehistorymdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\schedulehistorymdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\ordermdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\ordermdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\fooditemmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\fooditemmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\foodcategorymdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\foodcategorymdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\requestupdatefooditemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\requestupdatefooditemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\orderdetailshowviewreportdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\orderdetailshowviewreportdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\getopeningrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\getopeningrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\additonpointrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\additonpointrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\addorderrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\addorderrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\closeshiftamountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\closeshiftamountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\emailcheckrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\emailcheckrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\loginrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\loginrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\openshiftamountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\openshiftamountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\orderdetailrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\orderdetailrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\orderidrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\orderidrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\phonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\phonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\requestfooditemadddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\requestfooditemadddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\scheduleidrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\scheduleidrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\topitemsrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\topitemsrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\updateuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\updateuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\modelsrequest\\useridrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\modelsrequest\\useridrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\sourceapis.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\sourceapis.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\token\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\token\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\token\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\token\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\orderdetailmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\orderdetailmdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\models\\schedulemdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\models\\schedulemdl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\sourceapis.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\sourceapis.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|d:\\my_project_cv\\cuahang_bantrasua\\backend\\sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B07EAF7E-789C-46A3-98E7-16ACA32114C5}|sourceAPIs\\sourceAPIs.csproj|solutionrelative:sourceapis\\controllers\\foodcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,66 +206,596 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\UserController.cs",
-              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
-              "RelativeToolTip": "sourceAPIs\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAJYAAAAAAAAAAAAwwKMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T14:29:00.763Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "ScheduleController.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ScheduleController.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\ScheduleController.cs",
               "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ScheduleController.cs",
               "RelativeToolTip": "sourceAPIs\\Controllers\\ScheduleController.cs",
-              "ViewState": "AQIAACEAAAAAAAAAAAAYwAAAAAAAAAAA",
+              "ViewState": "AQIAAAABAAAAAAAAAAAQwB4BAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T05:33:12.92Z"
+              "WhenOpened": "2025-07-19T05:33:12.92Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "TotalSalesController.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\TotalSalesController.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\TotalSalesController.cs",
               "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\TotalSalesController.cs",
               "RelativeToolTip": "sourceAPIs\\Controllers\\TotalSalesController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAAwBUAAAAyAAAA",
+              "ViewState": "AQIAAEcAAAAAAAAAAAAYwFcAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T05:33:08.488Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
+              "Title": "ScheduleInfoRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\ScheduleInfoRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\ScheduleInfoRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\ScheduleInfoRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\ScheduleInfoRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:19.835Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SwapScheduleShiftRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\SwapScheduleShiftRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\SwapScheduleShiftRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\SwapScheduleShiftRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\SwapScheduleShiftRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:56.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "ReportController.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\ReportController.cs",
               "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\ReportController.cs",
               "RelativeToolTip": "sourceAPIs\\Controllers\\ReportController.cs",
-              "ViewState": "AQIAAOgBAAAAAAAAAAAuwDYCAAAAAAAA",
+              "ViewState": "AQIAAP8BAAAAAAAAAAAwwCACAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T02:15:25.179Z"
+              "WhenOpened": "2025-07-19T02:15:25.179Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "TimeRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\TimeRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\TimeRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\TimeRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\TimeRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:13.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\UserController.cs",
+              "RelativeToolTip": "sourceAPIs\\Controllers\\UserController.cs",
+              "ViewState": "AQIAAEQBAAAAAAAAAAAwwE4BAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-21T14:29:00.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UpdatePasswordRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UpdatePasswordRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\UpdatePasswordRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UpdatePasswordRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\UpdatePasswordRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:58.037Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UserMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\UserMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\UserMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\UserMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\UserMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAQAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:12:52.981Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
+              "RelativeDocumentMoniker": "sourceAPIs\\appsettings.json",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.json",
+              "RelativeToolTip": "sourceAPIs\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-02T04:40:12.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AddUserRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AddUserRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\AddUserRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AddUserRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\AddUserRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:49.029Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "GetTotalSalesRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\GetTotalSalesRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\GetTotalSalesRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\GetTotalSalesRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\GetTotalSalesRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:52.26Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Program.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Program.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Program.cs",
+              "RelativeToolTip": "sourceAPIs\\Program.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABcAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T04:40:03.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Datas\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Datas\\AppDbContext.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Datas\\AppDbContext.cs",
+              "RelativeToolTip": "sourceAPIs\\Datas\\AppDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:14:40.033Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UserHub.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserHub.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Handls\\UserHub.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserHub.cs",
+              "RelativeToolTip": "sourceAPIs\\Handls\\UserHub.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:34:22.092Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UserConnectionManager.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserConnectionManager.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Handls\\UserConnectionManager.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Handls\\UserConnectionManager.cs",
+              "RelativeToolTip": "sourceAPIs\\Handls\\UserConnectionManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:34:20.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ScheduleShiftMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleShiftMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\ScheduleShiftMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleShiftMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\ScheduleShiftMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:02.515Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ScheduleHistoryMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleHistoryMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\ScheduleHistoryMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleHistoryMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\ScheduleHistoryMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:05.508Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "OrderMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\OrderMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\OrderMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\OrderMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\OrderMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:04.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "FoodItemMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\FoodItemMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\FoodItemMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\FoodItemMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\FoodItemMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T16:10:37.581Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ShiftMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ShiftMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\ShiftMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ShiftMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\ShiftMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:01.222Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "TableMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\TableMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\TableMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\TableMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\TableMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:12:59.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "FoodCategoryMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\FoodCategoryMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\FoodCategoryMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\FoodCategoryMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\FoodCategoryMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:09.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "RequestUpdateFoodItemDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\RequestUpdateFoodItemDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\RequestUpdateFoodItemDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\RequestUpdateFoodItemDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\RequestUpdateFoodItemDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:25.526Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "OrderDetailShowViewReportDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderDetailShowViewReportDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\OrderDetailShowViewReportDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderDetailShowViewReportDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\OrderDetailShowViewReportDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:39.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "GetOpeningRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\GetOpeningRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\GetOpeningRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\GetOpeningRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\GetOpeningRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:51.567Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "AdditonPointRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AdditonPointRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\AdditonPointRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AdditonPointRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\AdditonPointRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:46.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "AddOrderRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AddOrderRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\AddOrderRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\AddOrderRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\AddOrderRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:48.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "CloseShiftAmountRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\CloseShiftAmountRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\CloseShiftAmountRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\CloseShiftAmountRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\CloseShiftAmountRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:49.972Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "EmailCheckRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\EmailCheckRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\EmailCheckRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\EmailCheckRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\EmailCheckRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:50.732Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "LoginRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\LoginRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\LoginRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\LoginRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\LoginRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:52.889Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "OpenShiftAmountRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OpenShiftAmountRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\OpenShiftAmountRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OpenShiftAmountRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\OpenShiftAmountRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:53.628Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "OrderDetailRequestDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderDetailRequestDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\OrderDetailRequestDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderDetailRequestDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\OrderDetailRequestDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:54.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "OrderIdRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderIdRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\OrderIdRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\OrderIdRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\OrderIdRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:36.953Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "PhoneRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\PhoneRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\PhoneRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\PhoneRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\PhoneRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:33.226Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "RequestFoodItemAddDTO.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\RequestFoodItemAddDTO.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\RequestFoodItemAddDTO.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\RequestFoodItemAddDTO.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\RequestFoodItemAddDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:55.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "ScheduleIdRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\ScheduleIdRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\ScheduleIdRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\ScheduleIdRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\ScheduleIdRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:56.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "TopItemsRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\TopItemsRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\TopItemsRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\TopItemsRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\TopItemsRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:57.357Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "UpdateUserRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UpdateUserRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\UpdateUserRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UpdateUserRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\UpdateUserRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:30:59.47Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "UserIdRequest.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UserIdRequest.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\ModelsRequest\\UserIdRequest.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\ModelsRequest\\UserIdRequest.cs",
+              "RelativeToolTip": "sourceAPIs\\ModelsRequest\\UserIdRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:31:00.14Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "sourceAPIs.http",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.http",
+              "RelativeDocumentMoniker": "sourceAPIs\\sourceAPIs.http",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.http",
+              "RelativeToolTip": "sourceAPIs\\sourceAPIs.http",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-08-02T08:30:35.357Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "RefreshToken.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\RefreshToken.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\Token\\RefreshToken.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\RefreshToken.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\Token\\RefreshToken.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:14:31.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "sourceAPIs\\appsettings.Development.json",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\appsettings.Development.json",
+              "RelativeToolTip": "sourceAPIs\\appsettings.Development.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-02T04:40:06.538Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "JwtSettings.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\JwtSettings.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\Token\\JwtSettings.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\Token\\JwtSettings.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\Token\\JwtSettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:14:30.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "OrderDetailMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\OrderDetailMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\OrderDetailMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\OrderDetailMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\OrderDetailMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:07.292Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "ScheduleMdl.cs",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleMdl.cs",
+              "RelativeDocumentMoniker": "sourceAPIs\\Models\\ScheduleMdl.cs",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Models\\ScheduleMdl.cs",
+              "RelativeToolTip": "sourceAPIs\\Models\\ScheduleMdl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:13:03.573Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "sourceAPIs\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Properties\\launchSettings.json",
+              "RelativeToolTip": "sourceAPIs\\Properties\\launchSettings.json",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAAA8AAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-02T04:40:23.686Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "sourceAPIs.csproj",
+              "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.csproj",
+              "RelativeDocumentMoniker": "sourceAPIs\\sourceAPIs.csproj",
+              "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\sourceAPIs.csproj",
+              "RelativeToolTip": "sourceAPIs\\sourceAPIs.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-02T04:32:17.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
               "Title": "FoodController.cs",
               "DocumentMoniker": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
               "RelativeDocumentMoniker": "sourceAPIs\\Controllers\\FoodController.cs",
               "ToolTip": "D:\\MY_PROJECT_CV\\CuaHang_BanTraSua\\backend\\sourceAPIs\\Controllers\\FoodController.cs",
               "RelativeToolTip": "sourceAPIs\\Controllers\\FoodController.cs",
-              "ViewState": "AQIAAKgAAAAAAAAAAAAvwBAAAAAvAAAA",
+              "ViewState": "AQIAAPEAAAAAAAAAAAAowCoBAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T02:15:23.896Z"
             }

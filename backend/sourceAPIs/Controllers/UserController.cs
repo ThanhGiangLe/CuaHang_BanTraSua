@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using testVue.Datas;
-using BCrypt.Net;
-using Microsoft.AspNetCore.Identity.Data;
-using Twilio.TwiML.Messaging;
-using testVue.ModelsRequest;
-using testVue.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using sourceAPI.Models.Token;
-using Microsoft.AspNetCore.Authorization;
-using sourceAPI.ModelsRequest;
 using sourceAPI.Models;
+using sourceAPI.Models.Token;
+using sourceAPI.ModelsRequest;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using testVue.Datas;
+using testVue.Models;
+using testVue.ModelsRequest;
 
 namespace testVue.Controllers
 {
@@ -120,7 +116,6 @@ namespace testVue.Controllers
             });
         }
 
-
         [HttpPost("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequestDTO request)
         {
@@ -137,7 +132,7 @@ namespace testVue.Controllers
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-            user.Password = hashedPassword; // Lưu mật khẩu đã được mã hóa
+            user.Password = hashedPassword; 
             _context.Users.Update(user);
 
             try
@@ -147,7 +142,6 @@ namespace testVue.Controllers
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi khi lưu vào cơ sở dữ liệu
                 return StatusCode(500, "Có lỗi trong quá trình xử lý.");
             }
         }
@@ -172,7 +166,6 @@ namespace testVue.Controllers
                 return Ok(new { success = -1 });
             }
 
-            // Kiểm tra xem người dùng đã tồn tại hay chưa
             var existingUser = await _context.Users.AnyAsync(u => u.Phone == addUserRequest.Phone || u.Email == addUserRequest.Email);
             if (existingUser)
             {
@@ -201,8 +194,8 @@ namespace testVue.Controllers
 
             if (addUserRequest.Role?.ToLower() != "khách hàng")
             {
-                int year = DateTime.Now.Year;
-                int month = DateTime.Now.Month;
+                int year = currentTime.Year;
+                int month = currentTime.Month;
                 int daysInCurrentMonth = DateTime.DaysInMonth(year, month);
 
                 var defautlSchedule = Enumerable.Range(1, daysInCurrentMonth).

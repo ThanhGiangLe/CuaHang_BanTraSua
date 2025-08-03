@@ -46,7 +46,7 @@ namespace testVue.Controllers
         {
             try
             {
-                var foodItems = await _context.FoodItems.ToListAsync();
+                var foodItems = await _context.FoodItems.Where(item => item.IsDeleted != 1).ToListAsync();
                 return Ok(new { success = 1, data = foodItems });
             }
             catch (Exception ex)
@@ -296,12 +296,8 @@ namespace testVue.Controllers
                 return NotFound(new { success = -1, message = "Không tìm thấy món cần xóa" });
             }
 
-            var listOrderDetails = await _context.OrderDetails.Where(item => item.FoodItemId == FoodItemId).ToListAsync();
-
-            _context.OrderDetails.RemoveRange(listOrderDetails);
-            await _context.SaveChangesAsync();
-
-            _context.FoodItems.Remove(foodItem);
+            foodItem.IsDeleted = 1;
+            _context.FoodItems.Update(foodItem);
 
             try
             {

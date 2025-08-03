@@ -334,6 +334,7 @@ const {
   getAllOrderByMonth,
   getAllOrderByDay,
   getAllOrderByFullName,
+  getAllOrderByPaymentMethod,
   GetOrderDetailsByOrderId,
 } = reportManagementHandler();
 const { getAllEmployee } = employeeManagementHandler();
@@ -450,81 +451,116 @@ function formatDateMonth(dateTime) {
   return formattedDate;
 }
 async function selectCurrentDayAndCallAPI() {
+  selectedDay.value = "";
+  selectedMonth.value = "";
   const day = currentDate.getDate();
+  // Định dạng lại thành "ngày/tháng/năm"
   const formattedDate = `${day < 10 ? "0" + day : day}-${
     currentMonth < 10 ? "0" + currentMonth : currentMonth
   }-${currentYear}`;
   selectedCurrentDay.value = formattedDate;
-  selectedDay.value = "";
-  selectedMonth.value = "";
-  console.log("selectedCurrentDay: ", selectedCurrentDay.value);
-  console.log("selectedDay: ", selectedDay.value);
-  console.log("selectedMonth: ", selectedMonth.value);
-  filterBill();
+  let [dayf, monthf, yearf] = selectedCurrentDay.value.split("-");
+  dayf = dayf.padStart(2, "0");
+  monthf = monthf.padStart(2, "0");
+  selectedCurrentDay.value = `${dayf}-${monthf}-${yearf}`;
+
+  const response = await getAllOrderByDay(selectedCurrentDay.value);
+  console.log("Hôm nay: ", response);
+  let result = response;
+  if (selectedEmployee.value != "") {
+    result = result.filter(
+      (item) =>
+        item.fullName.trim().toLowerCase() ==
+        selectedEmployee.value.trim().toLowerCase()
+    );
+  }
+  if (selectedPaymentMethod.value != "") {
+    result = result.filter(
+      (item) =>
+        item.paymentMethod.trim().toLowerCase() ==
+        selectedPaymentMethod.value.trim().toLowerCase()
+    );
+  }
+  filterAllBilling.value = result;
 }
 async function selectDayAndCallAPI(day) {
-  selectedDay.value = day;
   selectedCurrentDay.value = "";
   selectedMonth.value = "";
-  console.log("selectedDay: ", selectedDay.value);
-  console.log("selectedCurrentDay: ", selectedCurrentDay.value);
-  console.log("selectedMonth: ", selectedMonth.value);
-
-  filterBill();
+  selectedDay.value = day;
+  let [dayf, monthf, yearf] = selectedDay.value.split("-");
+  dayf = dayf.padStart(2, "0");
+  monthf = monthf.padStart(2, "0");
+  selectedDay.value = `${dayf}-${monthf}-${yearf}`;
+  const responseTotal1 = await getAllOrderByDay(selectedDay.value);
+  console.log("Chọn ngày: ", responseTotal1);
+  let result = responseTotal1;
+  if (selectedEmployee.value != "") {
+    result = result.filter(
+      (item) =>
+        item.fullName.trim().toLowerCase() ==
+        selectedEmployee.value.trim().toLowerCase()
+    );
+  }
+  if (selectedPaymentMethod.value != "") {
+    result = result.filter(
+      (item) =>
+        item.paymentMethod.trim().toLowerCase() ==
+        selectedPaymentMethod.value.trim().toLowerCase()
+    );
+  }
+  filterAllBilling.value = result;
 }
 async function selectMonthAndCallAPI(month) {
-  selectedMonth.value = month;
   selectedCurrentDay.value = "";
   selectedDay.value = "";
-  console.log("selectedMonth: ", selectedMonth.value);
-  console.log("selectedCurrentDay: ", selectedCurrentDay.value);
-  console.log("selectedDay: ", selectedDay.value);
+  selectedMonth.value = month;
+  let [monthf, yearf] = selectedMonth.value.split("-");
+  monthf = monthf.padStart(2, "0");
+  selectedMonth.value = `${monthf}-${yearf}`;
 
-  filterBill();
+  const response = await getAllOrderByMonth(selectedMonth.value);
+  let result = response;
+  if (selectedEmployee.value != "") {
+    result = result.filter(
+      (item) =>
+        item.fullName.trim().toLowerCase() ==
+        selectedEmployee.value.trim().toLowerCase()
+    );
+  }
+  if (selectedPaymentMethod.value != "") {
+    result = result.filter(
+      (item) =>
+        item.paymentMethod.trim().toLowerCase() ==
+        selectedPaymentMethod.value.trim().toLowerCase()
+    );
+  }
+  allBilling.value = result;
+  filterAllBilling.value = allBilling.value.sort(
+    (a, b) => b.orderTime - a.orderTime
+  );
 }
 
 async function selectEmployeeAndCallAPI(emp) {
+  selectedDay.value = "";
+  selectedMonth.value = "";
+  selectedCurrentDay.value = "";
   selectedEmployee.value = emp;
-  console.log("selectedEmployee: ", selectedEmployee.value);
-
-  filterBill();
+  const response = await getAllOrderByFullName(selectedEmployee.value);
+  filterAllBilling.value = response;
 }
-function filterBillByPaymentMethod(method) {
+async function filterBillByPaymentMethod(method) {
+  selectedDay.value = "";
+  selectedMonth.value = "";
+  selectedCurrentDay.value = "";
+  selectedEmployee.value = "";
   selectedPaymentMethod.value = method.paymentName;
   console.log("selectedPaymentMethod: ", selectedPaymentMethod.value);
-
-  filterBill();
+  const response = await getAllOrderByPaymentMethod(
+    selectedPaymentMethod.value
+  );
+  console.log("res: ", response);
+  filterAllBilling.value = response;
 }
-const filterBill = () => {
-  loading.value = true;
-  filterAllBilling.value = allBilling.value.filter((item) => {
-    const matchCurrentDay =
-      !selectedCurrentDay.value ||
-      formatDate(item.orderTime) == selectedCurrentDay.value;
-    const matchSelectedDay =
-      !selectedDay.value || formatDate(item.orderTime) == selectedDay.value;
-    const matchSelectedMonth =
-      !selectedMonth.value ||
-      formatDateMonth(item.orderTime) == selectedMonth.value;
-    console.log("formatDateMonth", formatDateMonth(item.orderTime));
-    const matchEmployee =
-      !selectedEmployee.value ||
-      item.fullName.toLowerCase().trim() ==
-        selectedEmployee.value.toLowerCase().trim();
-    const matchPaymentMethod =
-      !selectedPaymentMethod.value ||
-      item.paymentMethod.toLowerCase().trim() ==
-        selectedPaymentMethod.value.toLowerCase().trim();
-    return (
-      matchCurrentDay &&
-      matchEmployee &&
-      matchSelectedDay &&
-      matchSelectedMonth &&
-      matchPaymentMethod
-    );
-  });
-  loading.value = false;
-};
 
 const resetTimeFillterRevenueOrder = () => {
   selectedDay.value = "";

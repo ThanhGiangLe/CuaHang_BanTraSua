@@ -23,5 +23,6 @@ namespace testVue.Models
         public DateTime? UpdateDate { get; set; }
         public string? UpdateBy { get; set; } = string.Empty;
         public int IsMain { get; set; } = default;
+        public int IsDeleted { get; set; } = default;
     }
 }

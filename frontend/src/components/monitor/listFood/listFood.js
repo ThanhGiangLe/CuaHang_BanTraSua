@@ -148,6 +148,7 @@ export default function useFoodManagement() {
 
     const filtered = items.filter((foodItem) => {
       const isMainFood = foodItem.isMain == 1;
+      const isSale = foodItem.status.trim().toLowerCase() == "đang kinh doanh";
       const isCategoryMatch =
         listFoodCategorySelected.value.length === 0 ||
         listFoodCategorySelected.value.some(
@@ -158,7 +159,7 @@ export default function useFoodManagement() {
         foodItem.foodName.toLowerCase()
       ).includes(removeVietnameseTones(search.value.toLowerCase()));
 
-      return isCategoryMatch && isSearchMatch && isMainFood;
+      return isCategoryMatch && isSearchMatch && isMainFood && isSale;
     });
 
     return filtered.sort((a, b) => {
@@ -569,7 +570,7 @@ export default function useFoodManagement() {
         showToast("Đặt món thành công!", "success");
         searchPhoneNumbers.value = null;
         resetCurrentOrder();
-        setTimeout(() => window.location.reload(), 3200);
+        // setTimeout(() => window.location.reload(), 3200);
       } else if (success === -20) {
         showToast("Số điểm không đủ để thanh toán!", "warn");
       } else if (success === -26) {

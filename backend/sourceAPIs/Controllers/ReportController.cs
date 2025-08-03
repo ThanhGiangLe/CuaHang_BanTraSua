@@ -539,6 +539,37 @@ namespace testVue.Controllers
             return Ok(result);
         }
 
+        [HttpPost("get-all-order-payment-method")] // Có dùng
+        public async Task<ActionResult<IEnumerable<OrderMdl>>> GetOrdersByPaymentMethod([FromBody] TimeRequestDTO timeRequest)
+        {
+            if (timeRequest == null)
+            {
+                return BadRequest("Dữ liệu không hợp lệ.");
+            }
+
+            var query = from order in _context.Orders
+                        join user in _context.Users on order.UserId equals user.UserId
+                        join table in _context.Tables on order.TableId equals table.TableId
+                        where (order.PaymentMethod == timeRequest.Date)
+                        select new OrderDetailShowViewReportDTO
+                        {
+                            OrderId = order.OrderId,
+                            FullName = user.FullName ?? "Không xác định",
+                            OrderTime = order.OrderTime,
+                            TableName = table.TableName ?? "Không xác định",
+                            TotalAmount = (decimal)order.TotalAmount,
+                            ReturnedAmount = (decimal)order.ReturnedAmount,
+                            ReceivedAmount = (decimal)order.ReceivedAmount,
+                            Discount = (decimal)order.Discount,
+                            PaymentMethod = order.PaymentMethod ?? "Không xác định",
+                        };
+
+            var result = await query.OrderByDescending(x => x.OrderTime).ToListAsync();
+
+            return Ok(result);
+        }
+
+
         [HttpPost("get-orderdetails-by-orderid")]
         public async Task<IActionResult> GetOrderDetailsByOrderId([FromBody] OrderIdRequest request)
         {

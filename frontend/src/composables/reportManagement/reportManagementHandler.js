@@ -156,6 +156,20 @@ export function reportManagementHandler() {
       return err;
     }
   };
+  const getAllOrderByPaymentMethod = async (selectedPaymentMethod) => {
+    try {
+      const response = await axiosClient.post(
+        API_ENDPOINTS.GET_ALL_ORDER_PAYMENT_METHOD,
+        {
+          date: selectedPaymentMethod,
+        }
+      );
+      const result = response.data;
+      return result;
+    } catch (err) {
+      return err;
+    }
+  };
   const GetOrderDetailsByOrderId = async (request) => {
     try {
       const response = await axiosClient.post(
@@ -216,6 +230,7 @@ export function reportManagementHandler() {
     getAllOrderByMonth,
     getAllOrderByDay,
     getAllOrderByFullName,
+    getAllOrderByPaymentMethod,
     GetOrderDetailsByOrderId,
     GetRevenueOrderByDay,
     GetRevenueOrderByWeek,
