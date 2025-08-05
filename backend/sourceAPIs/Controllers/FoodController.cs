@@ -226,6 +226,11 @@ namespace testVue.Controllers
             {
                 return BadRequest("Dữ liệu yêu cầu truyền đi không hợp lệ.");
             }
+            var exittingFood = await _context.FoodItems.FirstOrDefaultAsync(item => item.FoodName.ToLower() == request.FoodName.ToLower());
+            if (exittingFood != null)
+            {
+                return NotFound();
+            }
             var roleFromToken = User.FindFirst(ClaimTypes.Role)?.Value;
             if (roleFromToken?.ToLower() == "khách hàng" || roleFromToken?.ToLower() == "nhân viên")
             {

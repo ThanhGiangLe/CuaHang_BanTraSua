@@ -28,7 +28,6 @@
         prepend-icon="mdi-account-group"
         value="users"
         class="my-vtab-custommer"
-        v-if="user.role == 'Chủ cửa hàng' || user.role == 'Quản lý'"
         >Quản lý tài khoản</v-tab
       >
       <v-tab

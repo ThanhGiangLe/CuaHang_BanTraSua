@@ -375,6 +375,7 @@ async function init() {
   employeeListFullName.value = employeeList.value
     .filter((emp) => emp.role != "Khách hàng")
     .map((emp) => emp.fullName);
+  employeeListFullName.value.push("Auto");
   loading.value = false;
 }
 init();

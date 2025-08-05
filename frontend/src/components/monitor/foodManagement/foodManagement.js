@@ -247,6 +247,9 @@ export default function useFoodManagement() {
       } else if (response.response.status == 400) {
         showToast(`Món ăn thêm không hợp lệ!`, "warn");
         cancelSaveFood();
+      } else if (response.response.status == 404) {
+        showToast(`Món ăn đã tồn tại!`, "warn");
+        cancelSaveFood();
       }
     }
   }

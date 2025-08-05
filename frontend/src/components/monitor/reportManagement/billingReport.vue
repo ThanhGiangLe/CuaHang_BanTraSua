@@ -541,25 +541,112 @@ async function selectMonthAndCallAPI(month) {
 }
 
 async function selectEmployeeAndCallAPI(emp) {
-  selectedDay.value = "";
-  selectedMonth.value = "";
-  selectedCurrentDay.value = "";
   selectedEmployee.value = emp;
   const response = await getAllOrderByFullName(selectedEmployee.value);
-  filterAllBilling.value = response;
+  console.log("abc: ", response);
+  let result = response;
+  if (selectedCurrentDay.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+
+      const formatOrderDate = `${day < 10 ? "0" + day : day}-${
+        month < 10 ? "0" + month : month
+      }-${year}`;
+
+      return formatOrderDate == selectedCurrentDay.value;
+    });
+  }
+  if (selectedDay.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+      const formatOrderDate = `${day < 10 ? "0" + day : day}-${
+        month < 10 ? "0" + month : month
+      }-${year}`;
+
+      return formatOrderDate == selectedDay.value;
+    });
+  }
+  if (selectedMonth.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+      const formatOrderDate = `${month.toString().padStart(2, "0")}-${year}`;
+
+      return formatOrderDate == selectedMonth.value;
+    });
+  }
+  if (selectedPaymentMethod.value) {
+    result = result.filter((item) => {
+      return (
+        item.paymentMethod.trim().toLowerCase() ==
+        selectedPaymentMethod.value.trim().toLowerCase()
+      );
+    });
+  }
+  filterAllBilling.value = result;
 }
 async function filterBillByPaymentMethod(method) {
-  selectedDay.value = "";
-  selectedMonth.value = "";
-  selectedCurrentDay.value = "";
-  selectedEmployee.value = "";
   selectedPaymentMethod.value = method.paymentName;
   console.log("selectedPaymentMethod: ", selectedPaymentMethod.value);
   const response = await getAllOrderByPaymentMethod(
     selectedPaymentMethod.value
   );
-  console.log("res: ", response);
-  filterAllBilling.value = response;
+  let result = response;
+  if (selectedCurrentDay.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+
+      const formatOrderDate = `${day < 10 ? "0" + day : day}-${
+        month < 10 ? "0" + month : month
+      }-${year}`;
+
+      return formatOrderDate == selectedCurrentDay.value;
+    });
+  }
+  if (selectedDay.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+      const formatOrderDate = `${day < 10 ? "0" + day : day}-${
+        month < 10 ? "0" + month : month
+      }-${year}`;
+
+      return formatOrderDate == selectedDay.value;
+    });
+  }
+  if (selectedMonth.value) {
+    result = result.filter((item) => {
+      let orderDate = new Date(item.orderTime);
+      let year = orderDate.getFullYear();
+      let month = orderDate.getMonth() + 1;
+      let day = orderDate.getDate();
+      const formatOrderDate = `${month.toString().padStart(2, "0")}-${year}`;
+
+      return formatOrderDate == selectedMonth.value;
+    });
+  }
+  if (selectedEmployee.value) {
+    result = result.filter((item) => {
+      return (
+        item.fullName.trim().toLowerCase() ==
+        selectedEmployee.value.trim().toLowerCase()
+      );
+    });
+  }
+  filterAllBilling.value = result;
 }
 
 const resetTimeFillterRevenueOrder = () => {
@@ -567,6 +654,7 @@ const resetTimeFillterRevenueOrder = () => {
   selectedMonth.value = "";
   selectedCurrentDay.value = "";
   selectedEmployee.value = "";
+  selectedPaymentMethod.value = "";
   init();
 };
 const formatDateFormApiToView = (inputDate) => {

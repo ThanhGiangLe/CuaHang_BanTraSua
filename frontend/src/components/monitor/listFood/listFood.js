@@ -101,6 +101,7 @@ export default function useFoodManagement() {
     const responseBestselling = await topBestSelling({
       Top: 5,
     });
+    console.log("responseBestselling: ", responseBestselling);
     listItemBestSelling.value = responseBestselling.top;
     listFoodItemIdBestSelling.value = _.pluck(
       listItemBestSelling.value,
@@ -438,6 +439,10 @@ export default function useFoodManagement() {
 
     if (existingItem) {
       existingItem.Quantity += resultOrderItem.value.Quantity;
+      if (existingItem.Quantity > 30) {
+        showToast("Số lượng tối đa là 30, vui lòng tách thành 2 đơn.", "warn");
+        existingItem.Quantity -= resultOrderItem.value.Quantity;
+      }
     } else {
       currentOrder.value.items.push({ ...resultOrderItem.value });
     }
